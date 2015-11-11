@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/Primary_Light"
+    android:weightSum="1">
+
+    <AutoCompleteTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/addressBar"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="10dp"
+        android:hint="Address or Contact"
+        android:textSize="30sp"
+        android:completionThreshold="2"
+        android:dropDownHeight="100dp"
+        android:textColor="@color/Dark" />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Be There in 5"
+        android:id="@+id/searchButton"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/round_button"
+        android:textColor="@color/Primary_Dark"
+        android:onClick="calculateLocation"
+        android:textSize="25sp" />
+</LinearLayout>

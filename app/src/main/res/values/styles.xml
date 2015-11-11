@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AppTheme" parent="android:Theme.Material">
+        <item name="android:colorPrimary">@color/Primary</item>
+        <item name="android:colorPrimaryDark">@color/Primary_Dark</item>
+        <item name="android:colorAccent">@color/Primary_Accent</item>
+        <item name="android:colorActivatedHighlight">@color/Primary_Light</item>
+        <item name="android:textColor">@color/Primary</item>
+    </style>
+
+
+    <color name="Primary">#64B5F6</color>
+    <color name="Primary_Dark">#1E88E5</color>
+    <color name="Primary_Light">#BBDEFB</color>
+    <color name="Primary_Accent">#640086ff</color>
+
+    <color name="Map_Color">#641e88e5</color>
+
+    <color name="ErrorRed">#FF9494</color>
+
+    <color name="Dark">#1F1F1F</color>
+    <color name="Medium">#2E2E2E</color>
+    <color name="Light">#EBEBEB</color>
+
+    <!--&lt;!&ndash;Orange &ndash;&gt;-->
+    <!--<color name="Primary">#FF7043</color>-->
+    <!--&lt;!&ndash; 300 &ndash;&gt;-->
+    <!--<color name="Primary_Dark">#FF5722</color>-->
+    <!--&lt;!&ndash; 500 &ndash;&gt;-->
+    <!--<color name="Primary_Light">#ffbc97</color>-->
+    <!--&lt;!&ndash; 100 &ndash;&gt;-->
+    <!--<color name="Primary_Accent">#64ff4800</color>-->
+    <!--&lt;!&ndash; A100 &ndash;&gt;-->
+
+    <!--&lt;!&ndash;Red &ndash;&gt;-->
+    <!--<color name="Primary">#F44336</color>-->
+    <!--&lt;!&ndash; 300 &ndash;&gt;-->
+    <!--<color name="Primary_Dark">#E53935</color>-->
+    <!--&lt;!&ndash; 500 &ndash;&gt;-->
+    <!--<color name="Primary_Light">#EF9A9A</color>-->
+    <!--&lt;!&ndash; 100 &ndash;&gt;-->
+    <!--<color name="Primary_Accent">#64ff0400</color>-->
+    <!--&lt;!&ndash; A100 &ndash;&gt;-->
+
+</resources>
+
+
