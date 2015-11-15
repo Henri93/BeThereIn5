@@ -19,7 +19,7 @@ import java.util.List;
 
 public class MapsActivity extends FragmentActivity {
 
-    private GoogleMap mMap; // Might be null if Google Play services APK is not available.
+    private GoogleMap mMap;
     private final int MILE_RADIUS = 1;
     private int CIRCLE_COLOR =  Color.argb(100, 30, 136, 229);
     private String destination;
