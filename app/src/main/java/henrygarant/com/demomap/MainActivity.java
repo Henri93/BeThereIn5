@@ -32,7 +32,6 @@ public class MainActivity extends FragmentActivity{
         searchButton = (Button)findViewById(R.id.searchButton);
         addressBar = (AutoCompleteTextView)findViewById(R.id.addressBar);
 
-
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, addressList);
         adapter.setNotifyOnChange(true);
         addressBar.setThreshold(2);
