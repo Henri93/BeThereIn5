@@ -2,17 +2,28 @@ package henrygarant.com.demomap;
 
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.location.Address;
+import android.location.Geocoder;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends FragmentActivity{
 
@@ -21,15 +32,13 @@ public class MainActivity extends FragmentActivity{
     private ArrayList<String> addressList = new ArrayList<String>();
     private ArrayAdapter<String> adapter;
     private String query;
-    //private SearchAddress searchAddress;
+    private SearchAddress searchAddress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
         getActionBar().setHomeButtonEnabled(true);
-
-        addressList.add("3030 Magee Ave");
 
         Typeface tf = Typeface.createFromAsset(getAssets(),"fonts/Exo-Regular.otf");
 
@@ -41,8 +50,8 @@ public class MainActivity extends FragmentActivity{
         addressBar.setThreshold(2);
         addressBar.setAdapter(adapter);
 
-        //searchAddress = new SearchAddress();
-        /*addressBar.addTextChangedListener(new TextWatcher() {
+        searchAddress = new SearchAddress();
+        addressBar.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 adapter.clear();
@@ -60,6 +69,7 @@ public class MainActivity extends FragmentActivity{
                         searchAddress.execute(query);
                         Log.d("ASYNC", "FINISH GOOD");
                         Log.d("ASYNC", query);
+                        Log.d("ArrayList", addressList.toString());
                     }else{
                         Log.d("ASYNC", "CANCEL");
                         searchAddress.cancel(false);
@@ -73,7 +83,7 @@ public class MainActivity extends FragmentActivity{
             public void afterTextChanged(Editable s) {
                 adapter.notifyDataSetChanged();
             }
-        });*/
+        });
 
 
         searchButton.setTypeface(tf, Typeface.BOLD);
@@ -103,8 +113,7 @@ public class MainActivity extends FragmentActivity{
     }
 
 
-
-    /*private ArrayList<String> getAddressInfo(Context context, String locationName){
+    private ArrayList<String> getAddressInfo(Context context, String locationName) {
         Geocoder geocoder = new Geocoder(context, Locale.getDefault());
 
         try {
@@ -153,5 +162,5 @@ public class MainActivity extends FragmentActivity{
         @Override
         protected void onProgressUpdate(Void... values) {}
     }
-    */
+
 }
