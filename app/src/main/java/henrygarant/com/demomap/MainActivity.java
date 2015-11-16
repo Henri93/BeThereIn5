@@ -12,11 +12,13 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 
+import java.util.ArrayList;
+
 public class MainActivity extends FragmentActivity{
 
     private Button searchButton;
     private AutoCompleteTextView addressBar;
-    private String[] addressList = new String[]{"3030 Magee Ave"};
+    private ArrayList<String> addressList = new ArrayList<String>();
     private ArrayAdapter<String> adapter;
     private String query;
     //private SearchAddress searchAddress;
@@ -26,6 +28,8 @@ public class MainActivity extends FragmentActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
         getActionBar().setHomeButtonEnabled(true);
+
+        addressList.add("3030 Magee Ave");
 
         Typeface tf = Typeface.createFromAsset(getAssets(),"fonts/Exo-Regular.otf");
 
@@ -148,5 +152,6 @@ public class MainActivity extends FragmentActivity{
         protected void onPreExecute() {}
         @Override
         protected void onProgressUpdate(Void... values) {}
-    }*/
+    }
+    */
 }
