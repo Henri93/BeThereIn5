@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/Primary_Light"
+    android:background="@color/Medium"
     android:weightSum="1">
 
     <AutoCompleteTextView
@@ -11,11 +11,11 @@
         android:id="@+id/addressBar"
         android:layout_gravity="center_horizontal"
         android:layout_margin="10dp"
-        android:hint="Address or Contact"
+        android:hint="Contact Name"
         android:textSize="30sp"
         android:completionThreshold="2"
         android:dropDownHeight="100dp"
-        android:textColor="@color/Dark" />
+        android:textColor="@color/Primary" />
     <Button
         android:layout_width="match_parent"
         android:layout_height="match_parent"

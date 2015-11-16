@@ -12,7 +12,8 @@
     <color name="Primary">#64B5F6</color>
     <color name="Primary_Dark">#1E88E5</color>
     <color name="Primary_Light">#BBDEFB</color>
-    <color name="Primary_Accent">#640086ff</color>
+    <!--<color name="Primary_Accent">#FF9A40</color>-->
+    <color name="Primary_Accent">#1E88E5</color>
 
     <color name="Map_Color">#641e88e5</color>
 

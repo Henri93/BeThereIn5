@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/contactName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Henry Garant"
+        android:padding="10dp"
+        android:textSize="18dp"
+        android:textColor="@color/Primary_Light"
+        android:background="@color/Medium"
+        android:textStyle="italic"
+        android:phoneNumber="false" />
+
+    <ImageView
+        android:layout_height="2dp"
+        android:layout_width="fill_parent"
+        android:background="@color/Primary_Accent" />
+
+</LinearLayout>
+
+
+
+
+
+

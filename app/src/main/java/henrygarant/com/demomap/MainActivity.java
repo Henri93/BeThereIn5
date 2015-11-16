@@ -2,37 +2,28 @@ package henrygarant.com.demomap;
 
 
 import android.app.AlertDialog;
-import android.content.Context;
+import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Typeface;
-import android.location.Address;
-import android.location.Geocoder;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v4.app.FragmentActivity;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.Toast;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
+import java.util.HashMap;
 
 public class MainActivity extends FragmentActivity{
 
     private Button searchButton;
     private AutoCompleteTextView addressBar;
-    private ArrayList<String> addressList = new ArrayList<String>();
     private ArrayAdapter<String> adapter;
-    private String query;
-    private SearchAddress searchAddress;
+    private HashMap<String, String> contacts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,46 +36,14 @@ public class MainActivity extends FragmentActivity{
         searchButton = (Button)findViewById(R.id.searchButton);
         addressBar = (AutoCompleteTextView)findViewById(R.id.addressBar);
 
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, addressList);
-        adapter.setNotifyOnChange(true);
+        contacts = new HashMap<String, String>();
+
+        populateContacts(this.getContentResolver());
+
         addressBar.setThreshold(2);
+
+        adapter = new ContactAdapter(this, new ArrayList<String>(contacts.values()));
         addressBar.setAdapter(adapter);
-
-        searchAddress = new SearchAddress();
-        addressBar.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                adapter.clear();
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if ((addressBar).isPerformingCompletion()) {return;}
-                if (s.length() < 2) {
-                    return;
-                }else{
-                    query = s.toString();
-                    if (searchAddress.getStatus().equals(AsyncTask.Status.FINISHED)){
-                        searchAddress = new SearchAddress();
-                        searchAddress.execute(query);
-                        Log.d("ASYNC", "FINISH GOOD");
-                        Log.d("ASYNC", query);
-                        Log.d("ArrayList", addressList.toString());
-                    }else{
-                        Log.d("ASYNC", "CANCEL");
-                        searchAddress.cancel(false);
-                        searchAddress = new SearchAddress();
-                        searchAddress.execute(query);
-                    }
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                adapter.notifyDataSetChanged();
-            }
-        });
-
 
         searchButton.setTypeface(tf, Typeface.BOLD);
         addressBar.setTypeface(tf);
@@ -112,55 +71,12 @@ public class MainActivity extends FragmentActivity{
         startActivity(intent);
     }
 
-
-    private ArrayList<String> getAddressInfo(Context context, String locationName) {
-        Geocoder geocoder = new Geocoder(context, Locale.getDefault());
-
-        try {
-            List<Address> a = geocoder.getFromLocationName(locationName, 5);
-
-            if(a != null) {
-
-                for (int i = 0; i < a.size(); i++) {
-                    //String city = a.get(i).getLocality();
-                    //String country = a.get(i).getCountryName();
-                    Address address = a.get(i);
-                    addressList.add(address.toString());
-                }
-            }
-            return addressList;
-
-        } catch (IOException e) {
-            e.printStackTrace();
+    public void populateContacts(ContentResolver cr) {
+        Cursor phones = cr.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null);
+        while (phones.moveToNext()) {
+            String contact = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+            String phoneNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+            contacts.put(phoneNumber, contact);
         }
-        return null;
     }
-
-    private class SearchAddress extends AsyncTask<String, Void, ArrayList<String>> {
-
-        @Override
-        protected ArrayList<String> doInBackground(String... params) {
-            addressList.clear();
-            ArrayList<String> addressArray = getAddressInfo(getApplicationContext(), query);
-            return addressArray;
-        }
-
-        @Override
-        protected void onPostExecute(ArrayList<String> addressArray) {
-            if(addressArray == null)
-                Toast.makeText(getApplicationContext(), "No address obtained from server", Toast.LENGTH_SHORT).show();
-            else{
-                adapter.clear();
-                for(String address : addressArray){
-                    adapter.add(address);
-                }
-            }
-        }
-
-        @Override
-        protected void onPreExecute() {}
-        @Override
-        protected void onProgressUpdate(Void... values) {}
-    }
-
 }
