@@ -36,7 +36,7 @@ public class LoginActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
 
-        inputEmail = (EditText) findViewById(R.id.phone);
+        inputPhone = (EditText) findViewById(R.id.phone);
         inputPassword = (EditText) findViewById(R.id.password);
         btnLogin = (Button) findViewById(R.id.btnLogin);
         btnLinkToRegister = (Button) findViewById(R.id.btnLinkToRegisterScreen);
@@ -63,18 +63,20 @@ public class LoginActivity extends Activity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
-                String email = inputEmail.getText().toString().trim();
+                String phone = inputPhone.getText().toString().trim();
                 String password = inputPassword.getText().toString().trim();
 
                 // Check for empty data in the form
-                if (!email.isEmpty() && !password.isEmpty()) {
+                if (!phone.isEmpty() && !password.isEmpty()) {
                     // login user
-                    checkLogin(email, password);
+                    checkLogin(phone, password);
                 } else {
                     // Prompt user to enter credentials
+                    //TODO ERROR SHAKE
                     Toast.makeText(getApplicationContext(),
                             "Please enter the credentials!", Toast.LENGTH_LONG)
                             .show();
+                            
                 }
             }
 
@@ -96,7 +98,7 @@ public class LoginActivity extends Activity {
     /**
      * function to verify login details in mysql db
      */
-    private void checkLogin(final String email, final String password) {
+    private void checkLogin(final String phone, final String password) {
         // Tag used to cancel the request
         String tag_string_req = "req_login";
 
@@ -126,12 +128,12 @@ public class LoginActivity extends Activity {
 
                         JSONObject user = jObj.getJSONObject("user");
                         String name = user.getString("name");
-                        String email = user.getString("email");
+                        String phone = user.getString("phone");
                         String created_at = user
                                 .getString("created_at");
 
                         // Inserting row in users table
-                        db.addUser(name, email, uid, created_at);
+                        db.addUser(name, phone, uid, created_at);
 
                         // Launch main activity
                         Intent intent = new Intent(LoginActivity.this,
@@ -166,7 +168,7 @@ public class LoginActivity extends Activity {
             protected Map<String, String> getParams() {
                 // Posting parameters to login url
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("email", email);
+                params.put("phone", phone);
                 params.put("password", password);
 
                 return params;
