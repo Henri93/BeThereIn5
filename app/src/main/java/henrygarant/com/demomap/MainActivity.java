@@ -59,6 +59,7 @@ public class MainActivity extends FragmentActivity{
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener(){
                     public void onClick(DialogInterface dialog, int whichButton){
                         //TODO SET REMINDER HERE
+
                         String address = addressBar.getText().toString().trim()
                         moveToActivity(MapsActivity.class, address);
                     }})
