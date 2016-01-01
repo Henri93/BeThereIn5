@@ -25,7 +25,7 @@ public class LoginActivity extends Activity {
     private static final String TAG = LoginActivity.class.getSimpleName();
     private Button btnLogin;
     private Button btnLinkToRegister;
-    private EditText inputEmail;
+    private EditText inputPhone;
     private EditText inputPassword;
     private ProgressDialog pDialog;
     private SessionManager session;
@@ -69,7 +69,8 @@ public class LoginActivity extends Activity {
                 // Check for empty data in the form
                 if (!phone.isEmpty() && !password.isEmpty()) {
                     // login user
-                    checkLogin(phone, password);
+                    //checkLogin(phone, password);
+                    fakeLogin();
                 } else {
                     // Prompt user to enter credentials
                     //TODO ERROR SHAKE
@@ -93,6 +94,11 @@ public class LoginActivity extends Activity {
             }
         });
 
+    }
+
+    private void fakeLogin() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 
     /**
