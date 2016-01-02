@@ -10,11 +10,15 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 
+import com.github.nkzawa.socketio.client.IO;
+
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -25,16 +29,19 @@ public class MainActivity extends FragmentActivity{
     private ArrayAdapter<String> adapter;
     private HashMap<String, String> contacts;
 
+    private static final String SERVER_ADDRESS = "http://192.168.1.4:3000";
+    private com.github.nkzawa.socketio.client.Socket mSocket;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
         getActionBar().setHomeButtonEnabled(true);
 
-        Typeface tf = Typeface.createFromAsset(getAssets(),"fonts/Exo-Regular.otf");
+        Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/Exo-Regular.otf");
 
-        searchButton = (Button)findViewById(R.id.searchButton);
-        addressBar = (AutoCompleteTextView)findViewById(R.id.addressBar);
+        searchButton = (Button) findViewById(R.id.searchButton);
+        addressBar = (AutoCompleteTextView) findViewById(R.id.addressBar);
 
         contacts = new HashMap<String, String>();
 
@@ -47,6 +54,25 @@ public class MainActivity extends FragmentActivity{
 
         searchButton.setTypeface(tf, Typeface.BOLD);
         addressBar.setTypeface(tf);
+
+
+        //temp code
+        try {
+            mSocket = IO.socket(SERVER_ADDRESS);
+            mSocket.connect();
+            mSocket.emit("message", "Android Says Hello");
+        } catch (URISyntaxException e) {
+            Log.d("ERROR", "Unable to Connect to Socket");
+        }
+
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        mSocket.disconnect();
     }
 
 
@@ -60,7 +86,7 @@ public class MainActivity extends FragmentActivity{
                     public void onClick(DialogInterface dialog, int whichButton){
                         //TODO SET REMINDER HERE
 
-                        String address = addressBar.getText().toString().trim()
+                        String address = addressBar.getText().toString().trim();
                         moveToActivity(MapsActivity.class, address);
                     }})
                 .setNegativeButton(android.R.string.no, null).show();
