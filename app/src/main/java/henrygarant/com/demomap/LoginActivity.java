@@ -68,7 +68,7 @@ public class LoginActivity extends Activity {
 
                 // Check for empty data in the form
                 if (!phone.isEmpty() && !password.isEmpty()) {
-                    // login user
+                    //user login
                     //checkLogin(phone, password);
                     fakeLogin();
                 } else {

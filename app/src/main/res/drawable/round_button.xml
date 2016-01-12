@@ -4,22 +4,22 @@
     <!-- PRESSED STATE -->
     <item android:state_pressed="true">
         <shape xmlns:android="http://schemas.android.com/apk/res/android" android:innerRadius="0dp" android:shape="ring" android:thickness="100dp" android:useLevel="false">
-            <solid android:color="@color/Primary" />
-            <stroke android:width="2dp" android:color="@color/Primary_Accent" />
+            <solid android:color="@color/Primary_Dark" />
+            <stroke android:width="2dp" android:color="@color/Primary" />
         </shape>
 
         <!-- FOCUSED STATE -->
     </item>
     <item android:state_focused="true">
         <shape xmlns:android="http://schemas.android.com/apk/res/android" android:innerRadius="0dp" android:shape="ring" android:thickness="100dp" android:useLevel="false">
-            <solid android:color="@color/Primary" />
+            <solid android:color="@color/Light" />
         </shape>
     </item>
 
     <!-- NORMAL STATE -->
     <item>
         <shape xmlns:android="http://schemas.android.com/apk/res/android" android:innerRadius="0dp" android:shape="ring" android:thickness="100dp" android:useLevel="false">
-            <stroke android:width="2dp" android:color="@color/Primary_Accent" />
+            <stroke android:width="2dp" android:color="@color/Light" />
         </shape>
     </item>
 
