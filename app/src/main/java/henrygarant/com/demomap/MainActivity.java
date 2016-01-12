@@ -1,8 +1,11 @@
 package henrygarant.com.demomap;
 
 
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -60,12 +63,22 @@ public class MainActivity extends FragmentActivity{
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener(){
                     public void onClick(DialogInterface dialog, int whichButton){
-                        //TODO SET REMINDER HERE
+                        //TODO SET Persistant REMINDER HERE
+
+                         setPersistentCheck();
+
 
                         String address = addressBar.getText().toString().trim();
                         moveToActivity(MapsActivity.class, address);
                     }})
                 .setNegativeButton(android.R.string.no, null).show();
+    }
+
+    private void setPersistentCheck() {
+        AlarmManager alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this, LocationManager.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 60000, pendingIntent);
     }
 
     private void moveToActivity(Class newClass, String destination){
@@ -74,6 +87,10 @@ public class MainActivity extends FragmentActivity{
         startActivity(intent);
     }
 
+    /**
+     * Populates a HashMap with all user's contacts
+     *
+     * */
     public void populateContacts(ContentResolver cr) {
         Cursor phones = cr.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null);
         while (phones.moveToNext()) {
@@ -82,4 +99,9 @@ public class MainActivity extends FragmentActivity{
             contacts.put(phoneNumber, contact);
         }
     }
+
+
+
+
+
 }
