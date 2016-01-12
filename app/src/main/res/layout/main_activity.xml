@@ -23,7 +23,7 @@
         android:id="@+id/searchButton"
         android:layout_gravity="center_horizontal"
         android:background="@drawable/round_button"
-        android:textColor="@color/Primary_Dark"
+        android:textColor="@color/Light"
         android:onClick="calculateLocation"
         android:textSize="25sp" />
 </LinearLayout>

@@ -100,8 +100,8 @@ public class MapsActivity extends FragmentActivity {
         mMap.setMyLocationEnabled(true);
 
 
-        //LocationManager locManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-        //Location currentLocation = locManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        //DestinationManager locManager = (DestinationManager)getSystemService(Context.LOCATION_SERVICE);
+        //Location currentLocation = locManager.getLastKnownLocation(DestinationManager.GPS_PROVIDER);
         // LatLng currentLatLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
 
 
