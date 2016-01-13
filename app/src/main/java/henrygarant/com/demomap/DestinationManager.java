@@ -4,6 +4,7 @@ import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -28,7 +29,7 @@ public class DestinationManager extends BroadcastReceiver implements LocationLis
         Log.d("ON RECIEVE: ", "Distance: " + isWithin5Minutes(context, destination));
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(context)
-                        .setSmallIcon(R.drawable.notification_icon)
+                        .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.notification_icon))
                         .setContentTitle("Alert")
                         .setContentText("Distance: " + isWithin5Minutes(context, destination));
 
@@ -37,8 +38,7 @@ public class DestinationManager extends BroadcastReceiver implements LocationLis
 
     }
 
-    private int isWithin5Minutes(Context context, String destination)
-    {
+    private int isWithin5Minutes(Context context, String destination) {
         //TODO Check if gps is enabled
         //TODO Get Speed for S=d/time
         Location mLocation = getLocation(context);
@@ -50,15 +50,15 @@ public class DestinationManager extends BroadcastReceiver implements LocationLis
     public int CalculationByDistance(LatLng StartP, LatLng EndP) {
 
         Location origin = new Location("Origin");
-                origin.setLatitude(StartP.latitude);
-                origin.setLongitude(StartP.longitude);
+        origin.setLatitude(StartP.latitude);
+        origin.setLongitude(StartP.longitude);
 
         Location dest = new Location("Destination");
-            dest.setLatitude(EndP.latitude);
-            dest.setLongitude(EndP.longitude);
+        dest.setLatitude(EndP.latitude);
+        dest.setLongitude(EndP.longitude);
 
         //returns distance in meters
-        return (int)origin.distanceTo(dest);
+        return (int) origin.distanceTo(dest);
     }
 
     private LatLng makeDestinationLatLng(Context context, String destination) {
@@ -74,12 +74,11 @@ public class DestinationManager extends BroadcastReceiver implements LocationLis
             }
             location = address.get(0);
             return new LatLng(location.getLatitude(), location.getLongitude());
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
         return null;
     }
-
 
 
     public Location getLocation(Context context) {
@@ -134,8 +133,7 @@ public class DestinationManager extends BroadcastReceiver implements LocationLis
                     }
                 }
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
