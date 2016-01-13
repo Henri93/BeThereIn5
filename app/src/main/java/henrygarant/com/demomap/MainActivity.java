@@ -59,13 +59,13 @@ public class MainActivity extends FragmentActivity{
     {
         new AlertDialog.Builder(this)
                 .setTitle("Set Notification")
-                .setMessage("Do you want to be reminded when they are within 5 minutes?")
+                .setMessage("Do you want to be reminded when you are within 5 minutes?")
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener(){
                     public void onClick(DialogInterface dialog, int whichButton){
                         //TODO SET Persistant REMINDER HERE
 
-                         setPersistentCheck();
+                         setPersistentCheck(addressBar.getText().toString());
 
 
                         //String address = addressBar.getText().toString().trim();
@@ -74,9 +74,10 @@ public class MainActivity extends FragmentActivity{
                 .setNegativeButton(android.R.string.no, null).show();
     }
 
-    private void setPersistentCheck() {
+    private void setPersistentCheck(String destination) {
         AlarmManager alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(this, DestinationManager.class);
+        intent.putExtra("destination", destination);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
         //60000 is one minute
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 60000, pendingIntent);

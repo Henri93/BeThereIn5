@@ -16,12 +16,15 @@ import java.util.List;
 
 public class DestinationManager extends BroadcastReceiver {
 
+
     @Override
     public void onReceive(Context context, Intent intent) {
+        String destination = intent.getStringExtra("destination");
+        Log.d("ON RECIEVE: ", "Destination: " + (destination));
         Log.d("ON RECIEVE: ", "Distance: " + isWithin5Minutes(context));
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(context)
-                        .setSmallIcon(R.mipmap.ic_launcher)
+                        .setSmallIcon(R.drawable.be_there_in_5_round)
                         .setContentTitle("Alert")
                         .setContentText("Distance: " + isWithin5Minutes(context));
 
@@ -37,7 +40,7 @@ public class DestinationManager extends BroadcastReceiver {
         //LocationManager locationManager = (LocationManager)context.getSystemService(context.LOCATION_SERVICE);
         //Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
         //LatLng locationLatLng = new LatLng(location.getLatitude(), location.getLongitude());
-        return CalculationByDistance(makeDestinationLatLng(context, "3301 Solly Ave, Philadelphia"), makeDestinationLatLng(context, "3045 Magee Ave, Philadelphia"));
+        return CalculationByDistance(makeDestinationLatLng(context, "3301 Solly Ave, Philadelphia"), makeDestinationLatLng(context, "3030 Magee Ave, Philadelphia"));
 
     }
 

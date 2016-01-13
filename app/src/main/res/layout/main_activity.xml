@@ -11,7 +11,7 @@
         android:id="@+id/addressBar"
         android:layout_gravity="center_horizontal"
         android:layout_margin="10dp"
-        android:hint="Contact Name"
+        android:hint="Destination"
         android:textSize="30sp"
         android:completionThreshold="2"
         android:dropDownHeight="100dp"
