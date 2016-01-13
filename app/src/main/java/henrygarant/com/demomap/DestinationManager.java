@@ -7,6 +7,9 @@ import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -14,8 +17,9 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.List;
 
-public class DestinationManager extends BroadcastReceiver {
+public class DestinationManager extends BroadcastReceiver implements LocationListener {
 
+    private Location mLastLocation;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -37,10 +41,9 @@ public class DestinationManager extends BroadcastReceiver {
     {
         //TODO Check if gps is enabled
         //TODO Get Speed for S=d/time
-        //LocationManager locationManager = (LocationManager)context.getSystemService(context.LOCATION_SERVICE);
-        //Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-        //LatLng locationLatLng = new LatLng(location.getLatitude(), location.getLongitude());
-        return CalculationByDistance(makeDestinationLatLng(context, "3301 Solly Ave, Philadelphia"), makeDestinationLatLng(context, "3030 Magee Ave, Philadelphia"));
+        Location mLocation = getLocation(context);
+        Log.d("DESTINATION MANAGER: ", "Current LL: " + mLocation.toString());
+        return CalculationByDistance(new LatLng(mLocation.getLatitude(), mLocation.getLongitude()), makeDestinationLatLng(context, "3030 Magee Ave, Philadelphia"));
 
     }
 
@@ -54,6 +57,7 @@ public class DestinationManager extends BroadcastReceiver {
             dest.setLatitude(EndP.latitude);
             dest.setLongitude(EndP.longitude);
 
+        //returns distance in meters
         return (int)origin.distanceTo(dest);
     }
 
@@ -74,5 +78,87 @@ public class DestinationManager extends BroadcastReceiver {
 
         }
         return null;
+    }
+
+
+
+    public Location getLocation(Context context) {
+        int MIN_TIME_BW_UPDATES = 6000;
+        int MIN_DISTANCE_CHANGE_FOR_UPDATES = 100;
+        try {
+            LocationManager locationManager = (LocationManager) context
+                    .getSystemService(context.LOCATION_SERVICE);
+
+            // Getting GPS status
+            boolean isGPSEnabled = locationManager
+                    .isProviderEnabled(LocationManager.GPS_PROVIDER);
+
+            // Getting network status
+            boolean isNetworkEnabled = locationManager
+                    .isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+
+            if (!isGPSEnabled && !isNetworkEnabled) {
+                // No network provider is enabled
+            } else {
+                if (isNetworkEnabled) {
+                    locationManager.requestLocationUpdates(
+                            LocationManager.NETWORK_PROVIDER,
+                            MIN_TIME_BW_UPDATES,
+                            MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
+                    Log.d("Network", "Network");
+                    if (locationManager != null) {
+                        mLastLocation = locationManager
+                                .getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                        if (mLastLocation != null) {
+                            double latitude = mLastLocation.getLatitude();
+                            double longitude = mLastLocation.getLongitude();
+                        }
+                    }
+                }
+                // If GPS enabled, get latitude/longitude using GPS Services
+                if (isGPSEnabled) {
+                    if (mLastLocation == null) {
+                        locationManager.requestLocationUpdates(
+                                LocationManager.GPS_PROVIDER,
+                                MIN_TIME_BW_UPDATES,
+                                MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
+                        Log.d("GPS Enabled", "GPS Enabled");
+                        if (locationManager != null) {
+                            mLastLocation = locationManager
+                                    .getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                            if (mLastLocation != null) {
+                                double latitude = mLastLocation.getLatitude();
+                                double longitude = mLastLocation.getLongitude();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return mLastLocation;
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        mLastLocation = location;
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
     }
 }

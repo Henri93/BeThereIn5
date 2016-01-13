@@ -67,9 +67,6 @@ public class MainActivity extends FragmentActivity{
 
                          setPersistentCheck(addressBar.getText().toString());
 
-
-                        //String address = addressBar.getText().toString().trim();
-                        //moveToActivity(MapsActivity.class, address);
                     }})
                 .setNegativeButton(android.R.string.no, null).show();
     }
@@ -80,6 +77,7 @@ public class MainActivity extends FragmentActivity{
         intent.putExtra("destination", destination);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
         //60000 is one minute
+        //6000 for testing purposes
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 60000, pendingIntent);
     }
 
