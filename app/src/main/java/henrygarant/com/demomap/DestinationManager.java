@@ -28,7 +28,7 @@ public class DestinationManager extends BroadcastReceiver implements LocationLis
         Log.d("ON RECIEVE: ", "Distance: " + isWithin5Minutes(context, destination));
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(context)
-                        .setSmallIcon(R.drawable.be_there_in_5_round)
+                        .setSmallIcon(R.drawable.notification_icon)
                         .setContentTitle("Alert")
                         .setContentText("Distance: " + isWithin5Minutes(context, destination));
 
