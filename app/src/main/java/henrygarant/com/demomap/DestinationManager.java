@@ -25,25 +25,25 @@ public class DestinationManager extends BroadcastReceiver implements LocationLis
     public void onReceive(Context context, Intent intent) {
         String destination = intent.getStringExtra("destination");
         Log.d("ON RECIEVE: ", "Destination: " + (destination));
-        Log.d("ON RECIEVE: ", "Distance: " + isWithin5Minutes(context));
+        Log.d("ON RECIEVE: ", "Distance: " + isWithin5Minutes(context, destination));
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(context)
                         .setSmallIcon(R.drawable.be_there_in_5_round)
                         .setContentTitle("Alert")
-                        .setContentText("Distance: " + isWithin5Minutes(context));
+                        .setContentText("Distance: " + isWithin5Minutes(context, destination));
 
         NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         mNotificationManager.notify(1, mBuilder.build());
 
     }
 
-    private int isWithin5Minutes(Context context)
+    private int isWithin5Minutes(Context context, String destination)
     {
         //TODO Check if gps is enabled
         //TODO Get Speed for S=d/time
         Location mLocation = getLocation(context);
         Log.d("DESTINATION MANAGER: ", "Current LL: " + mLocation.toString());
-        return CalculationByDistance(new LatLng(mLocation.getLatitude(), mLocation.getLongitude()), makeDestinationLatLng(context, "3030 Magee Ave, Philadelphia"));
+        return CalculationByDistance(new LatLng(mLocation.getLatitude(), mLocation.getLongitude()), makeDestinationLatLng(context, destination));
 
     }
 
