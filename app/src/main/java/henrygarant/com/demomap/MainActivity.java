@@ -64,7 +64,7 @@ public class MainActivity extends FragmentActivity{
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener(){
                     public void onClick(DialogInterface dialog, int whichButton){
                         //TODO SET Persistant REMINDER HERE
-
+                        //TODO CLEAR ANY POSSIBLE ALARMS
                          setPersistentCheck(addressBar.getText().toString());
                          moveToActivity(MapsActivity.class, addressBar.getText().toString());
 
