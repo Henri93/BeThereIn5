@@ -2,8 +2,6 @@ package henrygarant.com.demomap;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.location.Address;
-import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
@@ -14,8 +12,6 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-
-import java.util.List;
 
 public class MapsActivity extends FragmentActivity {
 
@@ -29,32 +25,19 @@ public class MapsActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
         CIRCLE_COLOR =  getResources().getColor(R.color.Map_Color);
+
         getActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent intent = getIntent();
         destination = intent.getStringExtra("destination");
-        makeDestinationLatLng(destination);
+        DestinationManager destinationManager = new DestinationManager();
+        destinationLatLng = destinationManager.makeDestinationLatLng(this, destination);
         setUpMapIfNeeded();
     }
 
-    private void makeDestinationLatLng(String destination) {
-        Geocoder coder = new Geocoder(this);
-        List<Address> address;
-        Address location = null;
 
-        try {
-            address = coder.getFromLocationName(destination, 1);
-            if (address == null) {
-                //TODO HANDLE NO LOCATION EVENT
-                return;
-            }
-            location = address.get(0);
-            destinationLatLng = new LatLng(location.getLatitude(), location.getLongitude());
-        }catch (Exception e){
-
-        }
-    }
 
     @Override
     protected void onResume() {
@@ -98,12 +81,6 @@ public class MapsActivity extends FragmentActivity {
 
         mMap.getUiSettings().setMyLocationButtonEnabled(false);
         mMap.setMyLocationEnabled(true);
-
-
-        //DestinationManager locManager = (DestinationManager)getSystemService(Context.LOCATION_SERVICE);
-        //Location currentLocation = locManager.getLastKnownLocation(DestinationManager.GPS_PROVIDER);
-        // LatLng currentLatLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
-
 
         mMap.addMarker(new MarkerOptions()
                 .position(destinationLatLng)

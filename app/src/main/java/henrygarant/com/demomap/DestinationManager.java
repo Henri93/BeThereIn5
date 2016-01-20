@@ -41,6 +41,7 @@ public class DestinationManager extends BroadcastReceiver implements LocationLis
     private int isWithin5Minutes(Context context, String destination) {
         //TODO Check if gps is enabled
         //TODO Get Speed for S=d/time
+        //null object here if location is off
         Location mLocation = getLocation(context);
         Log.d("DESTINATION MANAGER: ", "Current LL: " + mLocation.toString());
         return CalculationByDistance(new LatLng(mLocation.getLatitude(), mLocation.getLongitude()), makeDestinationLatLng(context, destination));
@@ -61,7 +62,7 @@ public class DestinationManager extends BroadcastReceiver implements LocationLis
         return (int) origin.distanceTo(dest);
     }
 
-    private LatLng makeDestinationLatLng(Context context, String destination) {
+    public LatLng makeDestinationLatLng(Context context, String destination) {
         Geocoder coder = new Geocoder(context);
         List<Address> address;
         Address location = null;
