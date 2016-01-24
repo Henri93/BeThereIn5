@@ -63,14 +63,15 @@ public class LoginActivity extends Activity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
+                //TODO LIMIT INPUT CAPABILITIES
                 String phone = inputPhone.getText().toString().trim();
                 String password = inputPassword.getText().toString().trim();
 
                 // Check for empty data in the form
                 if (!phone.isEmpty() && !password.isEmpty()) {
                     //user login
-                    //checkLogin(phone, password);
-                    fakeLogin();
+                    checkLogin(phone, password);
+                    //fakeLogin();
                 } else {
                     // Prompt user to enter credentials
                     //TODO ERROR SHAKE
