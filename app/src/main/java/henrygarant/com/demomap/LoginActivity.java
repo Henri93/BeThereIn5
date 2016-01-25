@@ -81,7 +81,7 @@ public class LoginActivity extends Activity {
                 String password = inputPassword.getText().toString().trim();
 
                 // Check for empty data in the form
-                if (!phone.isEmpty() && !password.isEmpty() || phone.matches("^[+]?[0-9]{10,13}$")) {
+                if (!phone.isEmpty() && !password.isEmpty() && phone.matches("^[+]?[0-9]{10,13}$")) {
                     //user login
                     checkLogin(phone, password);
                 } else {
