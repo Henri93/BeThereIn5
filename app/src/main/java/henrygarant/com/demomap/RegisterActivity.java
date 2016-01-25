@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RegisterActivity extends Activity {
+    //TODO fix register.php
     private static final String TAG = RegisterActivity.class.getSimpleName();
     private Button btnRegister;
     private Button btnLinkToLogin;
@@ -38,8 +39,8 @@ public class RegisterActivity extends Activity {
         setContentView(R.layout.register);
 
         inputFullName = (EditText) findViewById(R.id.name);
-        inputphone = (EditText) findViewById(R.id.phone);
-        inputPassword = (EditText) findViewById(R.id.password);
+        inputphone = (EditText) findViewById(R.id.regPhone);
+        inputPassword = (EditText) findViewById(R.id.regPassword);
         btnRegister = (Button) findViewById(R.id.btnRegister);
         btnLinkToLogin = (Button) findViewById(R.id.btnLinkToLoginScreen);
 
