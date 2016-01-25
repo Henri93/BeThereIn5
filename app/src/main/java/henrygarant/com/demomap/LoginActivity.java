@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -81,7 +82,7 @@ public class LoginActivity extends Activity {
                 String password = inputPassword.getText().toString().trim();
 
                 // Check for empty data in the form
-                if (!phone.isEmpty() && !password.isEmpty() && phone.matches("^[+]?[0-9]{10,13}$")) {
+                if (!phone.isEmpty() && !password.isEmpty() && Patterns.PHONE.matcher(phone).matches() && phone.length() >= 7 && phone.length() <= 16) {
                     //user login
                     checkLogin(phone, password);
                 } else {
@@ -89,13 +90,13 @@ public class LoginActivity extends Activity {
                     Animation shake = AnimationUtils.loadAnimation(getBaseContext(), R.anim.shake);
                     loginLayout.startAnimation(shake);
 
-                    if(!phone.matches("^[+]?[0-9]{10,13}$")){
+                    if(phone.isEmpty() && password.isEmpty()) {
                         Toast.makeText(getApplicationContext(),
-                                "Please enter a valid phone number!", Toast.LENGTH_LONG)
+                                "Please enter the credentials!", Toast.LENGTH_LONG)
                                 .show();
                     }else{
                         Toast.makeText(getApplicationContext(),
-                                "Please enter the credentials!", Toast.LENGTH_LONG)
+                                "Please enter a valid phone number!", Toast.LENGTH_LONG)
                                 .show();
                     }
 
