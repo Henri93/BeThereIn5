@@ -1,8 +1,11 @@
-# Be There In 5
+# Be There In 5 <img src="https://github.com/Henri93/BeThereIn5/blob/master/app/src/main/res/mipmap-xxhdpi/icon.png" width="10%" height="10%">
+
+
 
 [App Website](http://betherein5.eu.pn/)
 
 [Jump to Java Code](https://github.com/Henri93/BeThereIn5/tree/master/app/src/main/java/henrygarant/com/demomap)
+
 
 ####Prototype Design:
 
