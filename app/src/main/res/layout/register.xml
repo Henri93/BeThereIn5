@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/Primary"
+    android:background="@color/Medium"
     android:gravity="center"
     android:orientation="vertical"
     android:padding="10dp" >
@@ -16,51 +16,64 @@
         android:paddingRight="20dp" >
 
         <EditText
-            android:id="@+id/phone"
+            android:id="@+id/name"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:background="@color/Light"
+            android:background="@color/WhiteGloss"
+            android:hint="Name"
+            android:padding="10dp"
+            android:singleLine="true"
+            android:inputType="textCapWords"
+            android:textColor="@color/Primary_Opposite"
+            android:textColorHint="@color/WhiteGloss" />
+
+        <EditText
+            android:id="@+id/email"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@color/WhiteGloss"
             android:hint="Phone Number"
             android:inputType="textEmailAddress"
             android:padding="10dp"
             android:singleLine="true"
-            android:textColor="@color/MidLight"
-            android:textColorHint="@color/Hint" />
+            android:textColor="@color/Primary_Opposite"
+            android:textColorHint="@color/WhiteGloss" />
 
         <EditText
             android:id="@+id/password"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:background="@color/Light"
+            android:background="@color/WhiteGloss"
             android:hint="Password"
             android:inputType="textPassword"
             android:padding="10dp"
             android:singleLine="true"
-            android:textColor="@color/MidLight"
-            android:textColorHint="@color/Hint" />
+            android:textColor="@color/Primary_Opposite"
+            android:textColorHint="@color/WhiteGloss" />
 
         <!-- Login Button -->
 
         <Button
-            android:id="@+id/btnLogin"
+            android:id="@+id/btnRegister"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dip"
-            android:background="@color/Light"
-            android:text="LOGIN"
-            android:textColor="@color/Primary" />
+            android:background="@color/Primary_Opposite"
+            android:text="REGISTER"
+            android:textColor="@color/Light" />
 
         <!-- Link to Login Screen -->
 
         <Button
-            android:id="@+id/btnLinkToRegisterScreen"
+            android:id="@+id/btnLinkToLoginScreen"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dip"
-            android:background="#00000000"
-            android:text="Not a member? Sign up now."
+            android:background="@null"
+            android:text="Already registered? Log in here."
             android:textAllCaps="false"
             android:textColor="@color/Light"
             android:textSize="15dp" />

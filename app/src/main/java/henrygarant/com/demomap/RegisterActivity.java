@@ -21,11 +21,12 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public class LoginActivity extends Activity {
-    private static final String TAG = LoginActivity.class.getSimpleName();
-    private Button btnLogin;
-    private Button btnLinkToRegister;
-    private EditText inputPhone;
+public class RegisterActivity extends Activity {
+    private static final String TAG = RegisterActivity.class.getSimpleName();
+    private Button btnRegister;
+    private Button btnLinkToLogin;
+    private EditText inputFullName;
+    private EditText inputphone;
     private EditText inputPassword;
     private ProgressDialog pDialog;
     private SessionManager session;
@@ -34,105 +35,89 @@ public class LoginActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.login);
+        setContentView(R.layout.register);
 
-        inputPhone = (EditText) findViewById(R.id.phone);
+        inputFullName = (EditText) findViewById(R.id.name);
+        inputphone = (EditText) findViewById(R.id.phone);
         inputPassword = (EditText) findViewById(R.id.password);
-        btnLogin = (Button) findViewById(R.id.btnLogin);
-        btnLinkToRegister = (Button) findViewById(R.id.btnLinkToRegisterScreen);
+        btnRegister = (Button) findViewById(R.id.btnRegister);
+        btnLinkToLogin = (Button) findViewById(R.id.btnLinkToLoginScreen);
 
         // Progress dialog
         pDialog = new ProgressDialog(this);
         pDialog.setCancelable(false);
 
-        // SQLite database handler
-        db = new SQLiteHandler(getApplicationContext());
-
         // Session manager
         session = new SessionManager(getApplicationContext());
+
+        // SQLite database handler
+        db = new SQLiteHandler(getApplicationContext());
 
         // Check if user is already logged in or not
         if (session.isLoggedIn()) {
             // User is already logged in. Take him to main activity
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            Intent intent = new Intent(RegisterActivity.this,
+                    MainActivity.class);
             startActivity(intent);
             finish();
         }
 
-        // Login button Click Event
-        btnLogin.setOnClickListener(new View.OnClickListener() {
-
+        // Register Button Click event
+        btnRegister.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                //TODO LIMIT INPUT CAPABILITIES
-                String phone = inputPhone.getText().toString().trim();
+                String name = inputFullName.getText().toString().trim();
+                String phone = inputphone.getText().toString().trim();
                 String password = inputPassword.getText().toString().trim();
 
-                // Check for empty data in the form
-                if (!phone.isEmpty() && !password.isEmpty()) {
-                    //user login
-                    checkLogin(phone, password);
-                    //fakeLogin();
+                if (!name.isEmpty() && !phone.isEmpty() && !password.isEmpty()) {
+                    registerUser(name, phone, password);
                 } else {
-                    // Prompt user to enter credentials
-                    //TODO ERROR SHAKE
                     Toast.makeText(getApplicationContext(),
-                            "Please enter the credentials!", Toast.LENGTH_LONG)
+                            "Please enter your details!", Toast.LENGTH_LONG)
                             .show();
-
                 }
             }
-
         });
 
-        // Link to Register Screen
-        btnLinkToRegister.setOnClickListener(new View.OnClickListener() {
+        // Link to Login Screen
+        btnLinkToLogin.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
-
                 Intent i = new Intent(getApplicationContext(),
-                        RegisterActivity.class);
+                        LoginActivity.class);
                 startActivity(i);
                 finish();
             }
-
         });
 
     }
 
-    private void fakeLogin() {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-    }
-
     /**
-     * function to verify login details in mysql db
+     * Function to store user in MySQL database will post params(tag, name,
+     * phone, password) to register url
      */
-    private void checkLogin(final String phone, final String password) {
+    private void registerUser(final String name, final String phone,
+                              final String password) {
         // Tag used to cancel the request
-        String tag_string_req = "req_login";
+        String tag_string_req = "req_register";
 
-        pDialog.setMessage("Logging in ...");
+        pDialog.setMessage("Registering ...");
         showDialog();
 
         StringRequest strReq = new StringRequest(Method.POST,
-                AccountManager.URL_LOGIN, new Response.Listener<String>() {
+                AccountManager.URL_REGISTER, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
-                Log.d(TAG, "Login Response: " + response.toString());
+                Log.d(TAG, "Register Response: " + response.toString());
                 hideDialog();
 
                 try {
                     JSONObject jObj = new JSONObject(response);
                     boolean error = jObj.getBoolean("error");
-
-                    // Check for error node in json
                     if (!error) {
-                        // user successfully logged in
-                        // Create login session
-                        session.setLogin(true);
-
-                        // Now store the user in SQLite
+                        // User successfully stored in MySQL
+                        // Now store the user in sqlite
                         String uid = jObj.getString("uid");
 
                         JSONObject user = jObj.getJSONObject("user");
@@ -144,21 +129,24 @@ public class LoginActivity extends Activity {
                         // Inserting row in users table
                         db.addUser(name, phone, uid, created_at);
 
-                        // Launch main activity
-                        Intent intent = new Intent(LoginActivity.this,
-                                MainActivity.class);
+                        Toast.makeText(getApplicationContext(), "User successfully registered. Try login now!", Toast.LENGTH_LONG).show();
+
+                        // Launch login activity
+                        Intent intent = new Intent(
+                                RegisterActivity.this,
+                                LoginActivity.class);
                         startActivity(intent);
                         finish();
                     } else {
-                        // Error in login. Get the error message
+
+                        // Error occurred in registration. Get the error
+                        // message
                         String errorMsg = jObj.getString("error_msg");
                         Toast.makeText(getApplicationContext(),
                                 errorMsg, Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
-                    // JSON error
                     e.printStackTrace();
-                    Toast.makeText(getApplicationContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
                 }
 
             }
@@ -166,7 +154,7 @@ public class LoginActivity extends Activity {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e(TAG, "Login Error: " + error.getMessage());
+                Log.e(TAG, "Registration Error: " + error.getMessage());
                 Toast.makeText(getApplicationContext(),
                         error.getMessage(), Toast.LENGTH_LONG).show();
                 hideDialog();
@@ -175,8 +163,9 @@ public class LoginActivity extends Activity {
 
             @Override
             protected Map<String, String> getParams() {
-                // Posting parameters to login url
+                // Posting params to register url
                 Map<String, String> params = new HashMap<String, String>();
+                params.put("name", name);
                 params.put("phone", phone);
                 params.put("password", password);
 
