@@ -35,11 +35,11 @@
             android:layout_marginBottom="10dp"
             android:background="@color/WhiteGloss"
             android:hint="Phone Number"
-            android:inputType="textEmailAddress"
             android:padding="10dp"
             android:singleLine="true"
             android:textColor="@color/Primary"
-            android:textColorHint="@color/WhiteGloss" />
+            android:textColorHint="@color/WhiteGloss"
+            android:inputType="phone" />
 
         <EditText
             android:id="@+id/regPassword"

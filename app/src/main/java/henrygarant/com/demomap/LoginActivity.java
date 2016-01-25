@@ -76,6 +76,7 @@ public class LoginActivity extends Activity {
 
             public void onClick(View view) {
 
+                //phone regex ^[+]?[0-9]{10,13}$
                 String phone = inputPhone.getText().toString().trim();
                 String password = inputPassword.getText().toString().trim();
 
