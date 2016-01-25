@@ -81,17 +81,24 @@ public class LoginActivity extends Activity {
                 String password = inputPassword.getText().toString().trim();
 
                 // Check for empty data in the form
-                if (!phone.isEmpty() && !password.isEmpty()) {
+                if (!phone.isEmpty() && !password.isEmpty() || phone.matches("^[+]?[0-9]{10,13}$")) {
                     //user login
                     checkLogin(phone, password);
                 } else {
-                    // Prompt user to enter credentials
-
+                    // Prompt user to enter valid credentials
                     Animation shake = AnimationUtils.loadAnimation(getBaseContext(), R.anim.shake);
                     loginLayout.startAnimation(shake);
-                    Toast.makeText(getApplicationContext(),
-                            "Please enter the credentials!", Toast.LENGTH_LONG)
-                            .show();
+
+                    if(phone.matches("^[+]?[0-9]{10,13}$")){
+                        Toast.makeText(getApplicationContext(),
+                                "Please enter a valid phone number!", Toast.LENGTH_LONG)
+                                .show();
+                    }else{
+                        Toast.makeText(getApplicationContext(),
+                                "Please enter the credentials!", Toast.LENGTH_LONG)
+                                .show();
+                    }
+
 
                 }
             }
