@@ -25,7 +25,7 @@
             android:padding="10dp"
             android:singleLine="true"
             android:inputType="textCapWords"
-            android:textColor="@color/Primary_Opposite"
+            android:textColor="@color/Primary"
             android:textColorHint="@color/WhiteGloss" />
 
         <EditText
@@ -38,7 +38,7 @@
             android:inputType="textEmailAddress"
             android:padding="10dp"
             android:singleLine="true"
-            android:textColor="@color/Primary_Opposite"
+            android:textColor="@color/Primary"
             android:textColorHint="@color/WhiteGloss" />
 
         <EditText
@@ -51,7 +51,7 @@
             android:inputType="textPassword"
             android:padding="10dp"
             android:singleLine="true"
-            android:textColor="@color/Primary_Opposite"
+            android:textColor="@color/Primary"
             android:textColorHint="@color/WhiteGloss" />
 
         <!-- Login Button -->
@@ -61,7 +61,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dip"
-            android:background="@color/Primary_Opposite"
+            android:background="@color/Primary"
             android:text="REGISTER"
             android:textColor="@color/Light" />
 
