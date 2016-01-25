@@ -89,7 +89,7 @@ public class LoginActivity extends Activity {
                     Animation shake = AnimationUtils.loadAnimation(getBaseContext(), R.anim.shake);
                     loginLayout.startAnimation(shake);
 
-                    if(phone.matches("^[+]?[0-9]{10,13}$")){
+                    if(!phone.matches("^[+]?[0-9]{10,13}$")){
                         Toast.makeText(getApplicationContext(),
                                 "Please enter a valid phone number!", Toast.LENGTH_LONG)
                                 .show();
