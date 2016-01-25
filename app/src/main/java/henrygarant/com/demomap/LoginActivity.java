@@ -4,10 +4,15 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.android.volley.Request.Method;
@@ -22,7 +27,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class LoginActivity extends Activity {
+
     private static final String TAG = LoginActivity.class.getSimpleName();
+    private LinearLayout loginLayout;
     private Button btnLogin;
     private Button btnLinkToRegister;
     private EditText inputPhone;
@@ -36,7 +43,12 @@ public class LoginActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
 
+        loginLayout = (LinearLayout) findViewById(R.id.loginLayout);
+
         inputPhone = (EditText) findViewById(R.id.phone);
+        //Unsure if this works to format the phone number input
+        inputPhone.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
+        //
         inputPassword = (EditText) findViewById(R.id.password);
         btnLogin = (Button) findViewById(R.id.btnLogin);
         btnLinkToRegister = (Button) findViewById(R.id.btnLinkToRegisterScreen);
@@ -71,10 +83,11 @@ public class LoginActivity extends Activity {
                 if (!phone.isEmpty() && !password.isEmpty()) {
                     //user login
                     checkLogin(phone, password);
-                    //fakeLogin();
                 } else {
                     // Prompt user to enter credentials
                     //TODO ERROR SHAKE
+                    Animation shake = AnimationUtils.loadAnimation(getBaseContext(), R.anim.shake);
+                    loginLayout.startAnimation(shake);
                     Toast.makeText(getApplicationContext(),
                             "Please enter the credentials!", Toast.LENGTH_LONG)
                             .show();
@@ -99,15 +112,15 @@ public class LoginActivity extends Activity {
 
     }
 
-    private void fakeLogin() {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-    }
 
     /**
      * function to verify login details in mysql db
      */
     private void checkLogin(final String phone, final String password) {
+        //make sure keyboard is gone
+        InputMethodManager imm = (InputMethodManager) getSystemService(this.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(inputPassword.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+
         // Tag used to cancel the request
         String tag_string_req = "req_login";
 

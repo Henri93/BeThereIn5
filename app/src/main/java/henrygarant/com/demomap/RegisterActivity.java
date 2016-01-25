@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -27,7 +28,7 @@ public class RegisterActivity extends Activity {
     private Button btnRegister;
     private Button btnLinkToLogin;
     private EditText inputFullName;
-    private EditText inputphone;
+    private EditText inputPhone;
     private EditText inputPassword;
     private ProgressDialog pDialog;
     private SessionManager session;
@@ -39,7 +40,10 @@ public class RegisterActivity extends Activity {
         setContentView(R.layout.register);
 
         inputFullName = (EditText) findViewById(R.id.name);
-        inputphone = (EditText) findViewById(R.id.regPhone);
+        inputPhone = (EditText) findViewById(R.id.regPhone);
+        //Unsure if this works to format the phone number input
+        inputPhone.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
+        //
         inputPassword = (EditText) findViewById(R.id.regPassword);
         btnRegister = (Button) findViewById(R.id.btnRegister);
         btnLinkToLogin = (Button) findViewById(R.id.btnLinkToLoginScreen);
@@ -67,7 +71,7 @@ public class RegisterActivity extends Activity {
         btnRegister.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 String name = inputFullName.getText().toString().trim();
-                String phone = inputphone.getText().toString().trim();
+                String phone = inputPhone.getText().toString().trim();
                 String password = inputPassword.getText().toString().trim();
 
                 if (!name.isEmpty() && !phone.isEmpty() && !password.isEmpty()) {

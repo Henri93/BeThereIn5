@@ -14,7 +14,8 @@
         android:orientation="vertical"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
-        android:baselineAligned="false">
+        android:baselineAligned="false"
+        android:id="@+id/loginLayout">
 
         <EditText
             android:id="@+id/phone"
