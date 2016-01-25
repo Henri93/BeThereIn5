@@ -75,7 +75,7 @@ public class LoginActivity extends Activity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
-                //TODO LIMIT INPUT CAPABILITIES
+
                 String phone = inputPhone.getText().toString().trim();
                 String password = inputPassword.getText().toString().trim();
 
@@ -85,7 +85,7 @@ public class LoginActivity extends Activity {
                     checkLogin(phone, password);
                 } else {
                     // Prompt user to enter credentials
-                    //TODO ERROR SHAKE
+
                     Animation shake = AnimationUtils.loadAnimation(getBaseContext(), R.anim.shake);
                     loginLayout.startAnimation(shake);
                     Toast.makeText(getApplicationContext(),
