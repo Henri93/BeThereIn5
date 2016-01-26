@@ -8,8 +8,11 @@ import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.android.volley.Request.Method;
@@ -24,7 +27,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RegisterActivity extends Activity {
+
     private static final String TAG = RegisterActivity.class.getSimpleName();
+    private LinearLayout registerLayout;
     private Button btnRegister;
     private Button btnLinkToLogin;
     private EditText inputFullName;
@@ -38,6 +43,8 @@ public class RegisterActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register);
+
+        registerLayout = (LinearLayout)findViewById(R.id.registerLayout);
 
         inputFullName = (EditText) findViewById(R.id.name);
         inputPhone = (EditText) findViewById(R.id.regPhone);
@@ -77,6 +84,8 @@ public class RegisterActivity extends Activity {
                 if (!name.isEmpty() && !phone.isEmpty() && !password.isEmpty() && Patterns.PHONE.matcher(phone).matches() && phone.length() >= 7 && phone.length() <= 16) {
                     registerUser(name, phone, password);
                 } else {
+                    Animation shake = AnimationUtils.loadAnimation(getBaseContext(), R.anim.shake);
+                    registerLayout.startAnimation(shake);
                     Toast.makeText(getApplicationContext(),
                             "Please enter correct details!", Toast.LENGTH_LONG)
                             .show();
