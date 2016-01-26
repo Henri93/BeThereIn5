@@ -24,7 +24,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RegisterActivity extends Activity {
-    //TODO fix register.php
     private static final String TAG = RegisterActivity.class.getSimpleName();
     private Button btnRegister;
     private Button btnLinkToLogin;
