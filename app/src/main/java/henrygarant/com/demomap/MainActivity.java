@@ -1,6 +1,7 @@
 package henrygarant.com.demomap;
 
 
+import android.app.ActionBar;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
@@ -10,48 +11,45 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.ViewPager;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
-public class MainActivity extends FragmentActivity{
+public class MainActivity extends FragmentActivity implements android.app.ActionBar.TabListener {
 
-    private Button searchButton;
-    private AutoCompleteTextView addressBar;
-    private ArrayAdapter<String> adapter;
-    private HashMap<String, String> contacts;
-
+    private ViewPager viewPager;
+    private PagerAdapter mAdapter;
+    private android.app.ActionBar actionBar;
+    private String[] tabs = { "New", "Recent" };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
-        getActionBar().setHomeButtonEnabled(true);
 
         Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/Exo-Regular.otf");
 
-        searchButton = (Button) findViewById(R.id.searchButton);
-        addressBar = (AutoCompleteTextView) findViewById(R.id.addressBar);
 
-        contacts = new HashMap<String, String>();
+        // Initilization
+        viewPager = (ViewPager) findViewById(R.id.pager);
+        actionBar = getActionBar();
+        actionBar.setStackedBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.BlackGloss)));
+        mAdapter = new PagerAdapter(getSupportFragmentManager());
 
-        populateContacts(this.getContentResolver());
+        viewPager.setAdapter(mAdapter);
+        actionBar.setHomeButtonEnabled(false);
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
-        addressBar.setThreshold(2);
-
-        adapter = new ContactAdapter(this, new ArrayList<String>(contacts.values()));
-        addressBar.setAdapter(adapter);
-
-        searchButton.setTypeface(tf, Typeface.BOLD);
-        addressBar.setTypeface(tf);
-
+        // Adding Tabs
+        for (String tab_name : tabs) {
+            actionBar.addTab(actionBar.newTab().setText(tab_name)
+                    .setTabListener(this));
+        }
     }
 
 
@@ -64,8 +62,8 @@ public class MainActivity extends FragmentActivity{
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener(){
                     public void onClick(DialogInterface dialog, int whichButton){
                         //TODO CLEAR ANY POSSIBLE ALARMS
-                         setPersistentCheck(addressBar.getText().toString());
-                         moveToActivity(MapsActivity.class, addressBar.getText().toString());
+                         //setPersistentCheck(addressBar.getText().toString());
+                         //moveToActivity(MapsActivity.class, addressBar.getText().toString());
 
                     }})
                 .setNegativeButton(android.R.string.no, null).show();
@@ -88,20 +86,33 @@ public class MainActivity extends FragmentActivity{
     }
 
     /**
-     * Populates a HashMap with all user's contacts
+     * Returns a HashMap with all user's contacts
      *
      * */
-    public void populateContacts(ContentResolver cr) {
+    public HashMap<String, String> populateContacts(ContentResolver cr) {
+        HashMap<String, String> contacts = new HashMap<String, String>();
         Cursor phones = cr.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null);
         while (phones.moveToNext()) {
             String contact = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
             String phoneNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
             contacts.put(phoneNumber, contact);
         }
+        return contacts;
     }
 
 
+    @Override
+    public void onTabSelected(android.app.ActionBar.Tab tab, android.app.FragmentTransaction ft) {
+        viewPager.setCurrentItem(tab.getPosition());
+    }
 
+    @Override
+    public void onTabUnselected(android.app.ActionBar.Tab tab, android.app.FragmentTransaction ft) {
 
+    }
 
+    @Override
+    public void onTabReselected(android.app.ActionBar.Tab tab, android.app.FragmentTransaction ft) {
+
+    }
 }
