@@ -8,5 +8,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/listView"
         android:entries="@array/dummy_data"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:background="@color/BlackGloss"
+        style="@style/WhiteText"
+        android:theme="@style/WhiteText" />
 </LinearLayout>
