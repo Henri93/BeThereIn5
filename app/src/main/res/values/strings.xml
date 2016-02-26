@@ -1,4 +1,11 @@
 <resources>
     <string name="app_name">Be There In 5</string>
     <string name="title_activity_maps">Map</string>
+    <string-array name="dummy_data" >
+        <item>Person 1 - 5hr</item>
+        <item>Random Dude - 6hr</item>
+        <item>Bob Saget - 1d</item>
+        <item>Joe Thorton - 2d</item>
+        <item>Slim Shady - 7d</item>
+    </string-array>
 </resources>
