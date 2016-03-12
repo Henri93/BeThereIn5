@@ -134,7 +134,7 @@ public class GcmRegister extends Activity {
                     if (gcm == null) {
                         gcm = GoogleCloudMessaging.getInstance(context);
                     }
-                    regId = gcm.register(Config.GOOGLE_PROJECT_ID);
+                    regId = gcm.register(Config.GOOGLE_PROJECT_NUMBER);
                     Log.d("RegisterActivity", "registerInBackground - regId: "
                             + regId);
                     msg = "Device registered, registration ID=" + regId;
