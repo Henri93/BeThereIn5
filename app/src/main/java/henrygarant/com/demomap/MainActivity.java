@@ -86,6 +86,11 @@ public class MainActivity extends FragmentActivity implements android.app.Action
         }
     }
 
+    public void sendGcmMessage(View v){
+        Toast.makeText(getApplicationContext(), "Send Message", Toast.LENGTH_SHORT).show();
+        //TODO Connect to Message Page and Push the information into form and send
+    }
+
 
     public void calculateLocation(View view)
     {
