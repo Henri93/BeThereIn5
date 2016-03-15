@@ -27,6 +27,8 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import henrygarant.com.demomap.GcmServices.GcmRegister;
+
 public class LoginActivity extends Activity {
 
     private static final String TAG = LoginActivity.class.getSimpleName();
@@ -77,6 +79,14 @@ public class LoginActivity extends Activity {
 
             public void onClick(View view) {
 
+                //Create Gcm Identity
+                GcmRegister gcm = new GcmRegister();
+                String regId = gcm.registerGCM(getApplicationContext());
+                if(regId == null){
+                    Log.d("Error In LoginActivity", "Unable to obtain regId");
+                }
+
+
                 //phone regex ^[+]?[0-9]{10,13}$
                 String phone = inputPhone.getText().toString().trim();
                 String password = inputPassword.getText().toString().trim();
@@ -90,11 +100,11 @@ public class LoginActivity extends Activity {
                     Animation shake = AnimationUtils.loadAnimation(getBaseContext(), R.anim.shake);
                     loginLayout.startAnimation(shake);
 
-                    if(phone.isEmpty() && password.isEmpty()) {
+                    if (phone.isEmpty() && password.isEmpty()) {
                         Toast.makeText(getApplicationContext(),
                                 "Please enter the credentials!", Toast.LENGTH_LONG)
                                 .show();
-                    }else{
+                    } else {
                         Toast.makeText(getApplicationContext(),
                                 "Please enter a valid phone number!", Toast.LENGTH_LONG)
                                 .show();

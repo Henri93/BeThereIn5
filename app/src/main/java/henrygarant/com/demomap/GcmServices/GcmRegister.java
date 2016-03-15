@@ -1,18 +1,13 @@
 package henrygarant.com.demomap.GcmServices;
 
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
@@ -21,14 +16,10 @@ import java.io.IOException;
 
 import henrygarant.com.demomap.Config;
 import henrygarant.com.demomap.MainActivity;
-import henrygarant.com.demomap.R;
 
-public class GcmRegister extends Activity {
+public class GcmRegister{
 
-    Button btnGCMRegister;
-    Button btnAppShare;
     GoogleCloudMessaging gcm;
-    Context context;
     String regId;
 
     public static final String REG_ID = "regId";
@@ -36,63 +27,21 @@ public class GcmRegister extends Activity {
 
     static final String TAG = "Register Activity";
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.gcm_register);
 
-        context = getApplicationContext();
+    public String registerGCM(Context context) {
 
-        btnGCMRegister = (Button) findViewById(R.id.btnGCMRegister);
-        btnGCMRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                if (TextUtils.isEmpty(regId)) {
-                    regId = registerGCM();
-                    Log.d("RegisterActivity", "GCM RegId: " + regId);
-                } else {
-                    Toast.makeText(getApplicationContext(),
-                            "Already Registered with GCM Server!",
-                            Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-
-        btnAppShare = (Button) findViewById(R.id.btnAppShare);
-        btnAppShare.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                if (TextUtils.isEmpty(regId)) {
-                    Toast.makeText(getApplicationContext(), "RegId is empty!",
-                            Toast.LENGTH_LONG).show();
-                } else {
-                    Intent i = new Intent(getApplicationContext(),
-                            MainActivity.class);
-                    i.putExtra("regId", regId);
-                    Log.d("RegisterActivity",
-                            "onClick of Share: Before starting main activity.");
-                    startActivity(i);
-                    finish();
-                    Log.d("RegisterActivity", "onClick of Share: After finish.");
-                }
-            }
-        });
-    }
-
-    public String registerGCM() {
-
-        gcm = GoogleCloudMessaging.getInstance(this);
+        gcm = GoogleCloudMessaging.getInstance(context);
         regId = getRegistrationId(context);
 
         if (TextUtils.isEmpty(regId)) {
 
-            registerInBackground();
+            registerInBackground(context);
 
             Log.d("RegisterActivity",
                     "registerGCM - successfully registered with GCM server - regId: "
                             + regId);
         } else {
-            Toast.makeText(getApplicationContext(),
+            Toast.makeText(context,
                     "RegId already available. RegId: " + regId,
                     Toast.LENGTH_LONG).show();
         }
@@ -100,7 +49,7 @@ public class GcmRegister extends Activity {
     }
 
     private String getRegistrationId(Context context) {
-        final SharedPreferences prefs = getSharedPreferences(
+        final SharedPreferences prefs = context.getSharedPreferences(
                 MainActivity.class.getSimpleName(), Context.MODE_PRIVATE);
         String registrationId = prefs.getString(REG_ID, "");
         if (registrationId.isEmpty()) {
@@ -128,7 +77,7 @@ public class GcmRegister extends Activity {
         }
     }
 
-    private void registerInBackground() {
+    private void registerInBackground(final Context context) {
         new AsyncTask() {
 
             @Override
@@ -154,7 +103,7 @@ public class GcmRegister extends Activity {
 
 
             protected void onPostExecute(String msg) {
-                Toast.makeText(getApplicationContext(),
+                Toast.makeText(context,
                         "Registered with GCM Server." + msg, Toast.LENGTH_LONG)
                         .show();
             }
@@ -162,7 +111,7 @@ public class GcmRegister extends Activity {
     }
 
     private void storeRegistrationId(Context context, String regId) {
-        final SharedPreferences prefs = getSharedPreferences(
+        final SharedPreferences prefs = context.getSharedPreferences(
                 MainActivity.class.getSimpleName(), Context.MODE_PRIVATE);
         int appVersion = getAppVersion(context);
         Log.i(TAG, "Saving regId on app version " + appVersion);
