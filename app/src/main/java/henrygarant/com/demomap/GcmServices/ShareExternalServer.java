@@ -1,4 +1,4 @@
-package henrygarant.com.demomap;
+package henrygarant.com.demomap.GcmServices;
 
 import android.content.Context;
 import android.util.Log;
@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import henrygarant.com.demomap.Config;
 
 public class ShareExternalServer {
 

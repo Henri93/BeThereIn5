@@ -23,6 +23,8 @@ import android.widget.Toast;
 
 import java.util.HashMap;
 
+import henrygarant.com.demomap.GcmServices.ShareExternalServer;
+
 public class MainActivity extends FragmentActivity implements android.app.ActionBar.TabListener {
 
     private ViewPager viewPager;

@@ -119,7 +119,7 @@ public class RegisterActivity extends Activity {
         showDialog();
 
         StringRequest strReq = new StringRequest(Method.POST,
-                AccountManager.URL_REGISTER, new Response.Listener<String>() {
+                Config.URL_REGISTER, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {

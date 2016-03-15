@@ -41,7 +41,7 @@
             android:value="AIzaSyDgUIFnBmxGJPQZl8JikeLFK6RT4Uv4GFE" />
 
         <activity
-            android:name=".GcmRegister"
+            android:name=".GcmServices.GcmRegister"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -70,7 +70,7 @@
         </activity>
 
         <receiver
-            android:name=".GcmBroadcastReceiver"
+            android:name=".GcmServices.GcmBroadcastReceiver"
             android:permission="com.google.android.c2dm.permission.SEND" >
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
@@ -80,7 +80,7 @@
             </intent-filter>
         </receiver>
 
-        <service android:name=".GcmNotificationIntentService" />
+        <service android:name=".GcmServices.GcmNotificationIntentService" />
 
     </application>
 

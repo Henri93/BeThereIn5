@@ -1,4 +1,4 @@
-package henrygarant.com.demomap;
+package henrygarant.com.demomap.GcmServices;
 
 
 import android.app.Activity;
@@ -18,6 +18,10 @@ import android.widget.Toast;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import java.io.IOException;
+
+import henrygarant.com.demomap.Config;
+import henrygarant.com.demomap.MainActivity;
+import henrygarant.com.demomap.R;
 
 public class GcmRegister extends Activity {
 

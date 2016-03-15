@@ -1,4 +1,4 @@
-package henrygarant.com.demomap;
+package henrygarant.com.demomap.GcmServices;
 
 import android.app.Activity;
 import android.content.ComponentName;

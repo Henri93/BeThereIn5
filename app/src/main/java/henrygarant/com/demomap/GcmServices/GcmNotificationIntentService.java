@@ -1,4 +1,4 @@
-package henrygarant.com.demomap;
+package henrygarant.com.demomap.GcmServices;
 
 import android.app.IntentService;
 import android.app.NotificationManager;
@@ -11,6 +11,10 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
+
+import henrygarant.com.demomap.Config;
+import henrygarant.com.demomap.MainActivity;
+import henrygarant.com.demomap.R;
 
 public class GcmNotificationIntentService extends IntentService {
 
@@ -54,7 +58,7 @@ public class GcmNotificationIntentService extends IntentService {
                 }
                 Log.i(TAG, "Completed work @ " + SystemClock.elapsedRealtime());
 
-                sendNotification("Message Received from Google GCM Server: "
+                sendNotification("Message Received: "
                         + extras.get(Config.MESSAGE_KEY));
                 Log.i(TAG, "Received: " + extras.toString());
             }
