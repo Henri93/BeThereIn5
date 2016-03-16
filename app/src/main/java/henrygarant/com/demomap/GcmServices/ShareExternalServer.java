@@ -11,7 +11,6 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import henrygarant.com.demomap.Config;
 
@@ -34,10 +33,11 @@ public class ShareExternalServer {
             }
 
             StringBuilder postBody = new StringBuilder();
-            Iterator iterator = paramsMap.entrySet().iterator();
+            Iterator iterator = paramsMap.entrySet()
+                    .iterator();
 
             while (iterator.hasNext()) {
-                Entry param = (Entry) iterator.next();
+                Map.Entry param = (Map.Entry) iterator.next();
                 postBody.append(param.getKey()).append('=')
                         .append(param.getValue());
                 if (iterator.hasNext()) {

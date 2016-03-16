@@ -72,19 +72,16 @@ public class LoginActivity extends Activity {
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(intent);
             finish();
+        }else{
+            //Create Gcm Identity
+            GcmRegister gcm = new GcmRegister();
+            final String regId = gcm.registerGCM(getApplicationContext());
         }
 
         // Login button Click Event
         btnLogin.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
-
-                //Create Gcm Identity
-                GcmRegister gcm = new GcmRegister();
-                String regId = gcm.registerGCM(getApplicationContext());
-                if(regId == null){
-                    Log.d("Error In LoginActivity", "Unable to obtain regId");
-                }
 
 
                 //phone regex ^[+]?[0-9]{10,13}$
@@ -175,6 +172,7 @@ public class LoginActivity extends Activity {
 
                         // Inserting row in users table
                         db.addUser(name, phone, uid, created_at);
+
 
                         // Launch main activity
                         Intent intent = new Intent(LoginActivity.this,

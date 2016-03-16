@@ -12,18 +12,14 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import java.util.HashMap;
-
-import henrygarant.com.demomap.GcmServices.ShareExternalServer;
 
 public class MainActivity extends FragmentActivity implements android.app.ActionBar.TabListener {
 
@@ -32,9 +28,6 @@ public class MainActivity extends FragmentActivity implements android.app.Action
     private android.app.ActionBar actionBar;
     private String[] tabs = { "New", "Recent" };
     //GCM VARS
-    ShareExternalServer appUtil;
-    String regId;
-    AsyncTask shareRegidTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,27 +35,6 @@ public class MainActivity extends FragmentActivity implements android.app.Action
         setContentView(R.layout.main_activity);
 
         //Start GCM Tinkering
-        appUtil = new ShareExternalServer();
-        regId = getIntent().getStringExtra("regId");
-        Log.d("MainActivity", "regId: " + regId);
-
-        final Context context = this;
-        shareRegidTask = new AsyncTask() {
-
-            @Override
-            protected String doInBackground(Object[] params) {
-                String result = appUtil.shareRegIdWithAppServer(context, regId);
-                return result;
-            }
-
-            protected void onPostExecute(String result) {
-                shareRegidTask = null;
-                Toast.makeText(getApplicationContext(), result,
-                        Toast.LENGTH_LONG).show();
-            }
-
-        };
-        shareRegidTask.execute(null, null, null);
 
         //End GCM Tinkering
 

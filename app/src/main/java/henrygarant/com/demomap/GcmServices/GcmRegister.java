@@ -48,7 +48,7 @@ public class GcmRegister{
         return regId;
     }
 
-    private String getRegistrationId(Context context) {
+    public String getRegistrationId(Context context) {
         final SharedPreferences prefs = context.getSharedPreferences(
                 MainActivity.class.getSimpleName(), Context.MODE_PRIVATE);
         String registrationId = prefs.getString(REG_ID, "");
@@ -93,6 +93,7 @@ public class GcmRegister{
                     msg = "Device registered, registration ID=" + regId;
 
                     storeRegistrationId(context, regId);
+                    shareRegId(context, regId);
                 } catch (IOException ex) {
                     msg = "Error :" + ex.getMessage();
                     Log.d("RegisterActivity", "Error: " + msg);
@@ -120,4 +121,20 @@ public class GcmRegister{
         editor.putInt(APP_VERSION, appVersion);
         editor.commit();
     }
+
+    private void shareRegId(final Context context, final String regId){
+        //Share regId with server
+        final ShareExternalServer appUtil = new ShareExternalServer();
+        final AsyncTask shareRegidTask = new AsyncTask() {
+
+            @Override
+            protected String doInBackground(Object[] params) {
+                String result = appUtil.shareRegIdWithAppServer(context, regId);
+                return result;
+            }
+        };
+        shareRegidTask.execute(null, null, null);
+    }
+
+
 }
