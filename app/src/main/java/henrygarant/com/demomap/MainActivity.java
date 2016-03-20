@@ -12,14 +12,27 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class MainActivity extends FragmentActivity implements android.app.ActionBar.TabListener {
 
@@ -61,6 +74,7 @@ public class MainActivity extends FragmentActivity implements android.app.Action
     public void sendGcmMessage(View v){
         Toast.makeText(getApplicationContext(), "Send Message", Toast.LENGTH_SHORT).show();
         //TODO Connect to Message Page and Push the information into form and send
+        sendGcmMessage();
     }
 
 
@@ -125,5 +139,30 @@ public class MainActivity extends FragmentActivity implements android.app.Action
     @Override
     public void onTabReselected(android.app.ActionBar.Tab tab, android.app.FragmentTransaction ft) {
 
+    }
+
+    private void sendGcmMessage() {
+        new AsyncTask() {
+            @Override
+            protected String doInBackground(Void... params) {
+                String msg = "";
+                try {
+                    Bundle data = new Bundle();
+                    data.putString("my_message", "Hello World");
+                    data.putString("my_action","SAY_HELLO");
+                    String id = Integer.toString(msgId.incrementAndGet());
+                    gcm.send(SENDER_ID + "@gcm.googleapis.com", id, data);
+                    msg = "Sent message";
+                } catch (IOException ex) {
+                    msg = "Error :" + ex.getMessage();
+                }
+                return msg;
+            }
+
+            @Override
+            protected void onPostExecute(String msg) {
+                mDisplay.append(msg + "\n");
+            }
+        }.execute(null, null, null);
     }
 }
