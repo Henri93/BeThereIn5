@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
@@ -28,6 +29,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -143,26 +145,33 @@ public class MainActivity extends FragmentActivity implements android.app.Action
 
     private void sendGcmMessage() {
         new AsyncTask() {
-            @Override
-            protected String doInBackground(Void... params) {
-                String msg = "";
-                try {
-                    Bundle data = new Bundle();
-                    data.putString("my_message", "Hello World");
-                    data.putString("my_action","SAY_HELLO");
-                    String id = Integer.toString(msgId.incrementAndGet());
-                    gcm.send(SENDER_ID + "@gcm.googleapis.com", id, data);
-                    msg = "Sent message";
-                } catch (IOException ex) {
-                    msg = "Error :" + ex.getMessage();
-                }
-                return msg;
-            }
 
             @Override
-            protected void onPostExecute(String msg) {
-                mDisplay.append(msg + "\n");
+            protected Object doInBackground(Object[] params) {
+                HttpClient httpclient = new DefaultHttpClient();
+                HttpPost httppost = new HttpPost(Config.APP_SERVER_MESSAGE);
+                try {
+                    Log.d("SEND GCM",": starting to send message");
+                    List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+
+                    nameValuePairs.add(new BasicNameValuePair("message", "In the app message"));
+                    nameValuePairs.add(new BasicNameValuePair("push", "1"));
+
+                    httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+                    HttpResponse response = httpclient.execute(httppost);
+                    Log.d("SEND GCM",": executed send message");
+                    Log.d("SEND GCM", ": results : " + EntityUtils.toString(response.getEntity(), "UTF-8"));
+
+                } catch (ClientProtocolException e) {
+                    e.printStackTrace();
+                    Log.d("SEND GCM",": error");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Log.d("SEND GCM",": error");
+                }
+                return "Sent";
             }
+
         }.execute(null, null, null);
     }
 }
