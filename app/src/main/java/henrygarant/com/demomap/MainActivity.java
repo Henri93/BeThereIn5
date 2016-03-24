@@ -76,7 +76,7 @@ public class MainActivity extends FragmentActivity implements android.app.Action
     public void sendGcmMessage(View v){
         Toast.makeText(getApplicationContext(), "Send Message", Toast.LENGTH_SHORT).show();
         //TODO Connect to Message Page and Push the information into form and send
-        sendGcmMessage();
+        new SendGcmMessaage().execute("Inside App!");
     }
 
 
@@ -112,22 +112,6 @@ public class MainActivity extends FragmentActivity implements android.app.Action
         startActivity(intent);
     }
 
-    /**
-     * Returns a HashMap with all user's contacts
-     *
-     * */
-    public HashMap<String, String> populateContacts(ContentResolver cr) {
-        HashMap<String, String> contacts = new HashMap<String, String>();
-        Cursor phones = cr.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null);
-        while (phones.moveToNext()) {
-            String contact = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
-            String phoneNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-            contacts.put(phoneNumber, contact);
-        }
-        return contacts;
-    }
-
-
     @Override
     public void onTabSelected(android.app.ActionBar.Tab tab, android.app.FragmentTransaction ft) {
         viewPager.setCurrentItem(tab.getPosition());
@@ -143,35 +127,52 @@ public class MainActivity extends FragmentActivity implements android.app.Action
 
     }
 
-    private void sendGcmMessage() {
-        new AsyncTask() {
+    public void postData(String valueIWantToSend) {
+        HttpClient httpclient = new DefaultHttpClient();
+        // specify the URL you want to post to
+        HttpPost httppost = new HttpPost(Config.APP_SERVER_MESSAGE);
+        httppost.setHeader("Content-Type", "application/x-www-form-urlencoded");
+        try {
+            // create a list to store HTTP variables and their values
+            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+            // add an HTTP variable and value pair
+            nameValuePairs.add(new BasicNameValuePair("message", valueIWantToSend));
+            httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+            // send the variable and value, in other words post, to the URL
+            HttpResponse response = httpclient.execute(httppost);
+            Log.d("HTTP RESPONSE: ", EntityUtils.toString(response.getEntity()));
+        } catch (ClientProtocolException e) {
+            // process execption
+        } catch (IOException e) {
+            // process execption
+        }
+    }
 
-            @Override
-            protected Object doInBackground(Object[] params) {
-                HttpClient httpclient = new DefaultHttpClient();
-                HttpPost httppost = new HttpPost(Config.APP_SERVER_MESSAGE);
-                try {
-                    Log.d("SEND GCM",": starting to send message");
-                    List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+    private class SendGcmMessaage extends AsyncTask<String, Integer, Double>{
+        @Override
+        protected Double doInBackground(String... params) {
+            postData(params[0]);
+            return null;
+        }
 
-                    nameValuePairs.add(new BasicNameValuePair("message", "In the app message"));
-                    nameValuePairs.add(new BasicNameValuePair("push", "1"));
+        protected void onPostExecute(Double result){
+            Toast.makeText(getApplicationContext(), "Sent Post Request", Toast.LENGTH_LONG).show();
+        }
 
-                    httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-                    HttpResponse response = httpclient.execute(httppost);
-                    Log.d("SEND GCM",": executed send message");
-                    Log.d("SEND GCM", ": results : " + EntityUtils.toString(response.getEntity(), "UTF-8"));
+    }
 
-                } catch (ClientProtocolException e) {
-                    e.printStackTrace();
-                    Log.d("SEND GCM",": error");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    Log.d("SEND GCM",": error");
-                }
-                return "Sent";
-            }
-
-        }.execute(null, null, null);
+    /**
+     * Returns a HashMap with all user's contacts
+     *
+     * */
+    public HashMap<String, String> populateContacts(ContentResolver cr) {
+        HashMap<String, String> contacts = new HashMap<String, String>();
+        Cursor phones = cr.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null);
+        while (phones.moveToNext()) {
+            String contact = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+            String phoneNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+            contacts.put(phoneNumber, contact);
+        }
+        return contacts;
     }
 }

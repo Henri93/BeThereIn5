@@ -10,17 +10,25 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Henry Garant"
-        android:padding="10dp"
-        android:textSize="18dp"
+        android:padding="15dp"
+        android:textSize="22dp"
         android:textColor="@color/Primary_Light"
-        android:background="@color/Medium"
         android:textStyle="italic"
-        android:phoneNumber="false" />
+        android:phoneNumber="false"
+        android:layout_marginLeft="30dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="215-331-7408"
+        android:id="@+id/contactNumber"
+        android:layout_gravity="center_horizontal"
+        android:textColor="@color/BlackGloss" />
 
     <ImageView
-        android:layout_height="2dp"
+        android:layout_height="1dp"
         android:layout_width="fill_parent"
-        android:background="@color/Primary_Accent" />
+        android:background="@color/Light" />
 
 </LinearLayout>
 
