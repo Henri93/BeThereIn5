@@ -14,10 +14,10 @@ public interface Config {
     //TODO CHANGE BACKEND MYSQL TO NEW SERVER
 
     // Server user login url
-    public static String URL_LOGIN = "http://betherein5.eu.pn/android/Login.php";
+    public static String URL_LOGIN = "http://betherein5.byethost9.com/android/Login.php";
 
     // Server user register url
-    public static String URL_REGISTER = "http://betherein5.eu.pn/android/Register.php";
+    public static String URL_REGISTER = "http://betherein5.byethost9.com/android/Register.php";
 
 
     public static final String TAG = "henrygarant.com.demomap";
