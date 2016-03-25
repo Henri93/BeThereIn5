@@ -9,7 +9,9 @@
     </style>
 
 
-    <color name="Primary">#64B5F6</color>
+    <!--<color name="Primary">#64B5F6</color>-->
+    <!--<color name="Primary">#6193FF</color>687db2-->
+    <color name="Primary">#687db2</color>
     <color name="Primary_Dark">#1E88E5</color>
     <color name="Primary_Light">#BBDEFB</color>
     <color name="Primary_Accent">#1E88E5</color>
@@ -26,7 +28,7 @@
     <color name="Hint">#a5a5a5</color>
 
     <color name="BlackGloss">#19000000</color>
-    <color name="WhiteGloss">#32ffffff</color>
+    <color name="WhiteGloss">#4bffffff</color>
 
     <!--&lt;!&ndash;Orange &ndash;&gt;-->
     <!--<color name="Primary">#FF7043</color>-->

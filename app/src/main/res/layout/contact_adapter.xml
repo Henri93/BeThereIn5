@@ -5,30 +5,34 @@
     android:layout_height="fill_parent"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/contactName"
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Henry Garant"
-        android:padding="15dp"
-        android:textSize="22dp"
-        android:textColor="@color/Primary_Light"
-        android:textStyle="italic"
-        android:phoneNumber="false"
-        android:layout_marginLeft="30dp" />
+        android:padding="20dp">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="215-331-7408"
-        android:id="@+id/contactNumber"
-        android:layout_gravity="center_horizontal"
-        android:textColor="@color/BlackGloss" />
+        <TextView
+            android:id="@+id/contactName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Henry Garant"
+            android:textSize="24dp"
+            android:textColor="@color/Primary_Light"
+            android:phoneNumber="false" />
 
-    <ImageView
-        android:layout_height="1dp"
-        android:layout_width="fill_parent"
-        android:background="@color/Light" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="215-331-7408"
+            android:id="@+id/contactNumber"
+            android:textColor="@color/WhiteGloss"
+            android:textSize="16dp" />
+    </LinearLayout>
+
+    <!--<ImageView-->
+        <!--android:layout_height="1dp"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:background="@color/Light" />-->
 
 </LinearLayout>
 

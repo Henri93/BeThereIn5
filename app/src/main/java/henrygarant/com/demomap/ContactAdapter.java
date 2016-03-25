@@ -1,6 +1,7 @@
 package henrygarant.com.demomap;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,10 +25,15 @@ public class ContactAdapter extends ArrayAdapter<Contact> {
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.contact_adapter, parent, false);
         }
+
+        Typeface font = Typeface.createFromAsset(getContext().getAssets(), "fonts/OpenSans-Light.ttf");
         // Lookup view for data population
         TextView contactName = (TextView) convertView.findViewById(R.id.contactName);
         TextView contactNumber = (TextView) convertView.findViewById(R.id.contactNumber);
         // Populate the data into the template view using the data object
+        contactName.setTypeface(font);
+        contactName.setTypeface(font);
+
         contactName.setText(contact.getName());
         contactNumber.setText(contact.getNumber());
         // Return the completed view to render on screen
