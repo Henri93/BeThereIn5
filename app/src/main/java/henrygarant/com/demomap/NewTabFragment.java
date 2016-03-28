@@ -9,19 +9,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.widget.ExpandableListView;
 
 import java.util.ArrayList;
 
 public class NewTabFragment extends Fragment {
 
-    ListView contactList;
+    ExpandableListView contactList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootview = inflater.inflate(R.layout.tab_new, container,
                 false);
-        contactList = (ListView)rootview.findViewById(R.id.contactList);
+        contactList = (ExpandableListView)rootview.findViewById(R.id.contactList);
         ContentResolver cr = getActivity().getContentResolver();
         ArrayList<Contact> contactsList = new ArrayList<Contact>();
         Cursor phones = cr.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null);
