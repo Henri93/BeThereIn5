@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:text="Henry Garant"
             android:textSize="24dp"
-            android:textColor="@color/Primary_Light"
+            android:textColor="@color/Light"
             android:phoneNumber="false" />
 
         <TextView

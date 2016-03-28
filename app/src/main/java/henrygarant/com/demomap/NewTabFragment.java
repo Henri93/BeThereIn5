@@ -8,7 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 
 import java.util.ArrayList;
@@ -30,7 +30,7 @@ public class NewTabFragment extends Fragment {
             String phoneNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
             contactsList.add(new Contact(contact, phoneNumber));
         }
-        ArrayAdapter<Contact> contactAdapter = new ContactAdapter(getActivity(), contactsList);
+        BaseExpandableListAdapter contactAdapter = new ContactAdapter(getActivity().getApplicationContext(), contactsList);
         contactList.setAdapter(contactAdapter);
         return rootview;
     }

@@ -1,18 +1,107 @@
 package henrygarant.com.demomap;
 
 import android.content.Context;
-import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.BaseExpandableListAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class ContactAdapter extends ArrayAdapter<Contact> {
+public class ContactAdapter extends BaseExpandableListAdapter {
 
-    public ContactAdapter(Context context, ArrayList<Contact> contacts) {
+    private Context _context;
+    private ArrayList<Contact> _listDataHeader; // header titles
+
+    public ContactAdapter(Context context, ArrayList<Contact> listDataHeader) {
+        this._context = context;
+        this._listDataHeader = listDataHeader;
+    }
+
+    @Override
+    public Object getChild(int groupPosition, int childPosititon) {
+        return null;
+    }
+
+    @Override
+    public long getChildId(int groupPosition, int childPosition) {
+        return childPosition;
+    }
+
+    @Override
+    public View getChildView(int groupPosition, final int childPosition,
+                             boolean isLastChild, View convertView, ViewGroup parent) {
+
+
+        if (convertView == null) {
+            LayoutInflater infalInflater = (LayoutInflater) this._context
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = infalInflater.inflate(R.layout.expanded_item, null);
+        }
+
+        Button expandedButton= (Button) convertView
+                .findViewById(R.id.expanded_list_button);
+
+        expandedButton.setFocusable(false);
+        //TODO set onclick here
+        return convertView;
+    }
+
+    @Override
+    public int getChildrenCount(int groupPosition) {
+        return 1;
+    }
+
+    @Override
+    public Object getGroup(int groupPosition) {
+        return this._listDataHeader.get(groupPosition);
+    }
+
+    @Override
+    public int getGroupCount() {
+        return this._listDataHeader.size();
+    }
+
+    @Override
+    public long getGroupId(int groupPosition) {
+        return groupPosition;
+    }
+
+    @Override
+    public View getGroupView(int groupPosition, boolean isExpanded,
+                             View convertView, ViewGroup parent) {
+        Contact theContact = (Contact) getGroup(groupPosition);
+        if (convertView == null) {
+            LayoutInflater infalInflater = (LayoutInflater) this._context
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = infalInflater.inflate(R.layout.contact_adapter, null);
+        }
+
+        TextView lblListHeader = (TextView) convertView
+                .findViewById(R.id.contactName);
+        lblListHeader.setText(theContact.getName());
+
+        TextView lblListSubHeader = (TextView) convertView
+                .findViewById(R.id.contactNumber);
+        lblListSubHeader.setText(theContact.getNumber());
+
+        return convertView;
+    }
+
+    @Override
+    public boolean hasStableIds() {
+        return false;
+    }
+
+    @Override
+    public boolean isChildSelectable(int groupPosition, int childPosition) {
+        return true;
+    }
+}
+
+    /*public ContactAdapter(Context context, ArrayList<Contact> contacts) {
         super(context, 0 , contacts);
 
     }
@@ -38,5 +127,5 @@ public class ContactAdapter extends ArrayAdapter<Contact> {
         contactNumber.setText(contact.getNumber());
         // Return the completed view to render on screen
         return convertView;
-    }
-}
+    }*/
+
