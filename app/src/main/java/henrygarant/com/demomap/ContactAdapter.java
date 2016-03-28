@@ -1,6 +1,7 @@
 package henrygarant.com.demomap;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +32,7 @@ public class ContactAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getChildView(int groupPosition, final int childPosition,
+    public View getChildView(final int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
 
 
@@ -45,6 +46,14 @@ public class ContactAdapter extends BaseExpandableListAdapter {
                 .findViewById(R.id.expanded_list_button);
 
         expandedButton.setFocusable(false);
+
+        expandedButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO HANDLE ACCEPT INTERACTION PROCESS
+                Log.d("EXPANDEDLISTVIEW: ", "Button Click at " + getGroup(groupPosition).toString());
+            }
+        });
         //TODO set onclick here
         return convertView;
     }

@@ -42,7 +42,7 @@ public class MainActivity extends FragmentActivity implements android.app.Action
         // Initilization
         viewPager = (ViewPager) findViewById(R.id.pager);
         actionBar = getActionBar();
-        actionBar.setStackedBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.BlackGloss)));
+        actionBar.setStackedBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.MidLight)));
         mAdapter = new PagerAdapter(getSupportFragmentManager());
 
         viewPager.setAdapter(mAdapter);

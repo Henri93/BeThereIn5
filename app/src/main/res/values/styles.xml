@@ -11,11 +11,11 @@
 
     <!--<color name="Primary">#64B5F6</color>-->
     <!--<color name="Primary">#6193FF</color>687db2-->
-    <color name="Primary">#687db2</color>
-    <color name="Primary_Dark">#1E88E5</color>
-    <color name="Primary_Light">#BBDEFB</color>
-    <color name="Primary_Accent">#1E88E5</color>
-    <color name="Primary_Opposite">#F6BC64</color>
+    <color name="Primary">#5C79B2</color>
+    <color name="Primary_Dark">#42567F</color>
+    <color name="Primary_Light">#90B5FE</color>
+    <color name="Primary_Accent">#9CA8BF</color>
+    <color name="Primary_Opposite">#B26D55</color>
 
     <color name="Map_Color">#641e88e5</color>
 
@@ -24,7 +24,7 @@
     <color name="Dark">#1F1F1F</color>
     <color name="Medium">#2E2E2E</color>
     <color name="Light">#EBEBEB</color>
-    <color name="MidLight">#546776</color>
+    <color name="MidLight">#565656</color>
     <color name="Hint">#a5a5a5</color>
 
     <color name="BlackGloss">#19000000</color>
