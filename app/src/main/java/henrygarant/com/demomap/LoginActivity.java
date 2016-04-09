@@ -143,6 +143,8 @@ public class LoginActivity extends Activity {
         pDialog.setMessage("Logging in ...");
         showDialog();
 
+        //TODO ADD REGID TO DATABASE
+
         StringRequest strReq = new StringRequest(Method.POST,
                 Config.URL_LOGIN, new Response.Listener<String>() {
 
