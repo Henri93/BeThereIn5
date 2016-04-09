@@ -9,9 +9,9 @@
     </style>
 
 
-    <color name="Primary">#64B5F6</color>
+    <!--<color name="Primary">#64B5F6</color>-->
     <!--<color name="Primary">#6193FF</color>687db2-->
-    <!--<color name="Primary">#5C79B2</color>-->
+    <color name="Primary">#5C79B2</color>
     <color name="Primary_Dark">#42567F</color>
     <color name="Primary_Light">#90B5FE</color>
     <color name="Primary_Accent">#9CA8BF</color>

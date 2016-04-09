@@ -29,7 +29,7 @@ public class RecentTabFragment extends Fragment {
             public void onClick(View v) {
                 Toast.makeText(getActivity().getApplicationContext(), "Send Message", Toast.LENGTH_SHORT).show();
                 GcmSender gcmSender = new GcmSender(getActivity().getApplicationContext());
-                gcmSender.sendGcmMessage(sendText.getText().toString());
+                gcmSender.sendGcmMessage(sendPhone.getText().toString(), sendText.getText().toString());
                 sendText.setText("");
             }
         });

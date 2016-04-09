@@ -25,28 +25,31 @@ public class GcmSender {
 
     private Context context;
 
-    public GcmSender(Context context){
+    public GcmSender(Context context) {
         this.context = context;
     }
 
-    public void sendGcmMessage(String message){
-        new SendGcmMessaage().execute(message);
+    public void sendGcmMessage(String phone, String message) {
+        ArrayList<String> params = new ArrayList<String>();
+        params.add(phone);
+        params.add(message);
+        new SendGcmMessaage().execute(params);
     }
 
-    private class SendGcmMessaage extends AsyncTask<String, Integer, Double> {
+    private class SendGcmMessaage extends AsyncTask<ArrayList<String>, Integer, Double> {
         @Override
-        protected Double doInBackground(String... params) {
-            postData(params[0]);
+        protected Double doInBackground(ArrayList<String>... params) {
+            postData(params[0].get(0), params[0].get(1));
             return null;
         }
 
-        protected void onPostExecute(Double result){
+        protected void onPostExecute(Double result) {
             Toast.makeText(context.getApplicationContext(), "Sent Post Request", Toast.LENGTH_LONG).show();
         }
 
     }
 
-    public void postData(String valueIWantToSend) {
+    public void postData(String personSendingTo, String valueIWantToSend) {
         HttpClient httpclient = new DefaultHttpClient();
         // specify the URL you want to post to
         HttpPost httppost = new HttpPost(Config.APP_SERVER_MESSAGE);
@@ -56,6 +59,7 @@ public class GcmSender {
             List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
             // add an HTTP variable and value pair
             nameValuePairs.add(new BasicNameValuePair("message", valueIWantToSend));
+            nameValuePairs.add(new BasicNameValuePair("phone", personSendingTo));
             httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
             // send the variable and value, in other words post, to the URL
             HttpResponse response = httpclient.execute(httppost);
