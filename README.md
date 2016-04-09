@@ -2,7 +2,7 @@
 
 
 
-[App Website](http://betherein5.eu.pn/)
+[App Website](http://www.betherein5.net/)
 
 [Jump to Java Code](https://github.com/Henri93/BeThereIn5/tree/master/app/src/main/java/henrygarant/com/demomap)
 
