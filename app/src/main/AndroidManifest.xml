@@ -64,6 +64,11 @@
             android:label="@string/app_name">
         </activity>
 
+        <activity
+            android:name=".MapActivities.WaitingPage"
+            android:label="@string/app_name">
+        </activity>
+
         <receiver
             android:name=".GcmServices.GcmBroadcastReceiver"
             android:permission="com.google.android.c2dm.permission.SEND" >

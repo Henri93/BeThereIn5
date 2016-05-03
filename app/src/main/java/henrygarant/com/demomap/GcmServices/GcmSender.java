@@ -39,7 +39,7 @@ public class GcmSender {
     private class SendGcmMessaage extends AsyncTask<ArrayList<String>, Integer, Double> {
         @Override
         protected Double doInBackground(ArrayList<String>... params) {
-            postData(params[0].get(0), params[0].get(1));
+            postMessageData(params[0].get(0), params[0].get(1));
             return null;
         }
 
@@ -49,7 +49,7 @@ public class GcmSender {
 
     }
 
-    public void postData(String personSendingTo, String valueIWantToSend) {
+    public void postMessageData(String personSendingTo, String valueIWantToSend) {
         HttpClient httpclient = new DefaultHttpClient();
         // specify the URL you want to post to
         HttpPost httppost = new HttpPost(Config.APP_SERVER_MESSAGE);
@@ -60,6 +60,48 @@ public class GcmSender {
             // add an HTTP variable and value pair
             nameValuePairs.add(new BasicNameValuePair("message", valueIWantToSend));
             nameValuePairs.add(new BasicNameValuePair("phone", personSendingTo));
+            httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+            // send the variable and value, in other words post, to the URL
+            HttpResponse response = httpclient.execute(httppost);
+            Log.d("HTTP RESPONSE: ", EntityUtils.toString(response.getEntity()));
+        } catch (ClientProtocolException e) {
+            // process execption
+        } catch (IOException e) {
+            // process execption
+        }
+    }
+
+    public void sendGcmAccept(String phonefrom, String phoneto) {
+        ArrayList<String> params = new ArrayList<String>();
+        params.add(phoneto);
+        params.add(phonefrom);
+        new SendGcmAccept().execute(params);
+    }
+
+    private class SendGcmAccept extends AsyncTask<ArrayList<String>, Integer, Double> {
+        @Override
+        protected Double doInBackground(ArrayList<String>... params) {
+            postAcceptData(params[0].get(0), params[0].get(1));
+            return null;
+        }
+
+        protected void onPostExecute(Double result) {
+            Toast.makeText(context.getApplicationContext(), "Sent Post Request", Toast.LENGTH_LONG).show();
+        }
+
+    }
+
+    public void postAcceptData(String personSendingFrom, String personSendingTo) {
+        HttpClient httpclient = new DefaultHttpClient();
+        // specify the URL you want to post to
+        HttpPost httppost = new HttpPost(Config.APP_SERVER_ACCEPT);
+        httppost.setHeader("Content-Type", "application/x-www-form-urlencoded");
+        try {
+            // create a list to store HTTP variables and their values
+            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+            // add an HTTP variable and value pair
+            nameValuePairs.add(new BasicNameValuePair("phonefrom", personSendingFrom));
+            nameValuePairs.add(new BasicNameValuePair("phoneto", personSendingTo));
             httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
             // send the variable and value, in other words post, to the URL
             HttpResponse response = httpclient.execute(httppost);

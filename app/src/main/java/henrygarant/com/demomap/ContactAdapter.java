@@ -1,6 +1,7 @@
 package henrygarant.com.demomap;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+
+import henrygarant.com.demomap.MapActivities.WaitingPage;
 
 public class ContactAdapter extends BaseExpandableListAdapter {
 
@@ -52,6 +55,12 @@ public class ContactAdapter extends BaseExpandableListAdapter {
             public void onClick(View v) {
                 //TODO HANDLE ACCEPT INTERACTION PROCESS
                 Log.d("EXPANDEDLISTVIEW: ", "Button Click at " + getGroup(groupPosition).toString());
+                //Start The new activity here
+                Intent intent = new Intent(_context , WaitingPage.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                _context.startActivity(intent);
+
+
             }
         });
         //TODO set onclick here

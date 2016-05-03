@@ -5,6 +5,7 @@ public interface Config {
     // used to share GCM regId with application server - using php app server
     static final String APP_SERVER_URL = "http://www.betherein5.net/android/message.php?shareRegId=1";
     static final String APP_SERVER_MESSAGE = "http://www.betherein5.net/android/message.php";
+    static final String APP_SERVER_ACCEPT = "http://www.betherein5.net/android/accept.php";
 
     // Google Project Number
     static final String GOOGLE_PROJECT_ID = "betherein5-1231";
