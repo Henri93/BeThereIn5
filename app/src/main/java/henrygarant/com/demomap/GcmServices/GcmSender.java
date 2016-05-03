@@ -73,8 +73,8 @@ public class GcmSender {
 
     public void sendGcmAccept(String phonefrom, String phoneto) {
         ArrayList<String> params = new ArrayList<String>();
-        params.add(phoneto);
         params.add(phonefrom);
+        params.add(phoneto);
         new SendGcmAccept().execute(params);
     }
 
@@ -102,6 +102,8 @@ public class GcmSender {
             // add an HTTP variable and value pair
             nameValuePairs.add(new BasicNameValuePair("phonefrom", personSendingFrom));
             nameValuePairs.add(new BasicNameValuePair("phoneto", personSendingTo));
+            nameValuePairs.add(new BasicNameValuePair("acceptstart", "1"));
+            nameValuePairs.add(new BasicNameValuePair("acceptend", "0"));
             httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
             // send the variable and value, in other words post, to the URL
             HttpResponse response = httpclient.execute(httppost);

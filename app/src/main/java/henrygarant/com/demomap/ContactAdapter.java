@@ -54,9 +54,12 @@ public class ContactAdapter extends BaseExpandableListAdapter {
             @Override
             public void onClick(View v) {
                 //TODO HANDLE ACCEPT INTERACTION PROCESS
-                Log.d("EXPANDEDLISTVIEW: ", "Button Click at " + getGroup(groupPosition).toString());
+                String number = getGroup(groupPosition).toString().substring(getGroup(groupPosition).toString().lastIndexOf(':') + 1);
+                number = number.substring(1);
+                Log.d("EXPANDEDLISTVIEW: ", "Button Click at " + number);
                 //Start The new activity here
                 Intent intent = new Intent(_context , WaitingPage.class);
+                intent.putExtra("phoneto", number);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 _context.startActivity(intent);
 

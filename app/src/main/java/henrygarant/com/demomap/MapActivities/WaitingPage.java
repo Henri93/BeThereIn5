@@ -7,6 +7,9 @@ import android.os.Bundle;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import henrygarant.com.demomap.GcmServices.GcmSender;
+import henrygarant.com.demomap.SQLiteHandler;
+
 public class WaitingPage extends Activity {
 
     private ProgressDialog pDialog;
@@ -14,6 +17,7 @@ public class WaitingPage extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        final String number = getIntent().getStringExtra("phoneto");
         // Progress dialog
         pDialog = new ProgressDialog(this);
         pDialog.setCancelable(true);
@@ -28,6 +32,10 @@ public class WaitingPage extends Activity {
                     @Override
                     public void run() {
                         pDialog.setMessage("Connecting...");
+                        GcmSender gcmSender = new GcmSender(getApplicationContext());
+                        SQLiteHandler db = new SQLiteHandler(getApplicationContext());
+                        //gcmSender.sendGcmAccept(db.getUserDetails().get("phone"), number);
+                        gcmSender.sendGcmAccept("(215) 331-7408", number);
                     }
                 });
             }
