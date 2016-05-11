@@ -58,7 +58,17 @@ public class GcmNotificationIntentService extends IntentService {
                 }
                 Log.i(TAG, "Completed work @ " + SystemClock.elapsedRealtime());
                 //sendNotification(extras.get(Config.MESSAGE_KEY).toString());
-                sendNotification("AS: " + extras.get(Config.ACCEPT_START_KEY).toString() + " AE: " +  extras.get(Config.ACCEPT_START_KEY).toString());
+                if (extras.get(Config.MESSAGE_KEY) == null) {
+                    //GCM ACCEPT REQUEST
+                    if (extras.get(Config.ACCEPT_START_KEY).toString().equals("1") && extras.get(Config.ACCEPT_END_KEY).toString().equals("0")) {
+                        sendNotification("Do you accept the request from: ?");
+                    } else {
+                        Log.d("NOTIFICATIONINTENTSERVICE: ", "Error parsing gcm message");
+                    }
+                }else{
+                    sendNotification(extras.get(Config.MESSAGE_KEY).toString());
+                }
+
                 Log.i(TAG, "Received: " + extras.toString());
             }
         }
