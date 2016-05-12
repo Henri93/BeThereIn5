@@ -5,13 +5,9 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapsActivity extends FragmentActivity {
 
@@ -33,7 +29,7 @@ public class MapsActivity extends FragmentActivity {
         Intent intent = getIntent();
         destination = intent.getStringExtra("destination");
         DestinationManager destinationManager = new DestinationManager();
-        destinationLatLng = destinationManager.makeDestinationLatLng(this, destination);
+        //destinationLatLng = destinationManager.makeDestinationLatLng(this, destination);
         setUpMapIfNeeded();
     }
 
@@ -82,7 +78,7 @@ public class MapsActivity extends FragmentActivity {
         mMap.getUiSettings().setMyLocationButtonEnabled(false);
         mMap.setMyLocationEnabled(true);
 
-        mMap.addMarker(new MarkerOptions()
+        /*mMap.addMarker(new MarkerOptions()
                 .position(destinationLatLng)
                 .snippet("Your destination")
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
@@ -98,6 +94,6 @@ public class MapsActivity extends FragmentActivity {
         mMap.addCircle(circleOptions);
 
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
-                destinationLatLng, 13));
+                destinationLatLng, 13)); */
     }
 }

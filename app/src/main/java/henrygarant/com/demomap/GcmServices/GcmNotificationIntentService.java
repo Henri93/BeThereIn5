@@ -13,7 +13,7 @@ import android.util.Log;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import henrygarant.com.demomap.Config;
-import henrygarant.com.demomap.MainActivity;
+import henrygarant.com.demomap.MapsActivity;
 import henrygarant.com.demomap.R;
 
 public class GcmNotificationIntentService extends IntentService {
@@ -66,9 +66,9 @@ public class GcmNotificationIntentService extends IntentService {
                         Log.d("NOTIFICATIONINTENTSERVICE: ", "Error parsing gcm message");
                     }
                 }else{
+                    //GCM LOCATION DATA
                     sendNotification(extras.get(Config.MESSAGE_KEY).toString());
                 }
-
                 Log.i(TAG, "Received: " + extras.toString());
             }
         }
@@ -80,8 +80,11 @@ public class GcmNotificationIntentService extends IntentService {
         mNotificationManager = (NotificationManager) this
                 .getSystemService(Context.NOTIFICATION_SERVICE);
 
+        //Class to open when user clicks notification
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-                new Intent(this, MainActivity.class), 0);
+                new Intent(this, MapsActivity.class), 0);
+
+        //TODO ADD CONFIRM DIALOG IN NOTIFICATION
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
                 this).setSmallIcon(R.drawable.notification_icon_small)
