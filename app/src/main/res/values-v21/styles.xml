@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AppTheme" parent="android:Theme.Material">
+        <item name="android:colorPrimary">@color/Primary</item>
+        <item name="android:colorPrimaryDark">@color/Primary_Dark</item>
+        <item name="android:colorAccent">@color/Primary_Accent</item>
+        <item name="android:colorActivatedHighlight">@color/Primary_Light</item>
+        <item name="android:textColor">@color/Primary</item>
+    </style>
+
+
+    <!--<color name="Primary">#64B5F6</color>-->
+    <!--<color name="Primary">#6193FF</color>687db2-->
+    <color name="Primary">#1E88E5</color>
+    <color name="Primary_Dark">#42567F</color>
+    <color name="Primary_Light">#90B5FE</color>
+    <color name="Primary_Accent">#9CA8BF</color>
+    <color name="Primary_Opposite">#B26D55</color>
+
+    <color name="Map_Color">#641e88e5</color>
+
+    <color name="ErrorRed">#FF9494</color>
+
+    <color name="Dark">#1F1F1F</color>
+    <color name="Medium">#2E2E2E</color>
+    <color name="Light">#EBEBEB</color>
+    <color name="MidLight">#565656</color>
+    <color name="Hint">#a5a5a5</color>
+
+    <color name="BlackGloss">#19000000</color>
+    <color name="WhiteGloss">#4bffffff</color>
+
+    <!--&lt;!&ndash;Orange &ndash;&gt;-->
+    <!--<color name="Primary">#FF7043</color>-->
+    <!--&lt;!&ndash; 300 &ndash;&gt;-->
+    <!--<color name="Primary_Dark">#FF5722</color>-->
+    <!--&lt;!&ndash; 500 &ndash;&gt;-->
+    <!--<color name="Primary_Light">#ffbc97</color>-->
+    <!--&lt;!&ndash; 100 &ndash;&gt;-->
+    <!--<color name="Primary_Accent">#64ff4800</color>-->
+    <!--&lt;!&ndash; A100 &ndash;&gt;-->
+
+    <!--&lt;!&ndash;Red &ndash;&gt;-->
+    <!--<color name="Primary">#F44336</color>-->
+    <!--&lt;!&ndash; 300 &ndash;&gt;-->
+    <!--<color name="Primary_Dark">#E53935</color>-->
+    <!--&lt;!&ndash; 500 &ndash;&gt;-->
+    <!--<color name="Primary_Light">#EF9A9A</color>-->
+    <!--&lt;!&ndash; 100 &ndash;&gt;-->
+    <!--<color name="Primary_Accent">#64ff0400</color>-->
+    <!--&lt;!&ndash; A100 &ndash;&gt;-->
+
+
+    <style name="WhiteText">
+        <item name="android:color">@color/Light</item>
+        <item name="android:textColor">@color/Light</item>
+        <item name="android:textSize">30sp</item>
+    </style>
+
+</resources>
+
+
