@@ -32,9 +32,6 @@ public class MainActivity extends FragmentActivity implements android.app.Action
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
 
-        //Start GCM Tinkering
-
-        //End GCM Tinkering
 
         Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/Exo-Regular.otf");
 
