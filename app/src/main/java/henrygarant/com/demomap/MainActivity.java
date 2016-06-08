@@ -12,10 +12,12 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.view.Menu;
 import android.view.View;
 
 import java.util.HashMap;
@@ -24,7 +26,6 @@ public class MainActivity extends FragmentActivity implements android.app.Action
 
     private ViewPager viewPager;
     private PagerAdapter mAdapter;
-    private android.app.ActionBar actionBar;
     private String[] tabs = { "New", "Recent" };
 
     @Override
@@ -38,20 +39,28 @@ public class MainActivity extends FragmentActivity implements android.app.Action
 
         // Initilization
         viewPager = (ViewPager) findViewById(R.id.pager);
-        actionBar = getActionBar();
-        actionBar.setStackedBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.MidLight)));
+
+        if (Build.VERSION.SDK_INT >= 21) {
+            ActionBar actionBar = getActionBar();
+            actionBar.setStackedBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.MidLight)));
+            actionBar.setHomeButtonEnabled(false);
+            actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+            // Adding Tabs
+            for (String tab_name : tabs) {
+                actionBar.addTab(actionBar.newTab().setText(tab_name)
+                        .setTabListener(this));
+            }
+        }else{
+           //android.support.v7.app.ActionBar actionBar2 = getSupportActionBar();
+           // actionBar2.setStackedBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.MidLight)));
+            //actionBar2.setHomeButtonEnabled(false);
+            //No Tabs for < 21
+        }
         mAdapter = new PagerAdapter(getSupportFragmentManager());
 
         viewPager.setAdapter(mAdapter);
-        actionBar.setHomeButtonEnabled(false);
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
 
-        // Adding Tabs
-        for (String tab_name : tabs) {
-            actionBar.addTab(actionBar.newTab().setText(tab_name)
-                    .setTabListener(this));
-        }
     }
 
 
@@ -103,7 +112,6 @@ public class MainActivity extends FragmentActivity implements android.app.Action
     }
 
 
-
     /**
      * Returns a HashMap with all user's contacts
      *
@@ -118,4 +126,11 @@ public class MainActivity extends FragmentActivity implements android.app.Action
         }
         return contacts;
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        return true;
+    }
+
 }
