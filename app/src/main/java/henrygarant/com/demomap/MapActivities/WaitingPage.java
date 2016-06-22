@@ -8,6 +8,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import henrygarant.com.demomap.GcmServices.GcmSender;
+import henrygarant.com.demomap.R;
 import henrygarant.com.demomap.SQLiteHandler;
 
 public class WaitingPage extends Activity {
@@ -17,6 +18,7 @@ public class WaitingPage extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.waiting_page);
         final String number = getIntent().getStringExtra("phoneto");
         // Progress dialog
         pDialog = new ProgressDialog(this);
