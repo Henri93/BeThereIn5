@@ -23,6 +23,7 @@ public class MapsActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
+        //TODO PERIODICALLY SEND LOCATION INFO
 
         CIRCLE_COLOR =  getResources().getColor(R.color.Map_Color);
 
