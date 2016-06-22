@@ -17,10 +17,12 @@ public class MapsActivity extends FragmentActivity {
     private String destination;
     private LatLng destinationLatLng = null;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
 
         CIRCLE_COLOR =  getResources().getColor(R.color.Map_Color);
 
@@ -31,6 +33,7 @@ public class MapsActivity extends FragmentActivity {
         DestinationManager destinationManager = new DestinationManager();
         //destinationLatLng = destinationManager.makeDestinationLatLng(this, destination);
         setUpMapIfNeeded();
+
     }
 
 
@@ -96,4 +99,6 @@ public class MapsActivity extends FragmentActivity {
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
                 destinationLatLng, 13)); */
     }
+
+
 }

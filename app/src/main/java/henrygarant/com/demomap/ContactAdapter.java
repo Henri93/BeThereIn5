@@ -120,6 +120,8 @@ public class ContactAdapter extends BaseExpandableListAdapter {
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;
     }
+
+
 }
 
     /*public ContactAdapter(Context context, ArrayList<Contact> contacts) {
