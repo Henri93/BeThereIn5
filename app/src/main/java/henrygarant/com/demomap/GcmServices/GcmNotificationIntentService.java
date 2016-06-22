@@ -54,14 +54,13 @@ public class GcmNotificationIntentService extends IntentService {
                         Thread.sleep(5000);
                     } catch (InterruptedException e) {
                     }
-
                 }
                 Log.i(TAG, "Completed work @ " + SystemClock.elapsedRealtime());
                 //sendNotification(extras.get(Config.MESSAGE_KEY).toString());
                 if (extras.get(Config.MESSAGE_KEY) == null) {
                     //GCM ACCEPT REQUEST
                     if (extras.get(Config.ACCEPT_START_KEY).toString().equals("1") && extras.get(Config.ACCEPT_END_KEY).toString().equals("0")) {
-                        sendNotification("From " + extras.get("sender").toString());
+                        sendNotification("Ride Request From " + extras.get("sender").toString());
                     } else {
                         Log.d("NOTIFICATIONINTENTSERVICE: ", "Error parsing gcm message");
                     }
@@ -80,9 +79,14 @@ public class GcmNotificationIntentService extends IntentService {
         mNotificationManager = (NotificationManager) this
                 .getSystemService(Context.NOTIFICATION_SERVICE);
 
+        Intent intent = new Intent(this, MapsActivity.class);
+
+        intent.putExtra("not", 1);
+
         //Class to open when user clicks notification
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-                new Intent(this, MapsActivity.class), 0);
+                intent, PendingIntent.FLAG_CANCEL_CURRENT);
+
 
         //TODO ADD CONFIRM DIALOG IN NOTIFICATION
 

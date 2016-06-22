@@ -2,9 +2,13 @@ package henrygarant.com.demomap;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -23,16 +27,42 @@ public class MapsActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
+        Intent intent = getIntent();
+        Log.d("MAPSACTIVITY: ", intent.toString());
+        if (intent.getIntExtra("not", 0) == 1) {
+            //came from notification
+            //TODO PERIODICALLY SEND LOCATION INFO
+        } else {
+
+        }
+
+
 
         CIRCLE_COLOR =  getResources().getColor(R.color.Map_Color);
 
         getActionBar().setDisplayHomeAsUpEnabled(true);
 
-        Intent intent = getIntent();
         destination = intent.getStringExtra("destination");
         DestinationManager destinationManager = new DestinationManager();
         //destinationLatLng = destinationManager.makeDestinationLatLng(this, destination);
-        setUpMapIfNeeded();
+
+
+        try {
+
+            LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+            Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            double latitude = location.getLatitude();
+            double longitude = location.getLongitude();
+            destinationLatLng = new LatLng(latitude, longitude);
+            Log.d("MAPSACTIVITY: ", "destination " + destinationLatLng.toString());
+            setUpMapIfNeeded();
+        } catch (Exception e) {
+            Log.e("MapsActivity Exception", e.toString());
+        }
+
+
+
+
 
     }
 
@@ -95,9 +125,11 @@ public class MapsActivity extends FragmentActivity {
                 .radius(1609 * MILE_RADIUS);  //convert miles to meters
 
         mMap.addCircle(circleOptions);
+        */
+
 
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
-                destinationLatLng, 13)); */
+                destinationLatLng, 13));
     }
 
 
