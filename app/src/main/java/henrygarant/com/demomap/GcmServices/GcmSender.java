@@ -72,6 +72,7 @@ public class GcmSender {
     }
 
     public void sendGcmAccept(String phonefrom, String phoneto) {
+        Log.d("FROM: " + phonefrom, "TO: " + phoneto);
         ArrayList<String> params = new ArrayList<String>();
         params.add(phonefrom);
         params.add(phoneto);

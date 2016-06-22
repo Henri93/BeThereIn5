@@ -35,8 +35,8 @@ public class WaitingPage extends Activity {
                         GcmSender gcmSender = new GcmSender(getApplicationContext());
                         SQLiteHandler db = new SQLiteHandler(getApplicationContext());
                         //TODO CHANGE MY PHONE NUMBER AND CHECK IF THIS LINE WORKS
-                        //gcmSender.sendGcmAccept(db.getUserDetails().get("phone"), number);
-                        gcmSender.sendGcmAccept("(215) 331-7408", number);
+                        gcmSender.sendGcmAccept(db.getUserDetails().get("phone"), number);
+                        //gcmSender.sendGcmAccept("(215) 331-7408", number);
                     }
                 });
             }

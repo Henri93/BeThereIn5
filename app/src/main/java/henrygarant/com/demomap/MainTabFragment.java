@@ -13,7 +13,7 @@ import android.widget.ExpandableListView;
 
 import java.util.ArrayList;
 
-public class NewTabFragment extends Fragment {
+public class MainTabFragment extends Fragment {
 
     ExpandableListView contactList;
 
