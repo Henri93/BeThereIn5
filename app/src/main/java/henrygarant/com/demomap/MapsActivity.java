@@ -48,7 +48,6 @@ public class MapsActivity extends FragmentActivity {
 
 
         try {
-
             LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
             Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
             double latitude = location.getLatitude();
