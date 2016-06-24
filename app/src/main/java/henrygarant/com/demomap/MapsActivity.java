@@ -7,25 +7,37 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.widget.TextView;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 
-public class MapsActivity extends FragmentActivity {
+public class MapsActivity extends FragmentActivity implements
+        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private final int MILE_RADIUS = 1;
     private int CIRCLE_COLOR =  Color.argb(100, 30, 136, 229);
     private String destination;
+    private Location location;
     private LatLng destinationLatLng = null;
+    private TextView target;
+    private GoogleApiClient mGoogleApiClient;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+        target = (TextView) findViewById(R.id.target);
 
         Intent intent = getIntent();
         Log.d("MAPSACTIVITY: ", intent.toString());
@@ -37,8 +49,7 @@ public class MapsActivity extends FragmentActivity {
         }
 
 
-
-        CIRCLE_COLOR =  getResources().getColor(R.color.Map_Color);
+        CIRCLE_COLOR = getResources().getColor(R.color.Map_Color);
 
         getActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -46,10 +57,19 @@ public class MapsActivity extends FragmentActivity {
         DestinationManager destinationManager = new DestinationManager();
         //destinationLatLng = destinationManager.makeDestinationLatLng(this, destination);
 
+        if (mGoogleApiClient == null) {
+            mGoogleApiClient = new GoogleApiClient.Builder(this)
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .addApi(LocationServices.API)
+                    .build();
+
+        }
+
 
         try {
             LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-            Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
             double latitude = location.getLatitude();
             double longitude = location.getLongitude();
             destinationLatLng = new LatLng(latitude, longitude);
@@ -60,9 +80,17 @@ public class MapsActivity extends FragmentActivity {
         }
 
 
+    }
 
 
+    @Override
+    public void onLocationChanged(Location location) {
+        this.location = location;
+        updateUI();
+    }
 
+    private void updateUI() {
+        target.setText("Traget: " + String.valueOf(location.getLatitude()) + "..|.." + String.valueOf(location.getLongitude()));
     }
 
 
@@ -132,4 +160,28 @@ public class MapsActivity extends FragmentActivity {
     }
 
 
+    @Override
+    public void onConnected(Bundle bundle) {
+        startLocationUpdates();
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+
+    }
+
+    protected void startLocationUpdates() {
+        LocationRequest mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(10000);
+        mLocationRequest.setFastestInterval(5000);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+        LocationServices.FusedLocationApi.requestLocationUpdates(
+                mGoogleApiClient, mLocationRequest, this);
+    }
 }

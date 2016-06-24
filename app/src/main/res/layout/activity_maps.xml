@@ -9,7 +9,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="center_horizontal"
         android:layout_weight=".3"
-        android:padding="10dp"
+        android:padding="2dp"
         android:background="@color/Primary_Light">
 
         <fragment xmlns:android="http://schemas.android.com/apk/res/android"
@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="Target:"
-            android:id="@+id/textView3"
+            android:id="@+id/target"
             android:padding="20dp" />
 
         <TextView
