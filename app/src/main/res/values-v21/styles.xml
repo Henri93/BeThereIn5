@@ -9,12 +9,10 @@
     </style>
 
 
-    <!--<color name="Primary">#64B5F6</color>-->
-    <!--<color name="Primary">#6193FF</color>687db2-->
-    <color name="Primary">#1e88e5</color>
-    <color name="Primary_Dark">#42567F</color>
-    <color name="Primary_Light">#90b5fe</color>
-    <color name="Primary_Accent">#9CA8BF</color>
+    <color name="Primary">#03A9F4</color>
+    <color name="Primary_Dark">#0288D1</color>
+    <color name="Primary_Light">#B3E5FC</color>
+    <color name="Primary_Accent">#3F51B5</color>
     <color name="Primary_Opposite">#B26D55</color>
 
     <color name="Map_Color">#641e88e5</color>

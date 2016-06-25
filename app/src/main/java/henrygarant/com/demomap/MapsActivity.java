@@ -17,7 +17,10 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapsActivity extends FragmentActivity implements
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
@@ -86,20 +89,14 @@ public class MapsActivity extends FragmentActivity implements
     @Override
     public void onLocationChanged(Location location) {
         this.location = location;
+        Log.d("MAPSACTIVITY: ", "Location Changed");
         updateUI();
     }
 
     private void updateUI() {
-        target.setText("Traget: " + String.valueOf(location.getLatitude()) + "..|.." + String.valueOf(location.getLongitude()));
+        target.setText("Target: " + String.valueOf(location.getLatitude()) + "..|.." + String.valueOf(location.getLongitude()));
     }
 
-
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        setUpMapIfNeeded();
-    }
 
     /**
      * Sets up the map if it is possible to do so (i.e., the Google Play services APK is correctly
@@ -138,11 +135,11 @@ public class MapsActivity extends FragmentActivity implements
         mMap.getUiSettings().setMyLocationButtonEnabled(false);
         mMap.setMyLocationEnabled(true);
 
-        /*mMap.addMarker(new MarkerOptions()
+        mMap.addMarker(new MarkerOptions()
                 .position(destinationLatLng)
-                .snippet("Your destination")
+                .snippet("My Location")
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
-                .title("Destination"));
+                .title("Me"));
 
         // Instantiates a new CircleOptions object and defines the center and radius
         CircleOptions circleOptions = new CircleOptions()
@@ -152,8 +149,6 @@ public class MapsActivity extends FragmentActivity implements
                 .radius(1609 * MILE_RADIUS);  //convert miles to meters
 
         mMap.addCircle(circleOptions);
-        */
-
 
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
                 destinationLatLng, 13));
@@ -162,6 +157,7 @@ public class MapsActivity extends FragmentActivity implements
 
     @Override
     public void onConnected(Bundle bundle) {
+        Log.d("Location Updates: ", "Connected");
         startLocationUpdates();
     }
 
@@ -177,11 +173,39 @@ public class MapsActivity extends FragmentActivity implements
 
     protected void startLocationUpdates() {
         LocationRequest mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(10000);
-        mLocationRequest.setFastestInterval(5000);
+        mLocationRequest.setInterval(1000);//10000
+        mLocationRequest.setFastestInterval(500);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+        if (mGoogleApiClient == null) {
+            mGoogleApiClient = new GoogleApiClient.Builder(this)
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .addApi(LocationServices.API)
+                    .build();
+
+        }
 
         LocationServices.FusedLocationApi.requestLocationUpdates(
                 mGoogleApiClient, mLocationRequest, this);
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        //stopLocationUpdates();
+        //TODO save instance state from https://developer.android.com/training/location/receive-location-updates.html#save-state
+    }
+
+    protected void stopLocationUpdates() {
+        LocationServices.FusedLocationApi.removeLocationUpdates(
+                mGoogleApiClient, this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setUpMapIfNeeded();
+    }
+
 }

@@ -4,15 +4,15 @@
     <!-- PRESSED STATE -->
     <item android:state_pressed="true">
         <shape xmlns:android="http://schemas.android.com/apk/res/android" android:innerRadius="0dp" android:shape="ring" android:thickness="50dp" android:useLevel="false">
-            <solid android:color="@color/Primary_Light" />
-            <stroke android:width="2dp" android:color="@color/Primary_Accent" />
+            <solid android:color="@color/BlackGloss" />
+            <stroke android:width="2dp" android:color="@color/Light" />
         </shape>
 
         <!-- FOCUSED STATE -->
     </item>
     <item android:state_focused="true">
         <shape xmlns:android="http://schemas.android.com/apk/res/android" android:innerRadius="0dp" android:shape="ring" android:thickness="50dp" android:useLevel="false">
-            <solid android:color="@color/Primary_Light" />
+            <solid android:color="@color/Light" />
         </shape>
     </item>
 
