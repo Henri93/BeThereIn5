@@ -1,5 +1,6 @@
 package henrygarant.com.demomap;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.location.Location;
@@ -25,14 +26,15 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class MapsActivity extends FragmentActivity implements
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
-    private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private final int MILE_RADIUS = 1;
+    private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private int CIRCLE_COLOR =  Color.argb(100, 30, 136, 229);
     private String destination;
     private Location location;
     private LatLng destinationLatLng = null;
     private TextView target;
     private GoogleApiClient mGoogleApiClient;
+    private ProgressDialog pDialog;
 
 
     @Override
@@ -43,14 +45,6 @@ public class MapsActivity extends FragmentActivity implements
         target = (TextView) findViewById(R.id.target);
 
         Intent intent = getIntent();
-        Log.d("MAPSACTIVITY: ", intent.toString());
-        if (intent.getIntExtra("not", 0) == 1) {
-            //came from notification
-            //TODO PERIODICALLY SEND LOCATION INFO
-        } else {
-
-        }
-
 
         CIRCLE_COLOR = getResources().getColor(R.color.Map_Color);
 
@@ -207,5 +201,6 @@ public class MapsActivity extends FragmentActivity implements
         super.onResume();
         setUpMapIfNeeded();
     }
+
 
 }

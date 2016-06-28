@@ -13,20 +13,20 @@ import android.util.Log;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import henrygarant.com.demomap.Config;
-import henrygarant.com.demomap.MapsActivity;
+import henrygarant.com.demomap.MapActivities.WaitingPage;
 import henrygarant.com.demomap.R;
 
 public class GcmNotificationIntentService extends IntentService {
 
     public static final int NOTIFICATION_ID = 1;
-    private NotificationManager mNotificationManager;
+    public static final String TAG = "GCMNotificationIntentService";
     NotificationCompat.Builder builder;
+    private NotificationManager mNotificationManager;
+    private String sender;
 
     public GcmNotificationIntentService() {
         super("GcmIntentService");
     }
-
-    public static final String TAG = "GCMNotificationIntentService";
 
     @Override
     protected void onHandleIntent(Intent intent) {
@@ -60,7 +60,8 @@ public class GcmNotificationIntentService extends IntentService {
                 if (extras.get(Config.MESSAGE_KEY) == null) {
                     //GCM ACCEPT REQUEST
                     if (extras.get(Config.ACCEPT_START_KEY).toString().equals("1") && extras.get(Config.ACCEPT_END_KEY).toString().equals("0")) {
-                        sendNotification("Ride Request From " + extras.get("sender").toString());
+                        sender = extras.get("sender").toString();
+                        sendNotification("Ride Request From " + sender);
                     } else {
                         Log.d("NOTIFICATIONINTENTSERVICE: ", "Error parsing gcm message");
                     }
@@ -79,9 +80,9 @@ public class GcmNotificationIntentService extends IntentService {
         mNotificationManager = (NotificationManager) this
                 .getSystemService(Context.NOTIFICATION_SERVICE);
 
-        Intent intent = new Intent(this, MapsActivity.class);
+        Intent intent = new Intent(this, WaitingPage.class);
 
-        intent.putExtra("not", 1);
+        intent.putExtra("sender", sender);
 
         //Class to open when user clicks notification
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
