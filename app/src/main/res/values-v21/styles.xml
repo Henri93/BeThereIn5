@@ -64,6 +64,14 @@
         <item name="android:backgroundDimEnabled">false</item>
     </style>
 
+    <style name="ProcessDialog" parent="@style/Theme.Transparent">
+        <item name="android:colorPrimary">@color/Primary</item>
+        <item name="android:colorPrimaryDark">@color/Primary_Dark</item>
+        <item name="android:colorAccent">@color/Primary_Accent</item>
+        <item name="android:colorActivatedHighlight">@color/Primary_Light</item>
+        <item name="android:textColor">@color/Primary</item>
+    </style>
+
 </resources>
 
 
