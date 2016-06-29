@@ -65,7 +65,7 @@ public class GcmNotificationIntentService extends IntentService {
                     } else {
                         Log.d("NOTIFICATIONINTENTSERVICE: ", "Error parsing gcm message");
                     }
-                }else{
+                } else {
                     //GCM LOCATION DATA
                     sendNotification(extras.get(Config.MESSAGE_KEY).toString());
                 }
@@ -76,7 +76,6 @@ public class GcmNotificationIntentService extends IntentService {
     }
 
     private void sendNotification(String msg) {
-        //TODO MAKE NOTIFICATION DISAPPEAR AFTER CLICK
         Log.d(TAG, "Preparing to send notification...: " + msg);
         mNotificationManager = (NotificationManager) this
                 .getSystemService(Context.NOTIFICATION_SERVICE);
@@ -90,12 +89,11 @@ public class GcmNotificationIntentService extends IntentService {
                 intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
 
-        //TODO ADD CONFIRM DIALOG IN NOTIFICATION
-
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
                 this).setSmallIcon(R.drawable.notification_icon_small)
                 .setContentTitle("Be There In 5")
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(msg))
+                .setAutoCancel(true)
                 .setContentText(msg);
 
         mBuilder.setContentIntent(contentIntent);
