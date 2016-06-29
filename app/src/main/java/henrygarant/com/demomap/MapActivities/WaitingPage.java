@@ -37,7 +37,6 @@ public class WaitingPage extends FragmentActivity {
         if (number == null || number.equals("")) {
             //Came from notification
             new AlertDialog.Builder(this)
-                    //TODO STYLE THIS MOTHER FUCKER
                     .setTitle("Be There In 5")
                     .setMessage("Are you sure you want to ride with " + sender + "?")
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
@@ -49,7 +48,6 @@ public class WaitingPage extends FragmentActivity {
                     })
                     .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            //TODO FIX THIS EXIT it is sending the request again
                             finish();
                             System.exit(0);
                         }
@@ -66,9 +64,8 @@ public class WaitingPage extends FragmentActivity {
 
     private void sendGCMAccept(final String number) {
         // Progress dialog
-        //TODO STYLE THIS MOFO
         pDialog = new ProgressDialog(this);
-        pDialog.setCancelable(false);
+        pDialog.setCancelable(true);
         pDialog.setMessage("Sending Request...");
         showDialog();
 
