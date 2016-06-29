@@ -1,6 +1,5 @@
 package henrygarant.com.demomap;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.location.Location;
@@ -34,13 +33,13 @@ public class MapsActivity extends FragmentActivity implements
     private LatLng destinationLatLng = null;
     private TextView target;
     private GoogleApiClient mGoogleApiClient;
-    private ProgressDialog pDialog;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
 
         target = (TextView) findViewById(R.id.target);
 
@@ -48,10 +47,9 @@ public class MapsActivity extends FragmentActivity implements
 
         CIRCLE_COLOR = getResources().getColor(R.color.Map_Color);
 
-        getActionBar().setDisplayHomeAsUpEnabled(true);
 
-        destination = intent.getStringExtra("destination");
-        DestinationManager destinationManager = new DestinationManager();
+        //destination = intent.getStringExtra("destination");
+        //DestinationManager destinationManager = new DestinationManager();
         //destinationLatLng = destinationManager.makeDestinationLatLng(this, destination);
 
         if (mGoogleApiClient == null) {
@@ -71,6 +69,7 @@ public class MapsActivity extends FragmentActivity implements
             double longitude = location.getLongitude();
             destinationLatLng = new LatLng(latitude, longitude);
             Log.d("MAPSACTIVITY: ", "destination " + destinationLatLng.toString());
+            updateUI();
             setUpMapIfNeeded();
         } catch (Exception e) {
             Log.e("MapsActivity Exception", e.toString());
