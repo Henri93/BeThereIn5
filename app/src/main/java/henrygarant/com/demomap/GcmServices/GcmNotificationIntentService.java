@@ -76,6 +76,7 @@ public class GcmNotificationIntentService extends IntentService {
     }
 
     private void sendNotification(String msg) {
+        //TODO MAKE NOTIFICATION DISAPPEAR AFTER CLICK
         Log.d(TAG, "Preparing to send notification...: " + msg);
         mNotificationManager = (NotificationManager) this
                 .getSystemService(Context.NOTIFICATION_SERVICE);
