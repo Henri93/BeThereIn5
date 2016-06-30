@@ -1,9 +1,11 @@
 package henrygarant.com.demomap;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -14,13 +16,12 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CircleOptions;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.Calendar;
+
+import henrygarant.com.demomap.MapActivities.MyLocationService;
 
 public class MapsActivity extends FragmentActivity implements
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
@@ -29,8 +30,6 @@ public class MapsActivity extends FragmentActivity implements
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private int CIRCLE_COLOR =  Color.argb(100, 30, 136, 229);
     private String destination;
-    private Location location;
-    private LatLng destinationLatLng = null;
     private TextView target;
     private GoogleApiClient mGoogleApiClient;
 
@@ -48,7 +47,7 @@ public class MapsActivity extends FragmentActivity implements
         CIRCLE_COLOR = getResources().getColor(R.color.Map_Color);
 
 
-        //destination = intent.getStringExtra("destination");
+        destination = intent.getStringExtra("destination");
         //DestinationManager destinationManager = new DestinationManager();
         //destinationLatLng = destinationManager.makeDestinationLatLng(this, destination);
 
@@ -63,14 +62,17 @@ public class MapsActivity extends FragmentActivity implements
 
 
         try {
-            LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-            location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-            double latitude = location.getLatitude();
-            double longitude = location.getLongitude();
-            destinationLatLng = new LatLng(latitude, longitude);
-            Log.d("MAPSACTIVITY: ", "destination " + destinationLatLng.toString());
-            updateUI();
+
+            //TODO SEND THIS LOCATION NOT MAKE IT TARGET
+            //updateUI();
             setUpMapIfNeeded();
+
+            Intent newIntent = new Intent(this, MyLocationService.class);
+            PendingIntent pi = PendingIntent.getService(this, 0, newIntent, 0);
+            AlarmManager alarm_manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            alarm_manager.setRepeating(AlarmManager.RTC, Calendar.getInstance().getTimeInMillis(), 60000, pi);
+
+
         } catch (Exception e) {
             Log.e("MapsActivity Exception", e.toString());
         }
@@ -81,13 +83,12 @@ public class MapsActivity extends FragmentActivity implements
 
     @Override
     public void onLocationChanged(Location location) {
-        this.location = location;
         Log.d("MAPSACTIVITY: ", "Location Changed");
         updateUI();
     }
 
     private void updateUI() {
-        target.setText("Target: " + String.valueOf(location.getLatitude()) + "..|.." + String.valueOf(location.getLongitude()));
+        target.setText("Target: " + destination);
     }
 
 
@@ -128,7 +129,7 @@ public class MapsActivity extends FragmentActivity implements
         mMap.getUiSettings().setMyLocationButtonEnabled(false);
         mMap.setMyLocationEnabled(true);
 
-        mMap.addMarker(new MarkerOptions()
+        /*mMap.addMarker(new MarkerOptions()
                 .position(destinationLatLng)
                 .snippet("My Location")
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
@@ -145,6 +146,7 @@ public class MapsActivity extends FragmentActivity implements
 
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
                 destinationLatLng, 13));
+                */
     }
 
 
