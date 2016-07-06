@@ -10,14 +10,20 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CircleOptions;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.Calendar;
 
@@ -30,6 +36,7 @@ public class MapsActivity extends FragmentActivity implements
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private int CIRCLE_COLOR =  Color.argb(100, 30, 136, 229);
     private String destination;
+    private LatLng myLocation;
     private TextView target;
     private GoogleApiClient mGoogleApiClient;
 
@@ -48,7 +55,7 @@ public class MapsActivity extends FragmentActivity implements
 
 
         destination = intent.getStringExtra("destination");
-        //DestinationManager destinationManager = new DestinationManager();
+        // destinationManager = new DestinationManager();
         //destinationLatLng = destinationManager.makeDestinationLatLng(this, destination);
 
         if (mGoogleApiClient == null) {
@@ -73,6 +80,7 @@ public class MapsActivity extends FragmentActivity implements
             alarm_manager.setRepeating(AlarmManager.RTC, Calendar.getInstance().getTimeInMillis(), 60000, pi);
 
 
+
         } catch (Exception e) {
             Log.e("MapsActivity Exception", e.toString());
         }
@@ -83,12 +91,12 @@ public class MapsActivity extends FragmentActivity implements
 
     @Override
     public void onLocationChanged(Location location) {
-        Log.d("MAPSACTIVITY: ", "Location Changed");
-        updateUI();
+        Toast.makeText(MapsActivity.this, "LOCATION CHANGED", Toast.LENGTH_SHORT).show();
+        updateUI(location.getLatitude() + " | " + location.getLongitude());
     }
 
-    private void updateUI() {
-        target.setText("Target: " + destination);
+    private void updateUI(String s) {
+        target.setText("Target: " + s);
     }
 
 
@@ -129,24 +137,28 @@ public class MapsActivity extends FragmentActivity implements
         mMap.getUiSettings().setMyLocationButtonEnabled(false);
         mMap.setMyLocationEnabled(true);
 
-        /*mMap.addMarker(new MarkerOptions()
-                .position(destinationLatLng)
+        myLocation = new LatLng(mMap.getMyLocation().getLatitude(), mMap.getMyLocation().getLongitude());
+        Toast.makeText(MapsActivity.this, "LOCATION: " + myLocation.toString(), Toast.LENGTH_SHORT).show();
+
+        mMap.addMarker(new MarkerOptions()
+                .position(myLocation)
                 .snippet("My Location")
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
                 .title("Me"));
 
         // Instantiates a new CircleOptions object and defines the center and radius
         CircleOptions circleOptions = new CircleOptions()
-                .center(destinationLatLng)
+                .center(myLocation)
                 .fillColor(CIRCLE_COLOR)
                 .strokeColor(CIRCLE_COLOR)
                 .radius(1609 * MILE_RADIUS);  //convert miles to meters
 
         mMap.addCircle(circleOptions);
 
+
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
-                destinationLatLng, 13));
-                */
+                myLocation, 13));
+
     }
 
 
