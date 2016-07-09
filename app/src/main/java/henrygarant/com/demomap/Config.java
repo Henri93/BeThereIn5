@@ -14,7 +14,6 @@ public interface Config {
     static final String ACCEPT_START_KEY = "as";
     static final String ACCEPT_END_KEY = "ae";
 
-    //TODO CHANGE BACKEND MYSQL TO NEW SERVER
 
     // Server user login url
     public static String URL_LOGIN = "http://www.betherein5.net/android/Login.php";

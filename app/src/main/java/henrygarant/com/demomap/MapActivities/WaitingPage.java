@@ -46,7 +46,6 @@ public class WaitingPage extends FragmentActivity {
                         public void onClick(DialogInterface dialog, int which) {
                             Intent myIntent = new Intent(getBaseContext(), MapsActivity.class);
                             startActivity(myIntent);
-                            //TODO make MapsActivity send periodic updates
                             //TODO set place to recieve location updates, which sends user to MapsActivity
                         }
                     })

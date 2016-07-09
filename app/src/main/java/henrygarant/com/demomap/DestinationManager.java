@@ -40,7 +40,6 @@ public class DestinationManager extends BroadcastReceiver implements LocationLis
     }
 
     private int isWithin5Minutes(Context context, String destination) {
-        //TODO Check if gps is enabled
         //TODO Get Speed for S=d/time
         //null object here if location is off
         Location mLocation = getLocation(context);

@@ -53,7 +53,6 @@ public class ContactAdapter extends BaseExpandableListAdapter {
         expandedButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO HANDLE ACCEPT INTERACTION PROCESS
                 String number = getGroup(groupPosition).toString().substring(getGroup(groupPosition).toString().lastIndexOf(':') + 1);
                 number = number.substring(1);
                 Log.d("EXPANDEDLISTVIEW: ", "Button Click at " + number);
@@ -66,7 +65,7 @@ public class ContactAdapter extends BaseExpandableListAdapter {
 
             }
         });
-        //TODO set onclick here
+        //set onclick here
         return convertView;
     }
 
