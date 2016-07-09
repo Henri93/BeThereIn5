@@ -27,7 +27,7 @@ public class MyLocationService extends Service {
         Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
         double latitude = location.getLatitude();
         double longitude = location.getLongitude();
-        LatLng destinationLatLng = new LatLng(latitude, longitude);
+        LatLng myLatLng = new LatLng(latitude, longitude);
         //send the gcm message with location data
         return START_NOT_STICKY;
     }
