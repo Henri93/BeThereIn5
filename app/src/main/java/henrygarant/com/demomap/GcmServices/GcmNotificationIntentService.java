@@ -14,6 +14,7 @@ import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import henrygarant.com.demomap.Config;
 import henrygarant.com.demomap.MapActivities.WaitingPage;
+import henrygarant.com.demomap.MapsActivity;
 import henrygarant.com.demomap.R;
 
 public class GcmNotificationIntentService extends IntentService {
@@ -67,7 +68,10 @@ public class GcmNotificationIntentService extends IntentService {
                     }
                 }else{
                     //GCM LOCATION DATA
-                    sendNotification(extras.get(Config.MESSAGE_KEY).toString());
+                    Intent location_intent = new Intent();
+                    location_intent.putExtra("target", extras.get(Config.MESSAGE_KEY).toString());
+                    location_intent.setAction(MapsActivity.MAP_BROADCAST);
+                    sendBroadcast(intent);
                 }
                 Log.i(TAG, "Received: " + extras.toString());
             }

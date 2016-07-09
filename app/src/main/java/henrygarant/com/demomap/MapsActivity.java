@@ -3,9 +3,11 @@ package henrygarant.com.demomap;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
@@ -36,6 +38,7 @@ import henrygarant.com.demomap.MapActivities.MyLocationService;
 public class MapsActivity extends FragmentActivity implements
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
+    public static String MAP_BROADCAST = "henryrgarant.com.demomap.MAP_UPDATE";
     private final int MILE_RADIUS = 1;
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private int CIRCLE_COLOR =  Color.argb(100, 30, 136, 229);
@@ -43,7 +46,13 @@ public class MapsActivity extends FragmentActivity implements
     private LatLng myLocation;
     private TextView target;
     private GoogleApiClient mGoogleApiClient;
-
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            updateUI(intent.getStringExtra("target"));
+            Log.d("MAPSACTIVITY: ", "Location Broadcast Received");
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,7 +103,6 @@ public class MapsActivity extends FragmentActivity implements
 
     }
 
-
     @Override
     public void onLocationChanged(Location location) {
         Toast.makeText(MapsActivity.this, "LOCATION CHANGED", Toast.LENGTH_SHORT).show();
@@ -104,7 +112,6 @@ public class MapsActivity extends FragmentActivity implements
     private void updateUI(String s) {
         target.setText("Target: " + s);
     }
-
 
     /**
      * Sets up the map if it is possible to do so (i.e., the Google Play services APK is correctly
@@ -167,7 +174,6 @@ public class MapsActivity extends FragmentActivity implements
 
     }
 
-
     @Override
     public void onConnected(Bundle bundle) {
         Log.d("Location Updates: ", "Connected");
@@ -207,6 +213,7 @@ public class MapsActivity extends FragmentActivity implements
     protected void onPause() {
         super.onPause();
         //stopLocationUpdates();
+        unregisterReceiver(broadcastReceiver);
         //TODO save instance state from https://developer.android.com/training/location/receive-location-updates.html#save-state
     }
 
@@ -219,6 +226,9 @@ public class MapsActivity extends FragmentActivity implements
     public void onResume() {
         super.onResume();
         setUpMapIfNeeded();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(MapsActivity.MAP_BROADCAST);
+        registerReceiver(broadcastReceiver, filter);
     }
 
     private void checkLocationAvailable() {
