@@ -1,12 +1,16 @@
 package henrygarant.com.demomap;
 
 import android.app.AlarmManager;
+import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.widget.TextView;
@@ -47,9 +51,12 @@ public class MapsActivity extends FragmentActivity implements
         setContentView(R.layout.activity_maps);
         getActionBar().setDisplayHomeAsUpEnabled(true);
 
-        target = (TextView) findViewById(R.id.target);
+        //make sure location is enabled
+        checkLocationAvailable();
 
         Intent intent = getIntent();
+
+        target = (TextView) findViewById(R.id.target);
 
         CIRCLE_COLOR = getResources().getColor(R.color.Map_Color);
 
@@ -64,7 +71,6 @@ public class MapsActivity extends FragmentActivity implements
                     .addOnConnectionFailedListener(this)
                     .addApi(LocationServices.API)
                     .build();
-
         }
 
 
@@ -213,6 +219,44 @@ public class MapsActivity extends FragmentActivity implements
     public void onResume() {
         super.onResume();
         setUpMapIfNeeded();
+    }
+
+    private void checkLocationAvailable() {
+        LocationManager lm = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        boolean gps_enabled = false;
+        boolean network_enabled = false;
+
+        try {
+            gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        } catch (Exception ex) {
+        }
+
+        try {
+            network_enabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        } catch (Exception ex) {
+        }
+
+        if (!gps_enabled && !network_enabled) {
+            // notify user
+            AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+            dialog.setMessage("Please Enalbe Location Services");
+            dialog.setPositiveButton("Location Settings", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+                    Intent myIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    startActivity(myIntent);
+                }
+            });
+            dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+                    Intent myIntent = new Intent(MapsActivity.this, MainActivity.class);
+                    startActivity(myIntent);
+                }
+            });
+            dialog.show();
+        }
     }
 
 
