@@ -61,6 +61,7 @@ public class GcmNotificationIntentService extends IntentService {
                 if (extras.get(Config.MESSAGE_KEY) == null) {
                     //GCM ACCEPT REQUEST
                     if (extras.get(Config.ACCEPT_START_KEY).toString().equals("1") && extras.get(Config.ACCEPT_END_KEY).toString().equals("0")) {
+                        //TODO CHECK IF YOU CAN GET PHONEFROM HERE AND IF SO SET IT AS A PUBLIC VAR
                         sender = extras.get("sender").toString();
                         sendNotification("Ride Request From " + sender);
                     } else {

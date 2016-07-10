@@ -39,6 +39,7 @@ public class MapsActivity extends FragmentActivity implements
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
     public static String MAP_BROADCAST = "henryrgarant.com.demomap.MAP_UPDATE";
+    public static String phoneTo;
     private final int MILE_RADIUS = 1;
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private int CIRCLE_COLOR =  Color.argb(100, 30, 136, 229);
@@ -49,7 +50,8 @@ public class MapsActivity extends FragmentActivity implements
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            updateUI(intent.getStringExtra("target"));
+            phoneTo = intent.getStringExtra("target");
+            updateUI(intent.getStringExtra(phoneTo));
             Log.d("MAPSACTIVITY: ", "Location Broadcast Received");
         }
     };

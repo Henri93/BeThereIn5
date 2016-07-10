@@ -10,6 +10,9 @@ import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import henrygarant.com.demomap.GcmServices.GcmSender;
+import henrygarant.com.demomap.MapsActivity;
+
 
 public class MyLocationService extends Service {
 
@@ -29,6 +32,13 @@ public class MyLocationService extends Service {
         double longitude = location.getLongitude();
         LatLng myLatLng = new LatLng(latitude, longitude);
         //send the gcm message with location data
+        GcmSender sender = new GcmSender(this);
+        //TODO GET NUMBER
+        if (MapsActivity.phoneTo == null || MapsActivity.phoneTo.equals("")) {
+            sender.sendGcmMessage("(215) 331-7408", myLatLng.toString());
+        } else {
+            sender.sendGcmMessage(MapsActivity.phoneTo, myLatLng.toString());
+        }
         return START_NOT_STICKY;
     }
 
