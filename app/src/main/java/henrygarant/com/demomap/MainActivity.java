@@ -26,7 +26,7 @@ public class MainActivity extends FragmentActivity implements android.app.Action
 
     private ViewPager viewPager;
     private PagerAdapter mAdapter;
-    private String[] tabs = { "New", "Recent" };
+    private String[] tabs = {"Contacts", "New"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,38 +63,6 @@ public class MainActivity extends FragmentActivity implements android.app.Action
 
     }
 
-
-    public void calculateLocation(View view)
-    {
-        new AlertDialog.Builder(this)
-                .setTitle("Set Notification")
-                .setMessage("Do you want to be reminded when you are within 5 minutes?")
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener(){
-                    public void onClick(DialogInterface dialog, int whichButton){
-                        //TODO CLEAR ANY POSSIBLE ALARMS
-                         //setPersistentCheck(addressBar.getText().toString());
-                         //moveToActivity(MapsActivity.class, addressBar.getText().toString());
-
-                    }})
-                .setNegativeButton(android.R.string.no, null).show();
-    }
-
-    private void setPersistentCheck(String destination) {
-        AlarmManager alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(this, DestinationManager.class);
-        intent.putExtra("destination", destination);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
-        //60000 is one minute
-        //6000 for testing purposes
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 6000, pendingIntent);
-    }
-
-    private void moveToActivity(Class newClass, String destination){
-        Intent intent = new Intent(this, newClass);
-        intent.putExtra("destination", destination);
-        startActivity(intent);
-    }
 
     @Override
     public void onTabSelected(android.app.ActionBar.Tab tab, android.app.FragmentTransaction ft) {
