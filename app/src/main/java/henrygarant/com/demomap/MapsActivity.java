@@ -40,6 +40,9 @@ public class MapsActivity extends FragmentActivity implements
 
     public static String MAP_BROADCAST = "henryrgarant.com.demomap.MAP_UPDATE";
     public static String phoneTo;
+    private String updatedLocation;
+    private Intent serviceIntent;
+    private PendingIntent alarmPendingIntent;
     private final int MILE_RADIUS = 1;
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private int CIRCLE_COLOR =  Color.argb(100, 30, 136, 229);
@@ -50,8 +53,8 @@ public class MapsActivity extends FragmentActivity implements
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            phoneTo = intent.getStringExtra("target");
-            updateUI(intent.getStringExtra(phoneTo));
+            updatedLocation = intent.getStringExtra("target");
+            updateUI(updatedLocation);
             Log.d("MAPSACTIVITY: ", "Location Broadcast Received");
         }
     };
@@ -88,15 +91,12 @@ public class MapsActivity extends FragmentActivity implements
         try {
 
             //TODO SEND THIS LOCATION NOT MAKE IT TARGET
-            //updateUI();
             setUpMapIfNeeded();
 
-            Intent newIntent = new Intent(this, MyLocationService.class);
-            PendingIntent pi = PendingIntent.getService(this, 0, newIntent, 0);
+            serviceIntent = new Intent(this, MyLocationService.class);
+            alarmPendingIntent = PendingIntent.getService(this, 0, serviceIntent, 0);
             AlarmManager alarm_manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-            alarm_manager.setRepeating(AlarmManager.RTC, Calendar.getInstance().getTimeInMillis(), 60000, pi);
-
-
+            alarm_manager.setRepeating(AlarmManager.RTC, Calendar.getInstance().getTimeInMillis(), 60000, alarmPendingIntent);
 
         } catch (Exception e) {
             Log.e("MapsActivity Exception", e.toString());
@@ -152,7 +152,10 @@ public class MapsActivity extends FragmentActivity implements
         mMap.getUiSettings().setMyLocationButtonEnabled(false);
         mMap.setMyLocationEnabled(true);
 
-        myLocation = new LatLng(mMap.getMyLocation().getLatitude(), mMap.getMyLocation().getLongitude());
+        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+
+        myLocation = new LatLng(location.getLatitude(), location.getLongitude());
         Toast.makeText(MapsActivity.this, "LOCATION: " + myLocation.toString(), Toast.LENGTH_SHORT).show();
 
         mMap.addMarker(new MarkerOptions()
@@ -231,6 +234,15 @@ public class MapsActivity extends FragmentActivity implements
         IntentFilter filter = new IntentFilter();
         filter.addAction(MapsActivity.MAP_BROADCAST);
         registerReceiver(broadcastReceiver, filter);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        stopService(serviceIntent);
+        AlarmManager alarm_manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        alarm_manager.cancel(alarmPendingIntent);
+
     }
 
     private void checkLocationAvailable() {
