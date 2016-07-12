@@ -36,8 +36,9 @@ public class MyLocationService extends Service {
         LatLng myLatLng = new LatLng(latitude, longitude);
         //send the gcm message with location data
         GcmSender sender = new GcmSender(this);
-        //TODO GET NUMBER
         if (MapsActivity.phoneTo == null || MapsActivity.phoneTo.equals("")) {
+            Log.d("MYLOCATIONSERVICE", "No Target!");
+            //TODO THIS SHOULD BE AN ERROR
             sender.sendGcmMessage("(215) 331-7408", myLatLng.toString());
         } else {
             sender.sendGcmMessage(MapsActivity.phoneTo, myLatLng.toString());

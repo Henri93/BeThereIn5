@@ -40,10 +40,10 @@ public class MapsActivity extends FragmentActivity implements
 
     public static String MAP_BROADCAST = "henryrgarant.com.demomap.MAP_UPDATE";
     public static String phoneTo;
+    private final int MILE_RADIUS = 1;
     private String updatedLocation;
     private Intent serviceIntent;
     private PendingIntent alarmPendingIntent;
-    private final int MILE_RADIUS = 1;
     private GoogleMap mMap;
     private int CIRCLE_COLOR =  Color.argb(100, 30, 136, 229);
     private String destination;
@@ -54,6 +54,8 @@ public class MapsActivity extends FragmentActivity implements
         @Override
         public void onReceive(Context context, Intent intent) {
             updatedLocation = intent.getStringExtra("target");
+            //here the target becomes the person sending the data
+            phoneTo = intent.getStringExtra("phonefrom");
             updateUI(updatedLocation);
             updateMap(updatedLocation);
             Log.d("MAPSACTIVITY: ", "Location Broadcast Received");
