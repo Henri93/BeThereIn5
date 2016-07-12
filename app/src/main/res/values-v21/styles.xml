@@ -65,11 +65,22 @@
     </style>
 
     <style name="ProcessDialog" parent="@style/Theme.Transparent">
-        <item name="android:colorPrimary">@color/Primary</item>
-        <item name="android:colorPrimaryDark">@color/Primary_Dark</item>
-        <item name="android:colorAccent">@color/Primary_Accent</item>
-        <item name="android:colorActivatedHighlight">@color/Primary_Light</item>
-        <item name="android:textColor">@color/Primary</item>
+        <item name="android:textColor">@color/Light</item>
+        <item name="android:alertDialogStyle">@style/CustomAlertDialogStyle</item>
+
+    </style>
+
+    <style name="CustomAlertDialogStyle">
+        <item name="android:bottomBright">@color/Primary_Dark</item>
+        <item name="android:bottomDark">@color/Primary_Dark</item>
+        <item name="android:bottomMedium">@color/Primary_Dark</item>
+        <item name="android:centerBright">@color/Primary_Dark</item>
+        <item name="android:centerDark">@color/Primary_Dark</item>
+        <item name="android:centerMedium">@color/Primary_Dark</item>
+        <item name="android:fullBright">@color/Primary_Dark</item>
+        <item name="android:fullDark">@color/Primary_Dark</item>
+        <item name="android:topBright">@color/Primary_Dark</item>
+        <item name="android:topDark">@color/Primary_Dark</item>
     </style>
 
 </resources>
