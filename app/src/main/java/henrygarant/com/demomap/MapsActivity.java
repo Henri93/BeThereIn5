@@ -49,6 +49,7 @@ public class MapsActivity extends FragmentActivity implements
     private String destination;
     private LatLng myLocation;
     private TextView target;
+    private TextView destinationTextView;
     private GoogleApiClient mGoogleApiClient;
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -56,7 +57,7 @@ public class MapsActivity extends FragmentActivity implements
             updatedLocation = intent.getStringExtra("target");
             //here the target becomes the person sending the data
             phoneTo = intent.getStringExtra("phonefrom");
-            updateUI(updatedLocation);
+            updateUI(updatedLocation, myLocation.toString());
             updateMap(updatedLocation);
             Log.d("MAPSACTIVITY: ", "Location Broadcast Received");
         }
@@ -74,6 +75,7 @@ public class MapsActivity extends FragmentActivity implements
         Intent intent = getIntent();
 
         target = (TextView) findViewById(R.id.target);
+        destinationTextView = (TextView) findViewById(R.id.destinationTextView);
 
         CIRCLE_COLOR = getResources().getColor(R.color.Map_Color);
 
@@ -92,8 +94,6 @@ public class MapsActivity extends FragmentActivity implements
 
 
         try {
-
-            //TODO SEND THIS LOCATION NOT MAKE IT TARGET
             setUpMapIfNeeded();
 
             serviceIntent = new Intent(this, MyLocationService.class);
@@ -111,11 +111,11 @@ public class MapsActivity extends FragmentActivity implements
     @Override
     public void onLocationChanged(Location location) {
         Toast.makeText(MapsActivity.this, "LOCATION CHANGED", Toast.LENGTH_SHORT).show();
-        updateUI(location.getLatitude() + " | " + location.getLongitude());
     }
 
-    private void updateUI(String s) {
-        target.setText("Target: " + s);
+    private void updateUI(String myLocation, String destinationLocation) {
+        target.setText("Target: " + myLocation);
+        destinationTextView.setText("Destination: " + destinationLocation);
     }
 
     /**

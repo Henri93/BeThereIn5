@@ -46,7 +46,6 @@ public class WaitingPage extends FragmentActivity {
                         public void onClick(DialogInterface dialog, int which) {
                             Intent myIntent = new Intent(getBaseContext(), MapsActivity.class);
                             startActivity(myIntent);
-                            //TODO set place to recieve location updates, which sends user to MapsActivity
                         }
                     })
                     .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {

@@ -1,48 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center_horizontal"
         android:layout_weight=".3"
-        android:padding="5dp"
-        android:background="@color/Primary_Opposite">
+        android:background="@color/Primary_Opposite"
+        android:padding="5dp">
 
         <fragment xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/map"
-            tools:context=".MapsActivity"
-            android:name="com.google.android.gms.maps.SupportMapFragment"
-            android:layout_weight=".3" />
+            android:layout_weight=".3"
+            tools:context=".MapsActivity" />
     </FrameLayout>
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight=".7">
+        android:layout_weight=".7"
+        android:orientation="vertical">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Target:"
             android:id="@+id/target"
-            android:padding="20dp" />
-
-        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:padding="20dp"
+            android:text="Target:"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
+            android:id="@+id/destinationTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="20dp"
             android:text="Distance:"
-            android:id="@+id/textView2"
-            android:padding="20dp" />
+            android:textAppearance="?android:attr/textAppearanceSmall" />
     </LinearLayout>
 
 </LinearLayout>
