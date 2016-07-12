@@ -196,6 +196,7 @@ public class MapsActivity extends FragmentActivity implements
 
             mMap.addCircle(circleOptions);
 
+            //TODO ONLY ZOOM FIRST TIME
 
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
                     myLocation, 13));
