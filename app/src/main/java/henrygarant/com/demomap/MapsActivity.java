@@ -44,7 +44,7 @@ public class MapsActivity extends FragmentActivity implements
     private Intent serviceIntent;
     private PendingIntent alarmPendingIntent;
     private final int MILE_RADIUS = 1;
-    private GoogleMap mMap; // Might be null if Google Play services APK is not available.
+    private GoogleMap mMap;
     private int CIRCLE_COLOR =  Color.argb(100, 30, 136, 229);
     private String destination;
     private LatLng myLocation;
@@ -55,6 +55,7 @@ public class MapsActivity extends FragmentActivity implements
         public void onReceive(Context context, Intent intent) {
             updatedLocation = intent.getStringExtra("target");
             updateUI(updatedLocation);
+            updateMap(updatedLocation);
             Log.d("MAPSACTIVITY: ", "Location Broadcast Received");
         }
     };
@@ -157,26 +158,48 @@ public class MapsActivity extends FragmentActivity implements
 
         myLocation = new LatLng(location.getLatitude(), location.getLongitude());
         Toast.makeText(MapsActivity.this, "LOCATION: " + myLocation.toString(), Toast.LENGTH_SHORT).show();
+        updateMap(myLocation.toString());
+    }
 
-        mMap.addMarker(new MarkerOptions()
-                .position(myLocation)
-                .snippet("My Location")
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
-                .title("Me"));
+    private void updateMap(String target) {
 
-        // Instantiates a new CircleOptions object and defines the center and radius
-        CircleOptions circleOptions = new CircleOptions()
-                .center(myLocation)
-                .fillColor(CIRCLE_COLOR)
-                .strokeColor(CIRCLE_COLOR)
-                .radius(1609 * MILE_RADIUS);  //convert miles to meters
+        if (mMap != null) {
+            mMap.clear();
+            mMap.addMarker(new MarkerOptions()
+                    .position(myLocation)
+                    .snippet("My Location")
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+                    .title("Me"));
 
-        mMap.addCircle(circleOptions);
+            int index = target.indexOf(",");
+            Log.d("DEBUG: ", target);
+            String lat = target.substring((target.indexOf("(") + 1), index).trim();
+            Log.d("DEBUG: ", lat);
+            String lng = target.substring(index + 1, target.indexOf(")")).trim();
+            Log.d("DEBUG: ", lng);
+            double lati = Double.parseDouble(lat);
+            double lngi = Double.parseDouble(lng);
+            LatLng targetLoc = new LatLng(lati, lngi);
+
+            mMap.addMarker(new MarkerOptions()
+                    .position(targetLoc)
+                    .snippet("Target")
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
+                    .title("Target"));
+
+            // Instantiates a new CircleOptions object and defines the center and radius
+            CircleOptions circleOptions = new CircleOptions()
+                    .center(myLocation)
+                    .fillColor(CIRCLE_COLOR)
+                    .strokeColor(CIRCLE_COLOR)
+                    .radius(1609 * MILE_RADIUS);  //convert miles to meters
+
+            mMap.addCircle(circleOptions);
 
 
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
-                myLocation, 13));
-
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
+                    myLocation, 13));
+        }
     }
 
     @Override
