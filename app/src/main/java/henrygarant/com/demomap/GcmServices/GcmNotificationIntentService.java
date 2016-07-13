@@ -62,6 +62,7 @@ public class GcmNotificationIntentService extends IntentService {
                     //GCM ACCEPT REQUEST
                     if (extras.get(Config.ACCEPT_START_KEY).toString().equals("1") && extras.get(Config.ACCEPT_END_KEY).toString().equals("0")) {
                         //TODO CHECK IF YOU CAN GET PHONEFROM HERE AND IF SO SET IT AS A PUBLIC VAR
+                        //this might not make sense
                         sender = extras.get("sender").toString();
                         sendNotification("Ride Request From " + sender);
                     } else {
@@ -72,6 +73,7 @@ public class GcmNotificationIntentService extends IntentService {
                     Intent location_intent = new Intent();
                     Log.d("GCM LOCTION UPDATE: ", extras.toString());
                     location_intent.putExtra("target", extras.get(Config.MESSAGE_KEY).toString());
+                    //TODO EDIT SERVER TO SEND PHONEFROM
                     //location_intent.putExtra("phonefrom", extras.get(Config.PHONEFROM_KEY).toString());
                     location_intent.setAction(MapsActivity.MAP_BROADCAST);
                     Log.d("GCM LOCTION UPDATE: ", "sent broadcast.");
