@@ -1,4 +1,4 @@
-package henrygarant.com.demomap;
+package henrygarant.com.demomap.MapActivities;
 
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
@@ -8,9 +8,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -18,7 +16,9 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.List;
 
-public class DestinationManager extends BroadcastReceiver implements LocationListener {
+import henrygarant.com.demomap.R;
+
+public class DestinationManager extends BroadcastReceiver {
 
     private Location mLastLocation;
 
@@ -62,6 +62,16 @@ public class DestinationManager extends BroadcastReceiver implements LocationLis
         return (int) origin.distanceTo(dest);
     }
 
+    public LatLng convertStringToLatLng(String stringToConvert) {
+        int index = stringToConvert.indexOf(",");
+        String lat = stringToConvert.substring((stringToConvert.indexOf("(") + 1), index).trim();
+        String lng = stringToConvert.substring(index + 1, stringToConvert.indexOf(")")).trim();
+        double lati = Double.parseDouble(lat);
+        double lngi = Double.parseDouble(lng);
+        LatLng stringToConvertLoc = new LatLng(lati, lngi);
+        return stringToConvertLoc;
+    }
+
     public LatLng makeDestinationLatLng(Context context, String destination) {
         Geocoder coder = new Geocoder(context);
         List<Address> address;
@@ -101,10 +111,6 @@ public class DestinationManager extends BroadcastReceiver implements LocationLis
                 // No network provider is enabled
             } else {
                 if (isNetworkEnabled) {
-                    locationManager.requestLocationUpdates(
-                            LocationManager.NETWORK_PROVIDER,
-                            MIN_TIME_BW_UPDATES,
-                            MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
                     Log.d("Network", "Network");
                     if (locationManager != null) {
                         mLastLocation = locationManager
@@ -118,10 +124,6 @@ public class DestinationManager extends BroadcastReceiver implements LocationLis
                 // If GPS enabled, get latitude/longitude using GPS Services
                 if (isGPSEnabled) {
                     if (mLastLocation == null) {
-                        locationManager.requestLocationUpdates(
-                                LocationManager.GPS_PROVIDER,
-                                MIN_TIME_BW_UPDATES,
-                                MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
                         Log.d("GPS Enabled", "GPS Enabled");
                         if (locationManager != null) {
                             mLastLocation = locationManager
@@ -141,23 +143,4 @@ public class DestinationManager extends BroadcastReceiver implements LocationLis
         return mLastLocation;
     }
 
-    @Override
-    public void onLocationChanged(Location location) {
-        mLastLocation = location;
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-
-    }
 }

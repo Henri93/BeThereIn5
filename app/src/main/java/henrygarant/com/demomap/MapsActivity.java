@@ -33,6 +33,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.Calendar;
 
+import henrygarant.com.demomap.MapActivities.DestinationManager;
 import henrygarant.com.demomap.MapActivities.MyLocationService;
 
 public class MapsActivity extends FragmentActivity implements
@@ -49,7 +50,7 @@ public class MapsActivity extends FragmentActivity implements
     private String destination;
     private LatLng myLocation;
     private TextView target;
-    private TextView destinationTextView;
+    private TextView distanceTextView;
     private GoogleApiClient mGoogleApiClient;
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -57,7 +58,8 @@ public class MapsActivity extends FragmentActivity implements
             updatedLocation = intent.getStringExtra("target");
             //here the target becomes the person sending the data
             phoneTo = intent.getStringExtra("phonefrom");
-            updateUI(updatedLocation, myLocation.toString());
+            DestinationManager dm = new DestinationManager();
+            updateUI(updatedLocation, dm.CalculationByDistance(myLocation, dm.convertStringToLatLng(updatedLocation)));
             updateMap(updatedLocation);
             Log.d("MAPSACTIVITY: ", "Location Broadcast Received");
         }
@@ -75,7 +77,9 @@ public class MapsActivity extends FragmentActivity implements
         Intent intent = getIntent();
 
         target = (TextView) findViewById(R.id.target);
-        destinationTextView = (TextView) findViewById(R.id.destinationTextView);
+        distanceTextView = (TextView) findViewById(R.id.distanceTextView);
+
+        updateUI("Connecting...", 0);
 
         CIRCLE_COLOR = getResources().getColor(R.color.Map_Color);
 
@@ -113,9 +117,9 @@ public class MapsActivity extends FragmentActivity implements
         Toast.makeText(MapsActivity.this, "LOCATION CHANGED", Toast.LENGTH_SHORT).show();
     }
 
-    private void updateUI(String myLocation, String destinationLocation) {
+    private void updateUI(String myLocation, int distance) {
         target.setText("Target: " + myLocation);
-        destinationTextView.setText("Destination: " + destinationLocation);
+        distanceTextView.setText("Distance: " + distance + " m");
     }
 
     /**
@@ -173,15 +177,7 @@ public class MapsActivity extends FragmentActivity implements
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
                     .title("Me"));
 
-            int index = target.indexOf(",");
-            Log.d("DEBUG: ", target);
-            String lat = target.substring((target.indexOf("(") + 1), index).trim();
-            Log.d("DEBUG: ", lat);
-            String lng = target.substring(index + 1, target.indexOf(")")).trim();
-            Log.d("DEBUG: ", lng);
-            double lati = Double.parseDouble(lat);
-            double lngi = Double.parseDouble(lng);
-            LatLng targetLoc = new LatLng(lati, lngi);
+            LatLng targetLoc = new DestinationManager().convertStringToLatLng(target);
 
             mMap.addMarker(new MarkerOptions()
                     .position(targetLoc)
