@@ -44,7 +44,7 @@ public class MapsActivity extends FragmentActivity implements
     private final int MILE_RADIUS = 1;
     private String updatedLocation;
     private Intent serviceIntent;
-    private PendingIntent alarmPendingIntent;
+    private static PendingIntent alarmPendingIntent;
     private GoogleMap mMap;
     private int CIRCLE_COLOR =  Color.argb(100, 30, 136, 229);
     private String destination;
@@ -58,6 +58,7 @@ public class MapsActivity extends FragmentActivity implements
             updatedLocation = intent.getStringExtra("target");
             //here the target becomes the person sending the data
             phoneTo = intent.getStringExtra("phonefrom");
+            Log.d("MAPSACTIVITY: ", "phonefrom = " + phoneTo);
             DestinationManager dm = new DestinationManager();
             updateUI(updatedLocation, dm.CalculationByDistance(myLocation, dm.convertStringToLatLng(updatedLocation)));
             updateMap(updatedLocation);
@@ -303,6 +304,10 @@ public class MapsActivity extends FragmentActivity implements
             });
             dialog.show();
         }
+    }
+
+    public static PendingIntent getAlarmPendingIntent() {
+        return alarmPendingIntent;
     }
 
 

@@ -1,6 +1,8 @@
 package henrygarant.com.demomap.MapActivities;
 
+import android.app.AlarmManager;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.location.Location;
@@ -38,8 +40,8 @@ public class MyLocationService extends Service {
         GcmSender sender = new GcmSender(this);
         if (MapsActivity.phoneTo == null || MapsActivity.phoneTo.equals("")) {
             Log.d("MYLOCATIONSERVICE", "No Target!");
-            //TODO THIS SHOULD BE AN ERROR
-            sender.sendGcmMessage("(215) 331-7408", myLatLng.toString());
+            Toast.makeText(getBaseContext(), "Sorry, unable to connect at this time.", Toast.LENGTH_LONG);
+            abort();
         } else {
             sender.sendGcmMessage(MapsActivity.phoneTo, myLatLng.toString());
         }
@@ -55,5 +57,11 @@ public class MyLocationService extends Service {
     public void onDestroy() {
         super.onDestroy();
         Log.d("MYLOCATIONSERVICE", "Service destroyed");
+    }
+
+    private void abort() {
+        onDestroy();
+        AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        am.cancel(MapsActivity.getAlarmPendingIntent());
     }
 }

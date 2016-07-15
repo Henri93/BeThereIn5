@@ -45,6 +45,7 @@ public class WaitingPage extends FragmentActivity {
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             Intent myIntent = new Intent(getBaseContext(), MapsActivity.class);
+                            myIntent.putExtra("phonefrom", number);
                             startActivity(myIntent);
                         }
                     })
