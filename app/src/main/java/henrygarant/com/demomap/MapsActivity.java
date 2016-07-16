@@ -41,30 +41,36 @@ public class MapsActivity extends FragmentActivity implements
 
     public static String MAP_BROADCAST = "henryrgarant.com.demomap.MAP_UPDATE";
     public static String phoneTo;
+    public static String sender;
+    private static PendingIntent alarmPendingIntent;
     private final int MILE_RADIUS = 1;
     private String updatedLocation;
     private Intent serviceIntent;
-    private static PendingIntent alarmPendingIntent;
     private GoogleMap mMap;
     private int CIRCLE_COLOR =  Color.argb(100, 30, 136, 229);
     private String destination;
     private LatLng myLocation;
-    private TextView target;
+    private TextView targetName;
+    private TextView targetLoc;
     private TextView distanceTextView;
     private GoogleApiClient mGoogleApiClient;
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+            Log.d("MAPSACTIVITY: ", "Location Broadcast Received");
             updatedLocation = intent.getStringExtra("target");
             //here the target becomes the person sending the data
             phoneTo = intent.getStringExtra("phonefrom");
-            Log.d("MAPSACTIVITY: ", "phonefrom = " + phoneTo);
+            sender = intent.getStringExtra("sender");
             DestinationManager dm = new DestinationManager();
-            updateUI(updatedLocation, dm.CalculationByDistance(myLocation, dm.convertStringToLatLng(updatedLocation)));
+            updateUI(sender, updatedLocation, dm.CalculationByDistance(myLocation, dm.convertStringToLatLng(updatedLocation)));
             updateMap(updatedLocation);
-            Log.d("MAPSACTIVITY: ", "Location Broadcast Received");
         }
     };
+
+    public static PendingIntent getAlarmPendingIntent() {
+        return alarmPendingIntent;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,10 +83,11 @@ public class MapsActivity extends FragmentActivity implements
 
         Intent intent = getIntent();
 
-        target = (TextView) findViewById(R.id.target);
+        targetName = (TextView) findViewById(R.id.targetNameTextView);
+        targetLoc = (TextView) findViewById(R.id.targetLocTextView);
         distanceTextView = (TextView) findViewById(R.id.distanceTextView);
 
-        updateUI("Connecting...", 0);
+        updateUI("Loading...", "Connecting...", 0);
 
         CIRCLE_COLOR = getResources().getColor(R.color.Map_Color);
 
@@ -118,8 +125,9 @@ public class MapsActivity extends FragmentActivity implements
         Toast.makeText(MapsActivity.this, "LOCATION CHANGED", Toast.LENGTH_SHORT).show();
     }
 
-    private void updateUI(String myLocation, int distance) {
-        target.setText("Target: " + myLocation);
+    private void updateUI(String name, String myLocation, int distance) {
+        targetName.setText(name);
+        targetLoc.setText(myLocation);
         distanceTextView.setText("Distance: " + distance + " m");
     }
 
@@ -304,10 +312,6 @@ public class MapsActivity extends FragmentActivity implements
             });
             dialog.show();
         }
-    }
-
-    public static PendingIntent getAlarmPendingIntent() {
-        return alarmPendingIntent;
     }
 
 
