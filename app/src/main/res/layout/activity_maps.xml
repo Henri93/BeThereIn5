@@ -33,7 +33,8 @@
                 android:padding="20dp"
                 android:text="Target Name"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/Primary_Dark" />
+                android:textColor="@color/Primary_Dark"
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/distanceTextView"
@@ -43,19 +44,28 @@
                 android:padding="20dp"
                 android:text="Distance:"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/Primary_Dark" />
+                android:textColor="@color/Primary_Dark"
+                android:textSize="15sp" />
+
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/targetLocTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingBottom="20dp"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:paddingTop="2dp"
-            android:text="Target Loc"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/BlackGloss"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/targetLocTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="20dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingTop="2dp"
+                android:text="Target Loc"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+        </LinearLayout>
 
     </LinearLayout>
 
