@@ -29,9 +29,10 @@ public class GcmSender {
         this.context = context;
     }
 
-    public void sendGcmMessage(String phone, String message) {
+    public void sendGcmMessage(String phonefrom, String phoneto, String message) {
         ArrayList<String> params = new ArrayList<String>();
-        params.add(phone);
+        params.add(phonefrom);
+        params.add(phoneto);
         params.add(message);
         new SendGcmMessaage().execute(params);
     }
@@ -39,7 +40,7 @@ public class GcmSender {
     private class SendGcmMessaage extends AsyncTask<ArrayList<String>, Integer, Double> {
         @Override
         protected Double doInBackground(ArrayList<String>... params) {
-            postMessageData(params[0].get(0), params[0].get(1));
+            postMessageData(params[0].get(0), params[0].get(1), params[0].get(2));
             return null;
         }
 
@@ -49,7 +50,7 @@ public class GcmSender {
 
     }
 
-    public void postMessageData(String personSendingTo, String valueIWantToSend) {
+    public void postMessageData(String personFrom, String personSendingTo, String valueIWantToSend) {
         HttpClient httpclient = new DefaultHttpClient();
         // specify the URL you want to post to
         HttpPost httppost = new HttpPost(Config.APP_SERVER_MESSAGE);
@@ -59,7 +60,8 @@ public class GcmSender {
             List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
             // add an HTTP variable and value pair
             nameValuePairs.add(new BasicNameValuePair("message", valueIWantToSend));
-            nameValuePairs.add(new BasicNameValuePair("phone", personSendingTo));
+            nameValuePairs.add(new BasicNameValuePair("phoneto", personSendingTo));
+            nameValuePairs.add(new BasicNameValuePair("phonefrom", personFrom));
             httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
             // send the variable and value, in other words post, to the URL
             HttpResponse response = httpclient.execute(httppost);

@@ -83,6 +83,8 @@ public class MapsActivity extends FragmentActivity implements
 
         Intent intent = getIntent();
 
+        phoneTo = intent.getStringExtra("phonefrom");
+
         targetName = (TextView) findViewById(R.id.targetNameTextView);
         targetLoc = (TextView) findViewById(R.id.targetLocTextView);
         distanceTextView = (TextView) findViewById(R.id.distanceTextView);

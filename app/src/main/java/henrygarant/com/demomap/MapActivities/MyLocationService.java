@@ -16,6 +16,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import henrygarant.com.demomap.GcmServices.GcmSender;
 import henrygarant.com.demomap.MapsActivity;
+import henrygarant.com.demomap.SQLiteHandler;
 
 
 public class MyLocationService extends Service {
@@ -40,10 +41,13 @@ public class MyLocationService extends Service {
         GcmSender sender = new GcmSender(this);
         if (MapsActivity.phoneTo == null || MapsActivity.phoneTo.equals("")) {
             Log.d("MYLOCATIONSERVICE", "No Target!");
-            Toast.makeText(getBaseContext(), "Sorry, unable to connect at this time.", Toast.LENGTH_LONG);
-            abort();
+            Toast.makeText(getApplicationContext(), "Sorry, unable to connect at this time.", Toast.LENGTH_LONG);
+            //abort();
         } else {
-            sender.sendGcmMessage(MapsActivity.phoneTo, myLatLng.toString());
+            SQLiteHandler db = new SQLiteHandler(this);
+            Log.d("SERVICE MYPHONE: ", db.getUserDetails().get("phone").toString());
+            Log.d("SERVICE PHONETO: ", MapsActivity.phoneTo);
+            sender.sendGcmMessage(db.getUserDetails().get("phone").toString(), MapsActivity.phoneTo, myLatLng.toString());
         }
         return START_NOT_STICKY;
     }

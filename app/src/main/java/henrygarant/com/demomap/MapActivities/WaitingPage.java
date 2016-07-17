@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.ContextThemeWrapper;
 
 import java.util.Timer;
@@ -62,6 +63,9 @@ public class WaitingPage extends FragmentActivity {
         } else {
             //Came from user click aka ContactAdapter class
             sendGCMAccept(number);
+            Intent myIntent = new Intent(getBaseContext(), MapsActivity.class);
+            myIntent.putExtra("phonefrom", number);
+            startActivity(myIntent);
         }
     }
 
@@ -85,6 +89,7 @@ public class WaitingPage extends FragmentActivity {
                         pDialog.setMessage("Waiting for Acceptance...");
                         GcmSender gcmSender = new GcmSender(getApplicationContext());
                         SQLiteHandler db = new SQLiteHandler(getApplicationContext());
+                        Log.d("USER: ", db.getUserDetails().toString());
                         gcmSender.sendGcmAccept(db.getUserDetails().get("phone"), number);
                     }
                 });

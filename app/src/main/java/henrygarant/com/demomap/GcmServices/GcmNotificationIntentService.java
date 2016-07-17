@@ -61,6 +61,7 @@ public class GcmNotificationIntentService extends IntentService {
                 if (extras.get(Config.MESSAGE_KEY) == null) {
                     //GCM ACCEPT REQUEST
                     if (extras.get(Config.ACCEPT_START_KEY).toString().equals("1") && extras.get(Config.ACCEPT_END_KEY).toString().equals("0")) {
+                        Log.d("NOTIFICATIONINTENTSERVICE: ", extras.toString());
                         sender = extras.get("sender").toString();
                         MapsActivity.sender = sender;
                         MapsActivity.phoneTo = extras.get("phonefrom").toString();
