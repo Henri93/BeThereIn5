@@ -3,28 +3,38 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical">
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/contactImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:maxHeight="75dp"
+        android:maxWidth="75dp"
+        android:minHeight="75dp"
+        android:minWidth="75dp" />
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:padding="20dp">
 
         <TextView
             android:id="@+id/contactName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:phoneNumber="false"
             android:text="Henry Garant"
-            android:textSize="24dp"
             android:textColor="@color/Light"
-            android:phoneNumber="false" />
+            android:textSize="24dp" />
 
         <TextView
+            android:id="@+id/contactNumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="215-331-7408"
-            android:id="@+id/contactNumber"
             android:textColor="@color/WhiteGloss"
             android:textSize="16dp" />
     </LinearLayout>

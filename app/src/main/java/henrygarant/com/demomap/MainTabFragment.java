@@ -2,8 +2,11 @@ package henrygarant.com.demomap;
 
 import android.content.ContentResolver;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +14,8 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class MainTabFragment extends Fragment {
@@ -28,7 +33,21 @@ public class MainTabFragment extends Fragment {
         while (phones.moveToNext()) {
             String contact = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
             String phoneNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-            contactsList.add(new Contact(contact, phoneNumber));
+
+            String image_uri = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_URI));
+            Bitmap bitmap = null;
+            if (image_uri != null) {
+                System.out.println(Uri.parse(image_uri));
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(this.getActivity().getContentResolver(), Uri.parse(image_uri));
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            contactsList.add(new Contact(contact, phoneNumber, bitmap));
         }
         BaseExpandableListAdapter contactAdapter = new ContactAdapter(getActivity().getApplicationContext(), contactsList);
         contactList.setAdapter(contactAdapter);

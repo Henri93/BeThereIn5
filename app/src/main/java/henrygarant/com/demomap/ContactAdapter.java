@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -106,6 +107,10 @@ public class ContactAdapter extends BaseExpandableListAdapter {
         TextView lblListSubHeader = (TextView) convertView
                 .findViewById(R.id.contactNumber);
         lblListSubHeader.setText(theContact.getNumber());
+
+        ImageView lblImage = (ImageView) convertView.findViewById(R.id.contactImage);
+        lblImage.setImageBitmap(theContact.getImage());
+
 
         return convertView;
     }
