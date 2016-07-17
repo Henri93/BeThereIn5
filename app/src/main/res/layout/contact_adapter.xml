@@ -10,6 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
+        android:background="@color/WhiteGloss"
         android:maxHeight="75dp"
         android:maxWidth="75dp"
         android:minHeight="75dp"

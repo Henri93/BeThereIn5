@@ -109,6 +109,7 @@ public class ContactAdapter extends BaseExpandableListAdapter {
         lblListSubHeader.setText(theContact.getNumber());
 
         ImageView lblImage = (ImageView) convertView.findViewById(R.id.contactImage);
+
         lblImage.setImageBitmap(theContact.getImage());
 
 
