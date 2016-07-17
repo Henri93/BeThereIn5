@@ -40,7 +40,7 @@ public class WaitingPage extends FragmentActivity {
 
         if (number == null || number.equals("")) {
             //Came from notification
-            new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AppTheme))
+            new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.ProcessDialog))
                     .setTitle("Be There In 5")
                     .setMessage("Are you sure you want to ride with " + sender + "?")
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {

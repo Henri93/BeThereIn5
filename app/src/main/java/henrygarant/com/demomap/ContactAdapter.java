@@ -120,7 +120,6 @@ public class ContactAdapter extends BaseExpandableListAdapter {
             lblImage.setImageBitmap(theContact.getImage());
         }
 
-
         return convertView;
     }
 
