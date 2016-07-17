@@ -26,6 +26,8 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import henrygarant.com.demomap.GcmServices.GcmRegister;
+
 public class RegisterActivity extends Activity {
 
     private static final String TAG = RegisterActivity.class.getSimpleName();
@@ -82,7 +84,9 @@ public class RegisterActivity extends Activity {
                 String password = inputPassword.getText().toString().trim();
 
                 if (!name.isEmpty() && !phone.isEmpty() && !password.isEmpty() && Patterns.PHONE.matcher(phone).matches() && phone.length() >= 7 && phone.length() <= 16) {
-                    registerUser(name, phone, password);
+                    GcmRegister gcm = new GcmRegister();
+                    final String regId = gcm.registerGCM(getApplicationContext());
+                    registerUser(name, phone, password, regId);
                 } else {
                     Animation shake = AnimationUtils.loadAnimation(getBaseContext(), R.anim.shake);
                     registerLayout.startAnimation(shake);
@@ -111,7 +115,7 @@ public class RegisterActivity extends Activity {
      * phone, password) to register url
      */
     private void registerUser(final String name, final String phone,
-                              final String password) {
+                              final String password, final String reg) {
         // Tag used to cancel the request
         String tag_string_req = "req_register";
 
@@ -139,9 +143,10 @@ public class RegisterActivity extends Activity {
                         String phone = user.getString("phone");
                         String created_at = user
                                 .getString("created_at");
+                        String reg = user.getString("reg_id");
 
                         // Inserting row in users table
-                        db.addUser(name, phone, uid, created_at);
+                        db.addUser(name, phone, uid, reg, created_at);
 
                         Toast.makeText(getApplicationContext(), "User successfully registered. Try login now!", Toast.LENGTH_LONG).show();
 
@@ -182,6 +187,7 @@ public class RegisterActivity extends Activity {
                 params.put("name", name);
                 params.put("phone", phone);
                 params.put("password", password);
+                params.put("reg_id", reg);
 
                 return params;
             }

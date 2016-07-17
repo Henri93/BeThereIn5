@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
-import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -33,17 +32,19 @@ public class GcmRegister{
         gcm = GoogleCloudMessaging.getInstance(context);
         regId = getRegistrationId(context);
 
-        if (TextUtils.isEmpty(regId)) {
+        if (regId.isEmpty()) {
 
             registerInBackground(context);
 
             Log.d("RegisterActivity",
                     "registerGCM - successfully registered with GCM server - regId: "
                             + regId);
+
         } else {
             Toast.makeText(context,
                     "RegId already available. RegId: " + regId,
                     Toast.LENGTH_LONG).show();
+            shareRegId(context, regId);
         }
         return regId;
     }

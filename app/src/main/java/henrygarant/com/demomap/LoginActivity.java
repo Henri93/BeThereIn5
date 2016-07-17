@@ -171,9 +171,10 @@ public class LoginActivity extends Activity {
                         String phone = user.getString("phone");
                         String created_at = user
                                 .getString("created_at");
+                        String reg = user.getString("reg_id");
 
                         // Inserting row in users table
-                        db.addUser(name, phone, uid, created_at);
+                        db.addUser(name, phone, uid, reg, created_at);
 
 
                         // Launch main activity
