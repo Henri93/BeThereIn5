@@ -13,7 +13,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,7 +36,7 @@ import java.util.Calendar;
 import henrygarant.com.demomap.MapActivities.DestinationManager;
 import henrygarant.com.demomap.MapActivities.MyLocationService;
 
-public class MapsActivity extends FragmentActivity implements
+public class MapsActivity extends ActionBarActivity implements
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
     public static String MAP_BROADCAST = "henryrgarant.com.demomap.MAP_UPDATE";
