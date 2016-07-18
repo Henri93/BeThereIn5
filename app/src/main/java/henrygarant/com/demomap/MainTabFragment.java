@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +34,7 @@ public class MainTabFragment extends Fragment {
         while (phones.moveToNext()) {
             String contact = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
             String phoneNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-
+            //TODO MAKE SURE THAT IMAGE IS CORRECT
             String image_uri = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_URI));
             Bitmap bitmap = null;
             if (image_uri != null) {
@@ -51,6 +52,7 @@ public class MainTabFragment extends Fragment {
         }
         BaseExpandableListAdapter contactAdapter = new ContactAdapter(getActivity().getApplicationContext(), contactsList);
         contactList.setAdapter(contactAdapter);
+        Log.d("BREAKPOINT: ", "Made it 1");
         return rootview;
     }
 }

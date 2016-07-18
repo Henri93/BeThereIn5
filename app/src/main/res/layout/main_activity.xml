@@ -6,10 +6,12 @@
     android:weightSum="1">
 
 
-    <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/pager"
+    <fragment
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </android.support.v4.view.ViewPager>
+        android:layout_height="match_parent"
+        android:name="henrygarant.com.demomap.MainTabFragment"
+        android:id="@+id/mainFragment">
+
+    </fragment>
 
 </LinearLayout>
