@@ -2,6 +2,7 @@ package henrygarant.com.demomap;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,11 +20,12 @@ public class ContactAdapter extends BaseExpandableListAdapter {
 
     private Context _context;
     private ArrayList<Contact> _listDataHeader; // header titles
-    //private Typeface tf = Typeface.createFromAsset(_context.getAssets(), "fonts/Exo-Light.otf");
+    private Typeface tf;
 
     public ContactAdapter(Context context, ArrayList<Contact> listDataHeader) {
         this._context = context;
         this._listDataHeader = listDataHeader;
+        tf = Typeface.createFromAsset(_context.getAssets(), "fonts/Exo-Light.otf");
     }
 
     @Override
@@ -105,18 +107,18 @@ public class ContactAdapter extends BaseExpandableListAdapter {
                 .findViewById(R.id.contactName);
         lblListHeader.setText(theContact.getName());
 
-        //lblListHeader.setTypeface(tf);
+        lblListHeader.setTypeface(tf);
 
         TextView lblListSubHeader = (TextView) convertView
                 .findViewById(R.id.contactNumber);
         lblListSubHeader.setText(theContact.getNumber());
 
-        //lblListSubHeader.setTypeface(tf);
+        lblListSubHeader.setTypeface(tf);
 
         ImageView lblImage = (ImageView) convertView.findViewById(R.id.contactImage);
 
         if (theContact.getImage() != null) {
-            lblImage.setImageBitmap(theContact.getImage());
+            //lblImage.setImageBitmap(theContact.getImage());
         }
 
         return convertView;

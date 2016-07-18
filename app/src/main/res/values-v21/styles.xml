@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="AppTheme" parent="android:Theme.Material">
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
         <item name="android:colorPrimary">@color/Primary</item>
         <item name="android:colorPrimaryDark">@color/Primary_Dark</item>
         <item name="android:colorAccent">@color/Primary_Accent</item>
         <item name="android:colorActivatedHighlight">@color/Primary_Light</item>
         <item name="android:textColor">@color/Primary</item>
+        <item name="android:actionBarTheme">@style/MyActionBar</item>
+        <item name="android:actionBarStyle">@style/MyActionBar</item>
+        <item name="actionBarStyle">@style/MyActionBar</item>
+        <item name="android:textColorPrimary">@color/Light</item>
+    </style>
+
+    <style name="MyActionBar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@color/Primary</item>
+        <item name="background">@color/Primary</item>
     </style>
 
 
