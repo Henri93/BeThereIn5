@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -32,8 +31,8 @@ public class MyLocationService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d("MYLOCATIONSERVICE", "Service started");
         Toast.makeText(this, "LOCATION SERVICE UPDATE", Toast.LENGTH_SHORT);
-        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        DestinationManager dm = new DestinationManager();
+        Location location = dm.getLocation(getApplicationContext());
         double latitude = location.getLatitude();
         double longitude = location.getLongitude();
         LatLng myLatLng = new LatLng(latitude, longitude);
@@ -42,7 +41,7 @@ public class MyLocationService extends Service {
         if (MapsActivity.phoneTo == null || MapsActivity.phoneTo.equals("")) {
             Log.d("MYLOCATIONSERVICE", "No Target!");
             Toast.makeText(getApplicationContext(), "Sorry, unable to connect at this time.", Toast.LENGTH_LONG);
-            //abort();
+            abort();
         } else {
             SQLiteHandler db = new SQLiteHandler(this);
             Log.d("SERVICE MYPHONE: ", db.getUserDetails().get("phone").toString());

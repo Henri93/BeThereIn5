@@ -50,14 +50,19 @@ public class MapsActivity extends ActionBarActivity implements
     private TextView distanceTextView;
     private GoogleApiClient mGoogleApiClient;
     private DestinationManager destinationManager;
+
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.d("MAPSACTIVITY: ", "Location Broadcast Received");
+
+            //the location of the other person
             updatedLocation = intent.getStringExtra("target");
-            //here the target becomes the person sending the data
+            //phone number of person sending location
             phoneTo = intent.getStringExtra("phonefrom");
+            //the name of person sending location
             sender = intent.getStringExtra("sender");
+
             DestinationManager dm = new DestinationManager();
             updateUI(sender, updatedLocation, dm.CalculationByDistance(myLocation, dm.convertStringToLatLng(updatedLocation)));
             updateMap(updatedLocation);
@@ -98,6 +103,7 @@ public class MapsActivity extends ActionBarActivity implements
                     .build();
         }
 
+        //TODO IF CONNECTION IS STILL SLOW START SERVICE ONCE HERE
 
         try {
             setUpMapIfNeeded();
@@ -119,9 +125,9 @@ public class MapsActivity extends ActionBarActivity implements
         Toast.makeText(MapsActivity.this, "LOCATION CHANGED", Toast.LENGTH_SHORT).show();
     }
 
-    private void updateUI(String name, String myLocation, int distance) {
+    private void updateUI(String name, String targetLocation, int distance) {
         targetName.setText(name);
-        targetLoc.setText(myLocation);
+        targetLoc.setText(targetLocation);
         distanceTextView.setText("Distance: " + distance + " m");
     }
 

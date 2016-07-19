@@ -39,11 +39,10 @@ public class GcmNotificationIntentService extends IntentService {
         if (!extras.isEmpty()) {
             if (GoogleCloudMessaging.MESSAGE_TYPE_SEND_ERROR
                     .equals(messageType)) {
-                sendNotification("Send error: " + extras.toString());
+                Log.d("Send error: ", extras.toString());
             } else if (GoogleCloudMessaging.MESSAGE_TYPE_DELETED
                     .equals(messageType)) {
-                sendNotification("Deleted messages on server: "
-                        + extras.toString());
+                Log.d("Deleted messages on server: ", extras.toString());
             } else if (GoogleCloudMessaging.MESSAGE_TYPE_MESSAGE
                     .equals(messageType)) {
 
@@ -57,15 +56,14 @@ public class GcmNotificationIntentService extends IntentService {
                     }
                 }
                 Log.i(TAG, "Completed work @ " + SystemClock.elapsedRealtime());
-                //sendNotification(extras.get(Config.MESSAGE_KEY).toString());
                 if (extras.get(Config.MESSAGE_KEY) == null) {
                     //GCM ACCEPT REQUEST
                     if (extras.get(Config.ACCEPT_START_KEY).toString().equals("1") && extras.get(Config.ACCEPT_END_KEY).toString().equals("0")) {
                         Log.d("NOTIFICATIONINTENTSERVICE: ", extras.toString());
                         sender = extras.get("sender").toString();
-                        MapsActivity.sender = sender;
-                        MapsActivity.phoneTo = extras.get("phonefrom").toString();
-                        sendNotification("Ride Request From " + sender);
+                        //MapsActivity.sender = sender;
+                        //MapsActivity.phoneTo = extras.get("phonefrom").toString();
+                        sendNotification("Ride Request From " + sender, extras.get("phonefrom").toString());
                     } else {
                         Log.d("NOTIFICATIONINTENTSERVICE: ", "Error parsing gcm message");
                     }
@@ -73,9 +71,14 @@ public class GcmNotificationIntentService extends IntentService {
                     //GCM LOCATION DATA
                     Intent location_intent = new Intent();
                     Log.d("GCM LOCTION UPDATE: ", extras.toString());
+
+                    //the other persons location
                     location_intent.putExtra("target", extras.get(Config.MESSAGE_KEY).toString());
+                    //phone number of whom sent the location
                     location_intent.putExtra("phonefrom", extras.get(Config.PHONEFROM_KEY).toString());
+                    //name of whom sent the message
                     location_intent.putExtra("sender", extras.get(Config.SENDER_KEY).toString());
+
                     location_intent.setAction(MapsActivity.MAP_BROADCAST);
                     Log.d("GCM LOCTION UPDATE: ", "sent broadcast.");
                     sendBroadcast(location_intent);
@@ -86,7 +89,7 @@ public class GcmNotificationIntentService extends IntentService {
         GcmBroadcastReceiver.completeWakefulIntent(intent);
     }
 
-    private void sendNotification(String msg) {
+    private void sendNotification(String msg, String phonefrom) {
         Log.d(TAG, "Preparing to send notification...: " + msg);
         mNotificationManager = (NotificationManager) this
                 .getSystemService(Context.NOTIFICATION_SERVICE);
@@ -94,6 +97,8 @@ public class GcmNotificationIntentService extends IntentService {
         Intent intent = new Intent(this, WaitingPage.class);
 
         intent.putExtra("sender", sender);
+        intent.putExtra("phoneto", phonefrom);
+        intent.putExtra("fromaccept", true);
 
         //Class to open when user clicks notification
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0,

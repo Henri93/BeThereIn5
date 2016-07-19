@@ -23,6 +23,7 @@ public class WaitingPage extends FragmentActivity {
     private ProgressDialog pDialog;
     private String number;
     private String sender;
+    private boolean fromAccept;
 
 
     @Override
@@ -31,14 +32,16 @@ public class WaitingPage extends FragmentActivity {
         setContentView(R.layout.waiting_page);
 
         Intent intent = getIntent();
-        number = getIntent().getStringExtra("phoneto");
+        number = intent.getStringExtra("phoneto");
         sender = intent.getStringExtra("sender");
+        fromAccept = intent.getBooleanExtra("fromaccept", false);
+
 
         if (sender == null || sender.equals("")) {
             sender = "Unknown";
         }
 
-        if (number == null || number.equals("")) {
+        if (fromAccept && (number != null && !number.equals(""))) {
             //Came from notification
             new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.ProcessDialog))
                     .setTitle("Be There In 5")
@@ -46,8 +49,12 @@ public class WaitingPage extends FragmentActivity {
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             Intent myIntent = new Intent(getBaseContext(), MapsActivity.class);
+
+                            //phone number of whom sent the location
                             myIntent.putExtra("phonefrom", number);
+
                             startActivity(myIntent);
+
                         }
                     })
                     .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
