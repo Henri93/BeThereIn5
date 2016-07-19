@@ -1,18 +1,14 @@
 package henrygarant.com.demomap;
 
 import android.app.AlarmManager;
-import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.widget.TextView;
@@ -43,17 +39,17 @@ public class MapsActivity extends ActionBarActivity implements
     public static String phoneTo;
     public static String sender;
     private static PendingIntent alarmPendingIntent;
-    private final int MILE_RADIUS = 1;
+    private final double MILE_RADIUS = .5;
     private String updatedLocation;
     private Intent serviceIntent;
     private GoogleMap mMap;
     private int CIRCLE_COLOR =  Color.argb(100, 30, 136, 229);
-    private String destination;
     private LatLng myLocation;
     private TextView targetName;
     private TextView targetLoc;
     private TextView distanceTextView;
     private GoogleApiClient mGoogleApiClient;
+    private DestinationManager destinationManager;
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -76,10 +72,13 @@ public class MapsActivity extends ActionBarActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-//        getActionBar().setDisplayHomeAsUpEnabled(true);
+
+        CIRCLE_COLOR = getResources().getColor(R.color.Map_Color);
+
+        destinationManager = new DestinationManager();
 
         //make sure location is enabled
-        checkLocationAvailable();
+        destinationManager.checkLocationAvailable(this);
 
         Intent intent = getIntent();
 
@@ -89,14 +88,7 @@ public class MapsActivity extends ActionBarActivity implements
         targetLoc = (TextView) findViewById(R.id.targetLocTextView);
         distanceTextView = (TextView) findViewById(R.id.distanceTextView);
 
-        updateUI("Loading...", "Connecting...", 0);
-
-        CIRCLE_COLOR = getResources().getColor(R.color.Map_Color);
-
-
-        destination = intent.getStringExtra("destination");
-        // destinationManager = new DestinationManager();
-        //destinationLatLng = destinationManager.makeDestinationLatLng(this, destination);
+        updateUI("Waiting to connect...", "Connecting...", 0);
 
         if (mGoogleApiClient == null) {
             mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -170,16 +162,14 @@ public class MapsActivity extends ActionBarActivity implements
         mMap.getUiSettings().setMyLocationButtonEnabled(false);
         mMap.setMyLocationEnabled(true);
 
-        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        Location location = destinationManager.getLocation(this);
 
         myLocation = new LatLng(location.getLatitude(), location.getLongitude());
-        Toast.makeText(MapsActivity.this, "LOCATION: " + myLocation.toString(), Toast.LENGTH_SHORT).show();
-        updateMap(myLocation.toString());
+
+        updateMap("");
     }
 
     private void updateMap(String target) {
-
         if (mMap != null) {
             mMap.clear();
             mMap.addMarker(new MarkerOptions()
@@ -188,13 +178,16 @@ public class MapsActivity extends ActionBarActivity implements
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
                     .title("Me"));
 
-            LatLng targetLoc = new DestinationManager().convertStringToLatLng(target);
+            if (!target.equals("")) {
 
-            mMap.addMarker(new MarkerOptions()
-                    .position(targetLoc)
-                    .snippet("Target")
-                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
-                    .title("Target"));
+                LatLng targetLoc = new DestinationManager().convertStringToLatLng(target);
+
+                mMap.addMarker(new MarkerOptions()
+                        .position(targetLoc)
+                        .snippet("Target")
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
+                        .title("Target"));
+            }
 
             // Instantiates a new CircleOptions object and defines the center and radius
             CircleOptions circleOptions = new CircleOptions()
@@ -208,14 +201,15 @@ public class MapsActivity extends ActionBarActivity implements
             //TODO ONLY ZOOM FIRST TIME
 
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
-                    myLocation, 13));
+                    myLocation, 12));
         }
     }
 
     @Override
     public void onConnected(Bundle bundle) {
         Log.d("Location Updates: ", "Connected");
-        startLocationUpdates();
+        Toast.makeText(this, "Location Updates Started", Toast.LENGTH_LONG).show();
+        //startLocationUpdates();
     }
 
     @Override
@@ -278,43 +272,6 @@ public class MapsActivity extends ActionBarActivity implements
 
     }
 
-    private void checkLocationAvailable() {
-        LocationManager lm = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-        boolean gps_enabled = false;
-        boolean network_enabled = false;
-
-        try {
-            gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
-        } catch (Exception ex) {
-        }
-
-        try {
-            network_enabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-        } catch (Exception ex) {
-        }
-
-        if (!gps_enabled && !network_enabled) {
-            // notify user
-            AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-            dialog.setMessage("Please Enalbe Location Services");
-            dialog.setPositiveButton("Location Settings", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface paramDialogInterface, int paramInt) {
-                    Intent myIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                    startActivity(myIntent);
-                }
-            });
-            dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-
-                @Override
-                public void onClick(DialogInterface paramDialogInterface, int paramInt) {
-                    Intent myIntent = new Intent(MapsActivity.this, MainActivity.class);
-                    startActivity(myIntent);
-                }
-            });
-            dialog.show();
-        }
-    }
 
 
 }
