@@ -43,20 +43,16 @@ public class DestinationManager extends BroadcastReceiver {
 
     }
 
-    private int isWithin5Minutes(Context context, String destination) {
+    private boolean isWithin5Minutes(Context context, String destination) {
         //TODO Get Speed for S=d/time
-        //null object here if location is off
-        Location mLocation = getLocation(context);
-        Log.d("DESTINATION MANAGER: ", "Current LL: " + mLocation.toString());
-        return CalculationByDistance(new LatLng(mLocation.getLatitude(), mLocation.getLongitude()), makeDestinationLatLng(context, destination));
-
+        return false;
     }
 
-    public int CalculationByDistance(LatLng StartP, LatLng EndP) {
+    public int CalculationByDistance(Context context, LatLng EndP) {
 
         Location origin = new Location("Origin");
-        origin.setLatitude(StartP.latitude);
-        origin.setLongitude(StartP.longitude);
+        origin.setLatitude(getLocation(context).getLatitude());
+        origin.setLongitude(getLocation(context).getLongitude());
 
         Location dest = new Location("Destination");
         dest.setLatitude(EndP.latitude);

@@ -64,7 +64,7 @@ public class MapsActivity extends ActionBarActivity implements
             sender = intent.getStringExtra("sender");
 
             DestinationManager dm = new DestinationManager();
-            updateUI(sender, updatedLocation, dm.CalculationByDistance(myLocation, dm.convertStringToLatLng(updatedLocation)));
+            updateUI(sender, updatedLocation, dm.CalculationByDistance(getApplicationContext(), dm.convertStringToLatLng(updatedLocation)));
             updateMap(updatedLocation);
         }
     };
@@ -103,12 +103,12 @@ public class MapsActivity extends ActionBarActivity implements
                     .build();
         }
 
-        //TODO IF CONNECTION IS STILL SLOW START SERVICE ONCE HERE
-
         try {
             setUpMapIfNeeded();
 
             serviceIntent = new Intent(this, MyLocationService.class);
+            startService(serviceIntent);
+
             alarmPendingIntent = PendingIntent.getService(this, 0, serviceIntent, 0);
             AlarmManager alarm_manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
             alarm_manager.setRepeating(AlarmManager.RTC, Calendar.getInstance().getTimeInMillis(), 60000, alarmPendingIntent);
