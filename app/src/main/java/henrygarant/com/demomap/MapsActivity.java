@@ -207,7 +207,7 @@ public class MapsActivity extends ActionBarActivity implements
             //TODO ONLY ZOOM FIRST TIME
 
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
-                    myLocation, 12));
+                    myLocation, 14));
         }
     }
 
