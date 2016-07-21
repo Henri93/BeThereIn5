@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:weightSum="1">
 
 
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
@@ -10,20 +11,22 @@
             android:id="@+id/map"
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-        android:layout_weight=".2"
+        android:layout_height="0dp"
+        android:layout_weight=".7"
             tools:context=".MapsActivity" />
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight=".8"
+        android:layout_height="0dp"
+        android:layout_weight=".3"
         android:background="@color/Primary_Light"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:weightSum="2">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            android:layout_weight="1">
 
             <TextView
                 android:id="@+id/targetNameTextView"
@@ -51,33 +54,21 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             android:orientation="horizontal"
-            android:background="@color/BlackGloss">
-
-            <TextView
-                android:id="@+id/targetLocTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:paddingBottom="20dp"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:paddingTop="2dp"
-                android:text="Target Loc"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:layout_centerVertical="true"
-                android:layout_alignParentStart="true"
-                android:gravity="center_vertical"
-                android:layout_marginRight="20dp"
-                android:layout_marginLeft="20dp" />
+            android:background="@color/BlackGloss"
+            android:layout_weight="1"
+            android:weightSum="2">
 
             <LinearLayout
                 android:orientation="horizontal"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:background="@color/Primary_Light"
                 android:id="@+id/mapsLayout"
-                android:onClick="getDirectionsButtonClick">
+                android:onClick="getDirectionsButtonClick"
+                android:layout_weight="1.2"
+                android:layout_margin="10dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -95,6 +86,29 @@
                     android:id="@+id/imageView3"
                     android:src="@drawable/google_maps"
                     android:foregroundGravity="center_vertical" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".8"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp">
+
+                <TextView
+                    android:id="@+id/targetLocTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingBottom="20dp"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:paddingTop="2dp"
+                    android:text="Target Loc"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentStart="true"
+                    android:gravity="center_vertical" />
             </LinearLayout>
 
         </LinearLayout>
