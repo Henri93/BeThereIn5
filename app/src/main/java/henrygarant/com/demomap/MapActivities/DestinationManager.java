@@ -22,30 +22,24 @@ import java.util.List;
 import henrygarant.com.demomap.MainActivity;
 import henrygarant.com.demomap.R;
 
-public class DestinationManager extends BroadcastReceiver {
+public class DestinationManager {
 
     private Location mLastLocation;
 
-    @Override
-    public void onReceive(Context context, Intent intent) {
-        String destination = intent.getStringExtra("destination");
-        Log.d("ON RECIEVE: ", "Destination: " + (destination));
-        Log.d("ON RECIEVE: ", "Distance: " + isWithin5Minutes(context, destination));
-        NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(context)
-                        .setSmallIcon(R.drawable.notification_icon_small)
-                        .setLargeIcon(((BitmapDrawable) context.getResources().getDrawable(R.drawable.notification_icon_large)).getBitmap())
-                        .setContentTitle("Alert")
-                        .setContentText("Distance: " + isWithin5Minutes(context, destination));
-
-        NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        mNotificationManager.notify(1, mBuilder.build());
-
-    }
-
-    private boolean isWithin5Minutes(Context context, String destination) {
-        //TODO Get Speed for S=d/time
-        return false;
+    public boolean isWithin5Minutes(Context context, LatLng destination) {
+        boolean isWithin5 = false;
+        //assume 15mph or 6.7056 m/s if current speed is 0
+        float speed = (float) 6.7056;
+        if (getSpeed(context) != 0) {
+            speed = getSpeed(context);
+        }
+        int distance = CalculationByDistance(context, destination);
+        //distance/speed to get seconds
+        float time = distance / speed;
+        if (time <= 60 * 5) {
+            isWithin5 = true;
+        }
+        return isWithin5;
     }
 
     public int CalculationByDistance(Context context, LatLng EndP) {
@@ -181,6 +175,12 @@ public class DestinationManager extends BroadcastReceiver {
             });
             dialog.show();
         }
+    }
+
+    private float getSpeed(Context context) {
+        //meters per second
+        //TODO test this
+        return getLocation(context).getSpeed();
     }
 
 }
