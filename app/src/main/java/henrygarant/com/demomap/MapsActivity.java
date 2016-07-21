@@ -8,9 +8,14 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +33,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.Calendar;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import henrygarant.com.demomap.MapActivities.DestinationManager;
 import henrygarant.com.demomap.MapActivities.MyLocationService;
@@ -276,6 +283,37 @@ public class MapsActivity extends ActionBarActivity implements
         AlarmManager alarm_manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         alarm_manager.cancel(alarmPendingIntent);
 
+    }
+
+    public void getDirectionsButtonClick(View v) {
+        if (destinationManager.convertStringToLatLng(updatedLocation) != null) {
+            LatLng tempLatLng = destinationManager.convertStringToLatLng(updatedLocation);
+            Uri gmmIntentUri = Uri.parse("google.navigation:q=" + tempLatLng.latitude + "," + tempLatLng.longitude);
+            Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+            mapIntent.setPackage("com.google.android.apps.maps");
+            startActivity(mapIntent);
+        } else {
+            final LinearLayout lin = (LinearLayout) findViewById(R.id.mapsLayout);
+            final TextView dirTextView = (TextView) findViewById(R.id.getDirectionsTextView);
+            final Animation shake = AnimationUtils.loadAnimation(getBaseContext(), R.anim.shake);
+            dirTextView.setText("Wait to connect!");
+            lin.startAnimation(shake);
+            Timer directionTimer = new Timer();
+            directionTimer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            dirTextView.setText("Get Directions");
+                        }
+
+                    });
+                }
+
+            }, 2000);
+
+        }
     }
 
 

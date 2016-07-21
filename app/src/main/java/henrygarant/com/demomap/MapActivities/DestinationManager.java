@@ -63,13 +63,17 @@ public class DestinationManager extends BroadcastReceiver {
     }
 
     public LatLng convertStringToLatLng(String stringToConvert) {
-        int index = stringToConvert.indexOf(",");
-        String lat = stringToConvert.substring((stringToConvert.indexOf("(") + 1), index).trim();
-        String lng = stringToConvert.substring(index + 1, stringToConvert.indexOf(")")).trim();
-        double lati = Double.parseDouble(lat);
-        double lngi = Double.parseDouble(lng);
-        LatLng stringToConvertLoc = new LatLng(lati, lngi);
-        return stringToConvertLoc;
+        try {
+            int index = stringToConvert.indexOf(",");
+            String lat = stringToConvert.substring((stringToConvert.indexOf("(") + 1), index).trim();
+            String lng = stringToConvert.substring(index + 1, stringToConvert.indexOf(")")).trim();
+            double lati = Double.parseDouble(lat);
+            double lngi = Double.parseDouble(lng);
+            LatLng stringToConvertLoc = new LatLng(lati, lngi);
+            return stringToConvertLoc;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public LatLng makeDestinationLatLng(Context context, String destination) {

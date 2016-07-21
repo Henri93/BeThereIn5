@@ -27,7 +27,7 @@
 
     <color name="Map_Color">#641e88e5</color>
 
-    <color name="ErrorRed">#FF9494</color>
+    <color name="ErrorRed">#ff9494</color>
 
     <color name="Dark">#1F1F1F</color>
     <color name="Medium">#2E2E2E</color>
