@@ -37,19 +37,6 @@ public class GcmSender {
         new SendGcmMessaage().execute(params);
     }
 
-    private class SendGcmMessaage extends AsyncTask<ArrayList<String>, Integer, Double> {
-        @Override
-        protected Double doInBackground(ArrayList<String>... params) {
-            postMessageData(params[0].get(0), params[0].get(1), params[0].get(2));
-            return null;
-        }
-
-        protected void onPostExecute(Double result) {
-            Toast.makeText(context.getApplicationContext(), "Sent Post Request", Toast.LENGTH_LONG).show();
-        }
-
-    }
-
     public void postMessageData(String personFrom, String personSendingTo, String valueIWantToSend) {
         HttpClient httpclient = new DefaultHttpClient();
         // specify the URL you want to post to
@@ -81,19 +68,6 @@ public class GcmSender {
         new SendGcmAccept().execute(params);
     }
 
-    private class SendGcmAccept extends AsyncTask<ArrayList<String>, Integer, Double> {
-        @Override
-        protected Double doInBackground(ArrayList<String>... params) {
-            postAcceptData(params[0].get(0), params[0].get(1));
-            return null;
-        }
-
-        protected void onPostExecute(Double result) {
-            Toast.makeText(context.getApplicationContext(), "Sent Post Request", Toast.LENGTH_LONG).show();
-        }
-
-    }
-
     public void postAcceptData(String personSendingFrom, String personSendingTo) {
         HttpClient httpclient = new DefaultHttpClient();
         // specify the URL you want to post to
@@ -110,11 +84,38 @@ public class GcmSender {
             httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
             // send the variable and value, in other words post, to the URL
             HttpResponse response = httpclient.execute(httppost);
+            //TODO check for error here to send join message
             Log.d("HTTP RESPONSE: ", EntityUtils.toString(response.getEntity()));
         } catch (ClientProtocolException e) {
             // process execption
         } catch (IOException e) {
             // process execption
         }
+    }
+
+    private class SendGcmMessaage extends AsyncTask<ArrayList<String>, Integer, Double> {
+        @Override
+        protected Double doInBackground(ArrayList<String>... params) {
+            postMessageData(params[0].get(0), params[0].get(1), params[0].get(2));
+            return null;
+        }
+
+        protected void onPostExecute(Double result) {
+            Toast.makeText(context.getApplicationContext(), "Sent Post Request", Toast.LENGTH_LONG).show();
+        }
+
+    }
+
+    private class SendGcmAccept extends AsyncTask<ArrayList<String>, Integer, Double> {
+        @Override
+        protected Double doInBackground(ArrayList<String>... params) {
+            postAcceptData(params[0].get(0), params[0].get(1));
+            return null;
+        }
+
+        protected void onPostExecute(Double result) {
+            Toast.makeText(context.getApplicationContext(), "Sent Post Request", Toast.LENGTH_LONG).show();
+        }
+
     }
 }

@@ -12,12 +12,12 @@
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight=".7"
+        android:layout_weight=".75"
             tools:context=".MapsActivity" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight=".3"
+        android:layout_weight=".25"
         android:background="@color/Primary"
         android:orientation="vertical"
         android:weightSum="2">
@@ -25,16 +25,17 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:orientation="horizontal"
-            android:layout_weight=".8"
-            android:background="@color/BlackGloss">
+            android:layout_weight=".7"
+            android:background="@color/BlackGloss"
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/targetNameTextView"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight=".6"
-                android:padding="20dp"
+                android:gravity="center_vertical"
+                android:padding="5dp"
                 android:text="Target Name"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@color/Light"
@@ -43,9 +44,11 @@
             <TextView
                 android:id="@+id/distanceTextView"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
                 android:layout_weight=".4"
-                android:padding="20dp"
+                android:gravity="center_vertical"
+                android:padding="5dp"
                 android:text="Distance:"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@color/Light"
@@ -56,63 +59,63 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:orientation="horizontal"
+            android:layout_weight="1.3"
             android:background="@color/Primary"
-            android:layout_weight="1.2"
+            android:orientation="horizontal"
             android:weightSum="2">
 
             <LinearLayout
-                android:orientation="horizontal"
+                android:id="@+id/mapsLayout"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:background="@drawable/rect_button"
-                android:id="@+id/mapsLayout"
-                android:onClick="getDirectionsButtonClick"
-                android:layout_weight="1.1"
                 android:layout_margin="10dp"
+                android:layout_weight="1.1"
+                android:background="@drawable/rect_button"
+                android:onClick="getDirectionsButtonClick"
+                android:orientation="horizontal"
                 android:padding="6dp">
 
                 <TextView
+                    android:id="@+id/getDirectionsTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="Get Directions"
-                    android:id="@+id/getDirectionsTextView"
+                    android:layout_margin="7dp"
                     android:gravity="center_vertical"
-                    android:textColor="@color/Light"
-                    android:layout_margin="7dp" />
+                    android:text="Get Directions"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/Light" />
 
                 <ImageView
+                    android:id="@+id/imageView3"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:id="@+id/imageView3"
-                    android:src="@drawable/google_maps"
-                    android:foregroundGravity="center_vertical" />
+                    android:foregroundGravity="center_vertical"
+                    android:src="@drawable/google_maps" />
             </LinearLayout>
 
             <LinearLayout
-                android:orientation="horizontal"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight=".9"
                 android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp">
+                android:layout_marginRight="20dp"
+                android:layout_weight=".9"
+                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/targetLocTextView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center"
+                    android:gravity="center|center_vertical|center_horizontal"
                     android:paddingBottom="20dp"
                     android:paddingLeft="20dp"
                     android:paddingRight="20dp"
                     android:paddingTop="2dp"
                     android:text="Target Loc"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentStart="true"
-                    android:gravity="center|center_vertical|center_horizontal"
-                    android:textColor="@color/Light"
-                    android:layout_gravity="center" />
+                    android:textColor="@color/Light" />
             </LinearLayout>
 
         </LinearLayout>
