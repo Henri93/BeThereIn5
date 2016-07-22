@@ -1,18 +1,14 @@
 package henrygarant.com.demomap.MapActivities;
 
 import android.app.AlertDialog;
-import android.app.NotificationManager;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.drawable.BitmapDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.provider.Settings;
-import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -20,7 +16,6 @@ import com.google.android.gms.maps.model.LatLng;
 import java.util.List;
 
 import henrygarant.com.demomap.MainActivity;
-import henrygarant.com.demomap.R;
 
 public class DestinationManager {
 
@@ -177,7 +172,7 @@ public class DestinationManager {
         }
     }
 
-    private float getSpeed(Context context) {
+    public float getSpeed(Context context) {
         //meters per second
         //TODO test this
         return getLocation(context).getSpeed();

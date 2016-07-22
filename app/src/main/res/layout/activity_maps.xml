@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight=".3"
-        android:background="@color/Primary_Light"
+        android:background="@color/Primary"
         android:orientation="vertical"
         android:weightSum="2">
 
@@ -26,7 +26,8 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:orientation="horizontal"
-            android:layout_weight="1">
+            android:layout_weight=".8"
+            android:background="@color/BlackGloss">
 
             <TextView
                 android:id="@+id/targetNameTextView"
@@ -36,7 +37,7 @@
                 android:padding="20dp"
                 android:text="Target Name"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/Primary_Dark"
+                android:textColor="@color/Light"
                 android:textSize="18sp" />
 
             <TextView
@@ -47,7 +48,7 @@
                 android:padding="20dp"
                 android:text="Distance:"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/Primary_Dark"
+                android:textColor="@color/Light"
                 android:textSize="15sp" />
 
         </LinearLayout>
@@ -56,19 +57,20 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:orientation="horizontal"
-            android:background="@color/BlackGloss"
-            android:layout_weight="1"
+            android:background="@color/Primary"
+            android:layout_weight="1.2"
             android:weightSum="2">
 
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:background="@color/Primary_Light"
+                android:background="@drawable/rect_button"
                 android:id="@+id/mapsLayout"
                 android:onClick="getDirectionsButtonClick"
-                android:layout_weight="1.2"
-                android:layout_margin="10dp">
+                android:layout_weight="1.1"
+                android:layout_margin="10dp"
+                android:padding="6dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -77,7 +79,7 @@
                     android:text="Get Directions"
                     android:id="@+id/getDirectionsTextView"
                     android:gravity="center_vertical"
-                    android:textColor="@color/Primary_Accent"
+                    android:textColor="@color/Light"
                     android:layout_margin="7dp" />
 
                 <ImageView
@@ -92,7 +94,7 @@
                 android:orientation="horizontal"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight=".8"
+                android:layout_weight=".9"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp">
 
@@ -108,7 +110,9 @@
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:layout_centerVertical="true"
                     android:layout_alignParentStart="true"
-                    android:gravity="center_vertical" />
+                    android:gravity="center|center_vertical|center_horizontal"
+                    android:textColor="@color/Light"
+                    android:layout_gravity="center" />
             </LinearLayout>
 
         </LinearLayout>

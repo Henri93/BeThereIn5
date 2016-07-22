@@ -71,7 +71,15 @@ public class MapsActivity extends ActionBarActivity implements
             sender = intent.getStringExtra("sender");
 
             DestinationManager dm = new DestinationManager();
-            updateUI(sender, updatedLocation, dm.CalculationByDistance(getApplicationContext(), dm.convertStringToLatLng(updatedLocation)));
+            //updateUI(sender, updatedLocation, dm.CalculationByDistance(getApplicationContext(), dm.convertStringToLatLng(updatedLocation)));
+
+            //TODO REMOVE THIS FOR TESTING SPEED
+            if (dm.isWithin5Minutes(getApplicationContext(), dm.convertStringToLatLng(updatedLocation))) {
+                updateUI(sender, "YOU ARE WITHIN 5 MINUTES", dm.CalculationByDistance(getApplicationContext(), dm.convertStringToLatLng(updatedLocation)));
+            } else {
+                updateUI(sender, "Speed: " + dm.getSpeed(getApplicationContext()), dm.CalculationByDistance(getApplicationContext(), dm.convertStringToLatLng(updatedLocation)));
+            }
+
             updateMap(updatedLocation);
         }
     };
@@ -100,7 +108,7 @@ public class MapsActivity extends ActionBarActivity implements
         targetLoc = (TextView) findViewById(R.id.targetLocTextView);
         distanceTextView = (TextView) findViewById(R.id.distanceTextView);
 
-        updateUI("Waiting to connect...", "Connecting...", 0);
+        updateUI("Waiting to connect...", "Connecting", 0);
 
         if (mGoogleApiClient == null) {
             mGoogleApiClient = new GoogleApiClient.Builder(this)
