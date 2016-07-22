@@ -21,7 +21,7 @@ public class DestinationManager {
 
     private Location mLastLocation;
 
-    public boolean isWithin5Minutes(Context context, LatLng destination) {
+    public float isWithin5Minutes(Context context, LatLng destination) {
         boolean isWithin5 = false;
         //assume 15mph or 6.7056 m/s if current speed is 0
         float speed = (float) 6.7056;
@@ -34,7 +34,8 @@ public class DestinationManager {
         if (time <= 60 * 5) {
             isWithin5 = true;
         }
-        return isWithin5;
+        //return isWithin5;
+        return time;
     }
 
     public int CalculationByDistance(Context context, LatLng EndP) {

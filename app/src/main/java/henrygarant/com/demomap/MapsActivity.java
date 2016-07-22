@@ -74,12 +74,13 @@ public class MapsActivity extends ActionBarActivity implements
             //updateUI(sender, updatedLocation, dm.CalculationByDistance(getApplicationContext(), dm.convertStringToLatLng(updatedLocation)));
 
             //TODO REMOVE THIS FOR TESTING SPEED
-            if (dm.isWithin5Minutes(getApplicationContext(), dm.convertStringToLatLng(updatedLocation))) {
+           /* if (dm.isWithin5Minutes(getApplicationContext(), dm.convertStringToLatLng(updatedLocation))) {
                 updateUI(sender, "YOU ARE WITHIN 5 MINUTES", dm.CalculationByDistance(getApplicationContext(), dm.convertStringToLatLng(updatedLocation)));
             } else {
                 updateUI(sender, "Speed: " + dm.getSpeed(getApplicationContext()), dm.CalculationByDistance(getApplicationContext(), dm.convertStringToLatLng(updatedLocation)));
             }
-
+            */
+            updateUI(sender, "Sec Away: " + dm.isWithin5Minutes(getApplicationContext(), dm.convertStringToLatLng(updatedLocation)), dm.CalculationByDistance(getApplicationContext(), dm.convertStringToLatLng(updatedLocation)));
             updateMap(updatedLocation);
         }
     };
