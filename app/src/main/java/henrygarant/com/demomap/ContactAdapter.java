@@ -43,6 +43,7 @@ public class ContactAdapter extends BaseExpandableListAdapter {
                              boolean isLastChild, View convertView, ViewGroup parent) {
 
 
+
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -117,9 +118,9 @@ public class ContactAdapter extends BaseExpandableListAdapter {
 
         ImageView lblImage = (ImageView) convertView.findViewById(R.id.contactImage);
 
-        if (theContact.getImage() != null) {
-            //lblImage.setImageBitmap(theContact.getImage());
-        }
+        //this single line caused so much pain
+        lblImage.setImageBitmap(theContact.getImage());
+
 
         return convertView;
     }
