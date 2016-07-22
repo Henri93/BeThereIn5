@@ -6,3 +6,4 @@
 * [ ] Check is within 5 function
 * [ ] Send end gcm message to stop connection
 * [ ] Add cancel button in maps activity
+* [ ] Fix contact pictures
