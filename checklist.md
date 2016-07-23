@@ -8,5 +8,6 @@
 * [ ] Add cancel button in maps activity
 * [x] Fix contact pictures
 * [ ] Make Cancel Button
+* [ ] Ensure proper phone number format
 * [ ] Make Error Message PHP
 * [ ] Make Cancel Message PHP
