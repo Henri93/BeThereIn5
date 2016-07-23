@@ -1,6 +1,7 @@
 package henrygarant.com.demomap;
 
 import android.app.AlarmManager;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -10,6 +11,7 @@ import android.graphics.Color;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
@@ -74,13 +76,24 @@ public class MapsActivity extends ActionBarActivity implements
             //updateUI(sender, updatedLocation, dm.CalculationByDistance(getApplicationContext(), dm.convertStringToLatLng(updatedLocation)));
 
             //TODO REMOVE THIS FOR TESTING SPEED
-           /* if (dm.isWithin5Minutes(getApplicationContext(), dm.convertStringToLatLng(updatedLocation))) {
+            if (dm.isWithin5Minutes(getApplicationContext(), dm.convertStringToLatLng(updatedLocation))) {
                 updateUI(sender, "YOU ARE WITHIN 5 MINUTES", dm.CalculationByDistance(getApplicationContext(), dm.convertStringToLatLng(updatedLocation)));
+                NotificationManager mNotificationManager = (NotificationManager) getApplicationContext()
+                        .getSystemService(Context.NOTIFICATION_SERVICE);
+
+
+                NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
+                        getApplicationContext()).setSmallIcon(R.drawable.notification_icon_small)
+                        .setContentTitle("Be There In 5")
+                        .setStyle(new NotificationCompat.BigTextStyle().bigText("YOU ARE WITHIN 5"))
+                        .setContentText("YOU ARE WITHIN 5");
+
+                mNotificationManager.notify(0, mBuilder.build());
             } else {
                 updateUI(sender, "Speed: " + dm.getSpeed(getApplicationContext()), dm.CalculationByDistance(getApplicationContext(), dm.convertStringToLatLng(updatedLocation)));
             }
-            */
-            updateUI(sender, "Sec Away: " + dm.isWithin5Minutes(getApplicationContext(), dm.convertStringToLatLng(updatedLocation)), dm.CalculationByDistance(getApplicationContext(), dm.convertStringToLatLng(updatedLocation)));
+
+            //updateUI(sender, "Sec Away: " + dm.isWithin5Minutes(getApplicationContext(), dm.convertStringToLatLng(updatedLocation)), dm.CalculationByDistance(getApplicationContext(), dm.convertStringToLatLng(updatedLocation)));
             updateMap(updatedLocation);
         }
     };
