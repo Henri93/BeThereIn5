@@ -101,21 +101,18 @@
                 android:layout_weight=".9"
                 android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/targetLocTextView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cancel"
+                    android:id="@+id/button"
+                    android:background="@drawable/rect_button"
+                    android:textColor="@color/ErrorRed"
                     android:layout_gravity="center"
-                    android:gravity="center|center_vertical|center_horizontal"
-                    android:paddingBottom="20dp"
-                    android:paddingLeft="20dp"
-                    android:paddingRight="20dp"
-                    android:paddingTop="2dp"
-                    android:text="Target Loc"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="@color/Light" />
+                    android:gravity="center_vertical|center_horizontal"
+                    android:textSize="18sp"
+                    android:padding="20dp"
+                    android:onClick="cancelButtonClick" />
             </LinearLayout>
 
         </LinearLayout>

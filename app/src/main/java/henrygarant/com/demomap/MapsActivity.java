@@ -38,6 +38,7 @@ import java.util.Calendar;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import henrygarant.com.demomap.GcmServices.GcmSender;
 import henrygarant.com.demomap.MapActivities.DestinationManager;
 import henrygarant.com.demomap.MapActivities.MyLocationService;
 
@@ -73,11 +74,10 @@ public class MapsActivity extends ActionBarActivity implements
             sender = intent.getStringExtra("sender");
 
             DestinationManager dm = new DestinationManager();
-            //updateUI(sender, updatedLocation, dm.CalculationByDistance(getApplicationContext(), dm.convertStringToLatLng(updatedLocation)));
+            updateUI(sender, dm.CalculationByDistance(getApplicationContext(), dm.convertStringToLatLng(updatedLocation)));
 
             //TODO REMOVE THIS FOR TESTING SPEED
             if (dm.isWithin5Minutes(getApplicationContext(), dm.convertStringToLatLng(updatedLocation))) {
-                updateUI(sender, "YOU ARE WITHIN 5 MINUTES", dm.CalculationByDistance(getApplicationContext(), dm.convertStringToLatLng(updatedLocation)));
                 NotificationManager mNotificationManager = (NotificationManager) getApplicationContext()
                         .getSystemService(Context.NOTIFICATION_SERVICE);
 
@@ -89,8 +89,6 @@ public class MapsActivity extends ActionBarActivity implements
                         .setContentText("YOU ARE WITHIN 5");
 
                 mNotificationManager.notify(0, mBuilder.build());
-            } else {
-                updateUI(sender, "Speed: " + dm.getSpeed(getApplicationContext()), dm.CalculationByDistance(getApplicationContext(), dm.convertStringToLatLng(updatedLocation)));
             }
 
             //updateUI(sender, "Sec Away: " + dm.isWithin5Minutes(getApplicationContext(), dm.convertStringToLatLng(updatedLocation)), dm.CalculationByDistance(getApplicationContext(), dm.convertStringToLatLng(updatedLocation)));
@@ -119,10 +117,9 @@ public class MapsActivity extends ActionBarActivity implements
         phoneTo = intent.getStringExtra("phonefrom");
 
         targetName = (TextView) findViewById(R.id.targetNameTextView);
-        targetLoc = (TextView) findViewById(R.id.targetLocTextView);
         distanceTextView = (TextView) findViewById(R.id.distanceTextView);
 
-        updateUI("Waiting to connect...", "Connecting", 0);
+        updateUI("Waiting to connect...", 0);
 
         if (mGoogleApiClient == null) {
             mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -154,9 +151,8 @@ public class MapsActivity extends ActionBarActivity implements
         Toast.makeText(MapsActivity.this, "LOCATION CHANGED", Toast.LENGTH_SHORT).show();
     }
 
-    private void updateUI(String name, String targetLocation, int distance) {
+    private void updateUI(String name, int distance) {
         targetName.setText(name);
-        targetLoc.setText(targetLocation);
         distanceTextView.setText("Distance: " + distance + " m");
     }
 
@@ -301,9 +297,7 @@ public class MapsActivity extends ActionBarActivity implements
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        stopService(serviceIntent);
-        AlarmManager alarm_manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        alarm_manager.cancel(alarmPendingIntent);
+        destroyConnection();
 
     }
 
@@ -336,6 +330,21 @@ public class MapsActivity extends ActionBarActivity implements
             }, 2000);
 
         }
+    }
+
+    public void cancelButtonClick(View v) {
+        GcmSender gcmSender = new GcmSender(this);
+        SQLiteHandler db = new SQLiteHandler(this);
+        gcmSender.sendGcmAccept(db.getUserDetails().get("phone").toString(), phoneTo, "0", "1");
+        destroyConnection();
+    }
+
+    public void destroyConnection() {
+        stopService(serviceIntent);
+        AlarmManager alarm_manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        alarm_manager.cancel(alarmPendingIntent);
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 
 

@@ -97,7 +97,7 @@ public class WaitingPage extends FragmentActivity {
                         GcmSender gcmSender = new GcmSender(getApplicationContext());
                         SQLiteHandler db = new SQLiteHandler(getApplicationContext());
                         Log.d("USER: ", db.getUserDetails().toString());
-                        gcmSender.sendGcmAccept(db.getUserDetails().get("phone"), number);
+                        gcmSender.sendGcmAccept(db.getUserDetails().get("phone"), number, "1", "0");
                     }
                 });
             }

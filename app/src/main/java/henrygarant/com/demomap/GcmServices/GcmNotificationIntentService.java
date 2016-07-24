@@ -1,5 +1,6 @@
 package henrygarant.com.demomap.GcmServices;
 
+import android.app.AlarmManager;
 import android.app.IntentService;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -9,10 +10,12 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import henrygarant.com.demomap.Config;
+import henrygarant.com.demomap.MainActivity;
 import henrygarant.com.demomap.MapActivities.WaitingPage;
 import henrygarant.com.demomap.MapsActivity;
 import henrygarant.com.demomap.R;
@@ -64,6 +67,14 @@ public class GcmNotificationIntentService extends IntentService {
                         //MapsActivity.sender = sender;
                         //MapsActivity.phoneTo = extras.get("phonefrom").toString();
                         sendNotification("Ride Request From " + sender, extras.get("phonefrom").toString());
+                    }
+                    //GCM CANCEL REQUEST
+                    else if (extras.get(Config.ACCEPT_START_KEY).toString().equals("0") && extras.get(Config.ACCEPT_END_KEY).toString().equals("1")) {
+                        Log.d("CANCEL REQUEST:", "canceling");
+                        AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                        am.cancel(MapsActivity.getAlarmPendingIntent());
+                        startActivity(new Intent(this, MainActivity.class));
+                        Toast.makeText(this, extras.get(Config.SENDER_KEY).toString() + " canceled connection.", Toast.LENGTH_LONG).show();
                     } else {
                         Log.d("NOTIFICATIONINTENTSERVICE: ", "Error parsing gcm message");
                     }

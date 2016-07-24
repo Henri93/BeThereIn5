@@ -60,15 +60,17 @@ public class GcmSender {
         }
     }
 
-    public void sendGcmAccept(String phonefrom, String phoneto) {
+    public void sendGcmAccept(String phonefrom, String phoneto, String acceptStart, String acceptEnd) {
         Log.d("FROM: " + phonefrom, "TO: " + phoneto);
         ArrayList<String> params = new ArrayList<String>();
         params.add(phonefrom);
         params.add(phoneto);
+        params.add(acceptStart);
+        params.add(acceptEnd);
         new SendGcmAccept().execute(params);
     }
 
-    public void postAcceptData(String personSendingFrom, String personSendingTo) {
+    public void postAcceptData(String personSendingFrom, String personSendingTo, String acceptStart, String acceptEnd) {
         HttpClient httpclient = new DefaultHttpClient();
         // specify the URL you want to post to
         HttpPost httppost = new HttpPost(Config.APP_SERVER_ACCEPT);
@@ -79,8 +81,10 @@ public class GcmSender {
             // add an HTTP variable and value pair
             nameValuePairs.add(new BasicNameValuePair("phonefrom", personSendingFrom));
             nameValuePairs.add(new BasicNameValuePair("phoneto", personSendingTo));
-            nameValuePairs.add(new BasicNameValuePair("acceptstart", "1"));
-            nameValuePairs.add(new BasicNameValuePair("acceptend", "0"));
+            nameValuePairs.add(new BasicNameValuePair("acceptstart", acceptStart));
+            nameValuePairs.add(new BasicNameValuePair("acceptend", acceptEnd));
+            //nameValuePairs.add(new BasicNameValuePair("acceptstart", "1"));
+            //nameValuePairs.add(new BasicNameValuePair("acceptend", "0"));
             httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
             // send the variable and value, in other words post, to the URL
             HttpResponse response = httpclient.execute(httppost);
@@ -109,7 +113,7 @@ public class GcmSender {
     private class SendGcmAccept extends AsyncTask<ArrayList<String>, Integer, Double> {
         @Override
         protected Double doInBackground(ArrayList<String>... params) {
-            postAcceptData(params[0].get(0), params[0].get(1));
+            postAcceptData(params[0].get(0), params[0].get(1), params[0].get(2), params[0].get(3));
             return null;
         }
 
