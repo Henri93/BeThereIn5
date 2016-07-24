@@ -6,4 +6,8 @@
 * [ ] Check is within 5 function
 * [ ] Send end gcm message to stop connection
 * [ ] Add cancel button in maps activity
-* [ ] Fix contact pictures
+* [x] Fix contact pictures
+* [ ] Make Cancel Button
+* [ ] Ensure proper phone number format
+* [ ] Make Error Message PHP
+* [ ] Make Cancel Message PHP
