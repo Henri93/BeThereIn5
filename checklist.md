@@ -7,6 +7,7 @@
 * [ ] Send end gcm message to stop connection
 * [x] Fix contact pictures
 * [x] Make Cancel Button
+* [x] Add Search
 * [ ] Ensure proper phone number format
 * [ ] Make Error Message PHP
 * [ ] Make Cancel Message PHP
