@@ -19,13 +19,34 @@ import henrygarant.com.demomap.MapActivities.WaitingPage;
 public class ContactAdapter extends BaseExpandableListAdapter {
 
     private Context _context;
-    private ArrayList<Contact> _listDataHeader; // header titles
+    private ArrayList<Contact> _listDataHeader;
+    private ArrayList<Contact> originalContacts;// header titles
     private Typeface tf;
 
     public ContactAdapter(Context context, ArrayList<Contact> listDataHeader) {
         this._context = context;
         this._listDataHeader = listDataHeader;
+        originalContacts = listDataHeader;
         tf = Typeface.createFromAsset(_context.getAssets(), "fonts/Exo-Light.otf");
+    }
+
+    public void filterData(String query) {
+        query = query.toLowerCase();
+        if (query.isEmpty()) {
+            _listDataHeader.addAll(originalContacts);
+        } else {
+            ArrayList<Contact> newContacts = new ArrayList<Contact>();
+            for (Contact contact : _listDataHeader) {
+                if (contact.getName().toLowerCase().contains(query)) {
+                    newContacts.add(contact);
+                }
+            }
+            if (newContacts.size() != 0) {
+                _listDataHeader.clear();
+                _listDataHeader.addAll(newContacts);
+            }
+        }
+        notifyDataSetChanged();
     }
 
     @Override
