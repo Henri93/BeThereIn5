@@ -58,19 +58,20 @@ public class MainTabFragment extends Fragment implements
 
     public void filter(String query) {
         query = query.toLowerCase();
-        ArrayList<Contact> newContacts = new ArrayList<Contact>();
-        newContacts.addAll(getContacts());
         if (!query.isEmpty()) {
             ArrayList<Contact> searchedContacts = new ArrayList<Contact>();
-            for (Contact contact : newContacts) {
+            for (Contact contact : getContacts()) {
                 if (contact.getName().toLowerCase().contains(query)) {
                     searchedContacts.add(contact);
                 }
             }
             contactAdapter = new ContactAdapter(getActivity().getApplicationContext(), searchedContacts);
-            contactAdapter.notifyDataSetChanged();
+        } else {
+            contactAdapter = new ContactAdapter(getActivity().getApplicationContext(), getContacts());
         }
+
         contactList.setAdapter(contactAdapter);
+        contactAdapter.notifyDataSetChanged();
     }
 
     private ArrayList<Contact> getContacts() {
