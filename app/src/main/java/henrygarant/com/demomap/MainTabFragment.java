@@ -9,12 +9,12 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import java.io.FileNotFoundException;
@@ -38,6 +38,42 @@ public class MainTabFragment extends Fragment implements
         TextView selectTextView = (TextView) rootview.findViewById(R.id.selectTextView);
         Typeface tf = Typeface.createFromAsset(rootview.getContext().getAssets(), "fonts/OpenSans-Light.ttf");
         selectTextView.setTypeface(tf);
+
+        contactAdapter = new ContactAdapter(getActivity().getApplicationContext(), getContacts());
+        contactList.setAdapter(contactAdapter);
+        return rootview;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String query) {
+        filter(query);
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        filter(query);
+        return false;
+    }
+
+    public void filter(String query) {
+        query = query.toLowerCase();
+        ArrayList<Contact> newContacts = new ArrayList<Contact>();
+        newContacts.addAll(getContacts());
+        if (!query.isEmpty()) {
+            ArrayList<Contact> searchedContacts = new ArrayList<Contact>();
+            for (Contact contact : newContacts) {
+                if (contact.getName().toLowerCase().contains(query)) {
+                    searchedContacts.add(contact);
+                }
+            }
+            contactAdapter = new ContactAdapter(getActivity().getApplicationContext(), searchedContacts);
+            contactAdapter.notifyDataSetChanged();
+        }
+        contactList.setAdapter(contactAdapter);
+    }
+
+    private ArrayList<Contact> getContacts() {
         ContentResolver cr = getActivity().getContentResolver();
         ArrayList<Contact> contactsList = new ArrayList<Contact>();
         Cursor phones = cr.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null);
@@ -57,20 +93,7 @@ public class MainTabFragment extends Fragment implements
             }
             contactsList.add(new Contact(contact, phoneNumber, bitmap));
         }
-        contactAdapter = new ContactAdapter(getActivity().getApplicationContext(), contactsList);
-        contactList.setAdapter(contactAdapter);
-        return rootview;
-    }
-
-    @Override
-    public boolean onQueryTextChange(String query) {
-        contactAdapter.filterData(query);
-        return false;
-    }
-
-    @Override
-    public boolean onQueryTextSubmit(String query) {
-
-        return false;
+        phones.close();
+        return contactsList;
     }
 }
