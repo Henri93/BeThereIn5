@@ -54,7 +54,7 @@ public class GcmNotificationIntentService extends IntentService {
                             "Working... " + (i + 1) + "/5 @ "
                                     + SystemClock.elapsedRealtime());
                     try {
-                        Thread.sleep(5000);
+                        Thread.sleep(500);
                     } catch (InterruptedException e) {
                     }
                 }
@@ -78,8 +78,14 @@ public class GcmNotificationIntentService extends IntentService {
                     } else {
                         Log.d("NOTIFICATIONINTENTSERVICE: ", "Error parsing gcm message");
                     }
+                } else if (extras.get(Config.ERROR_KEY) != null) {
+                    //GCM ERROR SENDING
+                    AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                    am.cancel(MapsActivity.getAlarmPendingIntent());
+                    startActivity(new Intent(this, MainActivity.class));
+                    Toast.makeText(this, extras.get(Config.ERROR_KEY).toString(), Toast.LENGTH_LONG).show();
                 }else{
-                    //GCM LOCATION DATA
+                    //GCM MESSAGE LOCATION DATA
                     Intent location_intent = new Intent();
                     Log.d("GCM LOCTION UPDATE: ", extras.toString());
 

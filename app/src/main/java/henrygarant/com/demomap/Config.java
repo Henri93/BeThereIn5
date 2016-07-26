@@ -14,6 +14,7 @@ public interface Config {
     static final String PHONETO_KEY = "phoneto";
     static final String SENDER_KEY = "sender";
     static final String MESSAGE_KEY = "m";
+    static final String ERROR_KEY = "error";
     static final String ACCEPT_START_KEY = "as";
     static final String ACCEPT_END_KEY = "ae";
 
