@@ -9,5 +9,5 @@
 * [x] Make Cancel Button
 * [x] Add Search
 * [ ] Ensure proper phone number format
-* [ ] Make Error Message PHP
-* [ ] Make Cancel Message PHP
+* [x] Make Error Message PHP function
+* [x] Make Cancel Message PHP function
