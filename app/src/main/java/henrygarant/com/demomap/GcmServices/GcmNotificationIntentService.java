@@ -59,7 +59,17 @@ public class GcmNotificationIntentService extends IntentService {
                     }
                 }
                 Log.i(TAG, "Completed work @ " + SystemClock.elapsedRealtime());
-                if (extras.get(Config.MESSAGE_KEY) == null) {
+                Log.d("GCM NOTIF INTENT: ", extras.get(Config.ERROR_KEY).toString());
+                if (extras.get(Config.ERROR_KEY) != null) {
+                    //GCM ERROR SENDING
+                    Log.d("GCM NOTIF INTENT: ", "ERROR");
+                    AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                    am.cancel(MapsActivity.getAlarmPendingIntent());
+                    Intent myIntent = new Intent(this, MainActivity.class);
+                    myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    Toast.makeText(this, extras.get(Config.ERROR_KEY).toString(), Toast.LENGTH_LONG).show();
+                    startActivity(myIntent);
+                } else if (extras.get(Config.MESSAGE_KEY) == null) {
                     //GCM ACCEPT REQUEST
                     if (extras.get(Config.ACCEPT_START_KEY).toString().equals("1") && extras.get(Config.ACCEPT_END_KEY).toString().equals("0")) {
                         Log.d("NOTIFICATIONINTENTSERVICE: ", extras.toString());
@@ -78,13 +88,7 @@ public class GcmNotificationIntentService extends IntentService {
                     } else {
                         Log.d("NOTIFICATIONINTENTSERVICE: ", "Error parsing gcm message");
                     }
-                } else if (extras.get(Config.ERROR_KEY) != null) {
-                    //GCM ERROR SENDING
-                    AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                    am.cancel(MapsActivity.getAlarmPendingIntent());
-                    startActivity(new Intent(this, MainActivity.class));
-                    Toast.makeText(this, extras.get(Config.ERROR_KEY).toString(), Toast.LENGTH_LONG).show();
-                }else{
+                } else {
                     //GCM MESSAGE LOCATION DATA
                     Intent location_intent = new Intent();
                     Log.d("GCM LOCTION UPDATE: ", extras.toString());

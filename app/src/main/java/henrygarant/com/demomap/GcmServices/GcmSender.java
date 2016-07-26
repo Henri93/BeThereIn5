@@ -3,7 +3,6 @@ package henrygarant.com.demomap.GcmServices;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -105,7 +104,7 @@ public class GcmSender {
         }
 
         protected void onPostExecute(Double result) {
-            Toast.makeText(context.getApplicationContext(), "Sent Post Request", Toast.LENGTH_LONG).show();
+            //Toast.makeText(context.getApplicationContext(), "Sent Post Request", Toast.LENGTH_LONG).show();
         }
 
     }
@@ -118,7 +117,7 @@ public class GcmSender {
         }
 
         protected void onPostExecute(Double result) {
-            Toast.makeText(context.getApplicationContext(), "Sent Post Request", Toast.LENGTH_LONG).show();
+            //Toast.makeText(context.getApplicationContext(), "Sent Post Request", Toast.LENGTH_LONG).show();
         }
 
     }
