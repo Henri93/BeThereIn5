@@ -82,7 +82,7 @@ public class GcmNotificationIntentService extends IntentService {
                         Log.d("CANCEL REQUEST:", "canceling");
                         AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
                         am.cancel(MapsActivity.getAlarmPendingIntent());
-                        startActivity(new Intent(this, MainActivity.class));
+                        startActivity(new Intent(this, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                         Toast.makeText(this, extras.get(Config.SENDER_KEY).toString() + " canceled connection.", Toast.LENGTH_LONG).show();
                     } else {
                         Log.d("NOTIFICATIONINTENTSERVICE: ", "Error parsing gcm message");
