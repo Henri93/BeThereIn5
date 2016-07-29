@@ -91,12 +91,14 @@ public class GcmNotificationIntentService extends IntentService {
                     //GCM MESSAGE LOCATION DATA
                     Intent location_intent = new Intent();
                     Log.d("GCM LOCTION UPDATE: ", extras.toString());
+
                     //the other persons location
                     location_intent.putExtra("target", extras.get(Config.MESSAGE_KEY).toString());
                     //phone number of whom sent the location
                     location_intent.putExtra("phonefrom", extras.get(Config.PHONEFROM_KEY).toString());
                     //name of whom sent the message
                     location_intent.putExtra("sender", extras.get(Config.SENDER_KEY).toString());
+
                     location_intent.setAction(MapsActivity.MAP_BROADCAST);
                     Log.d("GCM LOCTION UPDATE: ", "sent broadcast.");
                     sendBroadcast(location_intent);
