@@ -8,6 +8,7 @@
 * [x] Fix contact pictures
 * [x] Make Cancel Button
 * [x] Add Search
-* [ ] Ensure proper phone number format
+* [x] Ensure proper phone number format
 * [x] Make Error Message PHP function
 * [x] Make Cancel Message PHP function
+* [ ] Make Accept Notification wake screen
