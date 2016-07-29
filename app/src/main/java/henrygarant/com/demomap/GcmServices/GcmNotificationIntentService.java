@@ -59,7 +59,6 @@ public class GcmNotificationIntentService extends IntentService {
                     }
                 }
                 Log.i(TAG, "Completed work @ " + SystemClock.elapsedRealtime());
-                Log.d("GCM NOTIF INTENT: ", extras.get(Config.ERROR_KEY).toString());
                 if (extras.get(Config.ERROR_KEY) != null) {
                     //GCM ERROR SENDING
                     Log.d("GCM NOTIF INTENT: ", "ERROR");

@@ -28,6 +28,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import henrygarant.com.demomap.GcmServices.GcmRegister;
+import henrygarant.com.demomap.GcmServices.GcmSender;
 
 public class LoginActivity extends Activity {
 
@@ -91,7 +92,7 @@ public class LoginActivity extends Activity {
                 // Check for empty data in the form
                 if (!phone.isEmpty() && !password.isEmpty() && Patterns.PHONE.matcher(phone).matches() && phone.length() >= 7 && phone.length() <= 16) {
                     //user login
-                    checkLogin(phone, password);
+                    checkLogin(new GcmSender(getApplicationContext()).formatPhone(phone), password);
                 } else {
                     // Prompt user to enter valid credentials
                     Animation shake = AnimationUtils.loadAnimation(getBaseContext(), R.anim.shake);

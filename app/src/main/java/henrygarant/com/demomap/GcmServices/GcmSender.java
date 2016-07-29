@@ -29,6 +29,8 @@ public class GcmSender {
     }
 
     public void sendGcmMessage(String phonefrom, String phoneto, String message) {
+        phoneto = formatPhone(phoneto);
+        phonefrom = formatPhone(phonefrom);
         ArrayList<String> params = new ArrayList<String>();
         params.add(phonefrom);
         params.add(phoneto);
@@ -60,6 +62,8 @@ public class GcmSender {
     }
 
     public void sendGcmAccept(String phonefrom, String phoneto, String acceptStart, String acceptEnd) {
+        phoneto = formatPhone(phoneto);
+        phonefrom = formatPhone(phonefrom);
         Log.d("FROM: " + phonefrom, "TO: " + phoneto);
         ArrayList<String> params = new ArrayList<String>();
         params.add(phonefrom);
@@ -120,5 +124,13 @@ public class GcmSender {
             //Toast.makeText(context.getApplicationContext(), "Sent Post Request", Toast.LENGTH_LONG).show();
         }
 
+    }
+
+    public String formatPhone(String phoneNumber) {
+        String s = phoneNumber.replaceAll("[ +()\\\\s-]", "");
+        if (s.startsWith("1") && s.length() == 11) {
+            s = s.substring(1);
+        }
+        return s;
     }
 }

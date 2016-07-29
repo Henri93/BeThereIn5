@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import henrygarant.com.demomap.GcmServices.GcmRegister;
+import henrygarant.com.demomap.GcmServices.GcmSender;
 
 public class RegisterActivity extends Activity {
 
@@ -87,7 +88,8 @@ public class RegisterActivity extends Activity {
                     GcmRegister gcm = new GcmRegister();
                     final String regId = gcm.registerGCM(getApplicationContext());
                     //TODO TEST FORMAT
-                    registerUser(name, formatPhone(phone), password, regId);
+                    Log.d("REGISTER: ", new GcmSender(getApplicationContext()).formatPhone(phone));
+                    registerUser(name, new GcmSender(getApplicationContext()).formatPhone(phone), password, regId);
                 } else {
                     Animation shake = AnimationUtils.loadAnimation(getBaseContext(), R.anim.shake);
                     registerLayout.startAnimation(shake);
@@ -207,10 +209,6 @@ public class RegisterActivity extends Activity {
     private void hideDialog() {
         if (pDialog.isShowing())
             pDialog.dismiss();
-    }
-
-    private String formatPhone(String phoneNumber) {
-        return phoneNumber.replaceAll("[ +()\\\\s-]", "");
     }
 
 }
