@@ -86,7 +86,8 @@ public class RegisterActivity extends Activity {
                 if (!name.isEmpty() && !phone.isEmpty() && !password.isEmpty() && Patterns.PHONE.matcher(phone).matches() && phone.length() >= 7 && phone.length() <= 16) {
                     GcmRegister gcm = new GcmRegister();
                     final String regId = gcm.registerGCM(getApplicationContext());
-                    registerUser(name, phone, password, regId);
+                    //TODO TEST FORMAT
+                    registerUser(name, formatPhone(phone), password, regId);
                 } else {
                     Animation shake = AnimationUtils.loadAnimation(getBaseContext(), R.anim.shake);
                     registerLayout.startAnimation(shake);
@@ -207,4 +208,9 @@ public class RegisterActivity extends Activity {
         if (pDialog.isShowing())
             pDialog.dismiss();
     }
+
+    private String formatPhone(String phoneNumber) {
+        return phoneNumber.replaceAll("[ +()\\\\s-]", "");
+    }
+
 }

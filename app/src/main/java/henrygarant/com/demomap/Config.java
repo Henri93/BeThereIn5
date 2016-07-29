@@ -33,4 +33,5 @@ public interface Config {
     public static final String FIELD_REGISTRATION_ID = "registration_id";
     public static final String FIELD_MESSAGE = "msg";
 
+
 }
