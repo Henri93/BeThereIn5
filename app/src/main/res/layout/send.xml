@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/Primary"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight=".5"
+        android:padding="10dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/login_image" />
+
+    <LinearLayout
+        android:id="@+id/sendLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_weight=".5"
+        android:baselineAligned="false"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:padding="10dp"
+            android:text="Enter a Phone Number"
+            android:textColor="@color/Light"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/sendPhone"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@color/Light"
+            android:hint="Phone Number"
+            android:inputType="phone"
+            android:padding="10dp"
+            android:singleLine="true"
+            android:textColor="@color/MidLight"
+            android:textColorHint="@color/Hint" />
+
+        <!-- Login Button -->
+
+        <Button
+            android:id="@+id/sendButton"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center"
+            android:background="@drawable/round_button_small"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="Connect"
+            android:textAlignment="center"
+            android:textColor="@color/Light"
+            android:textSize="14sp" />
+
+
+    </LinearLayout>
+
+</LinearLayout>
