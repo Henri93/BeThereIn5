@@ -92,9 +92,9 @@ public class MapsActivity extends ActionBarActivity implements
                 mBuilder.setLights(Color.RED, 3000, 3000);
                 mBuilder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
                 mNotificationManager.notify(0, mBuilder.build());
+                destroyConnection();
             }
 
-            //updateUI(sender, "Sec Away: " + dm.isWithin5Minutes(getApplicationContext(), dm.convertStringToLatLng(updatedLocation)), dm.CalculationByDistance(getApplicationContext(), dm.convertStringToLatLng(updatedLocation)));
             updateMap(updatedLocation);
         }
     };
