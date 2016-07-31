@@ -86,7 +86,7 @@ public class MapsActivity extends ActionBarActivity implements
                         getApplicationContext()).setSmallIcon(R.drawable.notification_icon_small)
                         .setContentTitle("Be There In 5")
                         .setStyle(new NotificationCompat.BigTextStyle().bigText(sender))
-                        .setContentText("You are withing 5 minutes from " + sender);
+                        .setContentText("You are within 5 minutes from " + sender);
 
                 mBuilder.setVibrate(new long[]{1000, 1000, 1000, 1000, 1000});
                 mBuilder.setLights(Color.RED, 3000, 3000);
