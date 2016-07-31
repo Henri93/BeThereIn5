@@ -2,23 +2,15 @@ package henrygarant.com.demomap;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.util.Patterns;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import henrygarant.com.demomap.GcmServices.GcmSender;
 import henrygarant.com.demomap.MapActivities.WaitingPage;
 
 public class SendActivity extends ActionBarActivity {
@@ -30,12 +22,11 @@ public class SendActivity extends ActionBarActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.send);
-        getActionBar().setHomeButtonEnabled(true);
         phoneEditText = (EditText) findViewById(R.id.sendPhone);
         sendLayout = (LinearLayout) findViewById(R.id.sendLayout);
     }
 
-    public void sendNewButtonClicked(View v) {
+    public void sendNewButtonClick(View v) {
         String phone = phoneEditText.getText().toString();
         if (!phone.isEmpty() && Patterns.PHONE.matcher(phone).matches() && phone.length() >= 7 && phone.length() <= 16) {
             phoneEditText.setText("");
