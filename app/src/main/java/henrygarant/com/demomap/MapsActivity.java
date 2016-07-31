@@ -91,6 +91,7 @@ public class MapsActivity extends ActionBarActivity implements
                 mBuilder.setVibrate(new long[]{1000, 1000, 1000, 1000, 1000});
                 mBuilder.setLights(Color.RED, 3000, 3000);
                 mBuilder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
+                mBuilder.setAutoCancel(true);
                 mNotificationManager.notify(0, mBuilder.build());
                 //TODO FIGURE A WAY TO EITHER WAIT OR DESTROY NEXT CONNECTION
                 //this ensures that the other person will receive location update too

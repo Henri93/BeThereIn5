@@ -3,6 +3,7 @@ package henrygarant.com.demomap;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.util.Patterns;
 import android.view.View;
 import android.view.animation.Animation;
@@ -23,6 +24,7 @@ public class SendActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.send);
         phoneEditText = (EditText) findViewById(R.id.sendPhone);
+        phoneEditText.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
         sendLayout = (LinearLayout) findViewById(R.id.sendLayout);
     }
 
