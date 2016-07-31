@@ -68,7 +68,7 @@ public class WaitingPage extends FragmentActivity {
                     .setIcon(R.mipmap.icon)
                     .show();
         } else {
-            //Came from user click aka ContactAdapter class
+            //Came from user click aka ContactAdapter class or SenderActivity
             sendGCMAccept(number);
             Intent myIntent = new Intent(getBaseContext(), MapsActivity.class);
             myIntent.putExtra("phonefrom", number);

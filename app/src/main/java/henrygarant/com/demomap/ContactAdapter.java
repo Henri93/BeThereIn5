@@ -70,7 +70,6 @@ public class ContactAdapter extends BaseExpandableListAdapter {
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 _context.startActivity(intent);
 
-
             }
         });
         //set onclick here
