@@ -3,8 +3,8 @@
 * [x] Add Target TextView Functionality
 * [x] Add Distance Functionality
 * [ ] Send Join Request to non members
-* [ ] Check is within 5 function
-* [ ] Send end gcm message to stop connection
+* [x] Check is within 5 function
+* [x] Send end gcm message to stop connection
 * [x] Fix contact pictures
 * [x] Make Cancel Button
 * [x] Add Search
