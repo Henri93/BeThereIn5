@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
@@ -80,8 +81,14 @@ public class GcmNotificationIntentService extends IntentService {
                         Log.d("CANCEL REQUEST:", "canceling");
                         AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
                         am.cancel(MapsActivity.getAlarmPendingIntent());
+                        Handler mHandler = new Handler(getMainLooper());
+                        mHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(getApplicationContext(), "Connection Stopped", Toast.LENGTH_SHORT).show();
+                            }
+                        });
                         startActivity(new Intent(this, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-                        Toast.makeText(this, extras.get(Config.SENDER_KEY).toString() + " canceled connection.", Toast.LENGTH_LONG).show();
                     } else {
                         Log.d("NOTIFICATIONINTENTSERVICE: ", "Error parsing gcm message");
                     }
