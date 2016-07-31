@@ -6,6 +6,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -129,10 +130,9 @@ public class GcmNotificationIntentService extends IntentService {
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(msg))
                 .setContentText(msg);
 
-        mBuilder.setContentIntent(contentIntent);
-        mBuilder.setAutoCancel(true);
-        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        builder.setSound(alarmSound);
+        mBuilder.setVibrate(new long[]{1000, 1000, 1000, 1000, 1000});
+        mBuilder.setLights(Color.BLUE, 3000, 3000);
+        mBuilder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
         mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
     }
 }

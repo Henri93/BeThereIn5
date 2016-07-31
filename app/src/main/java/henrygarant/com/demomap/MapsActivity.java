@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
 import android.location.Location;
+import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
@@ -56,7 +57,6 @@ public class MapsActivity extends ActionBarActivity implements
     private int CIRCLE_COLOR =  Color.argb(100, 30, 136, 229);
     private LatLng myLocation;
     private TextView targetName;
-    private TextView targetLoc;
     private TextView distanceTextView;
     private GoogleApiClient mGoogleApiClient;
     private DestinationManager destinationManager;
@@ -76,18 +76,21 @@ public class MapsActivity extends ActionBarActivity implements
             DestinationManager dm = new DestinationManager();
             updateUI(sender, dm.CalculationByDistance(getApplicationContext(), dm.convertStringToLatLng(updatedLocation)));
 
-            //TODO REMOVE THIS FOR TESTING SPEED
+            //***
+            //THE MASTER BETHEREIN5 CHECK HAPPENS HERE
+            //***
             if (dm.isWithin5Minutes(getApplicationContext(), dm.convertStringToLatLng(updatedLocation))) {
                 NotificationManager mNotificationManager = (NotificationManager) getApplicationContext()
                         .getSystemService(Context.NOTIFICATION_SERVICE);
-
-
                 NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
                         getApplicationContext()).setSmallIcon(R.drawable.notification_icon_small)
                         .setContentTitle("Be There In 5")
-                        .setStyle(new NotificationCompat.BigTextStyle().bigText("YOU ARE WITHIN 5"))
-                        .setContentText("YOU ARE WITHIN 5");
+                        .setStyle(new NotificationCompat.BigTextStyle().bigText(sender))
+                        .setContentText("You are withing 5 minutes");
 
+                mBuilder.setVibrate(new long[]{1000, 1000, 1000, 1000, 1000});
+                mBuilder.setLights(Color.RED, 3000, 3000);
+                mBuilder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
                 mNotificationManager.notify(0, mBuilder.build());
             }
 
