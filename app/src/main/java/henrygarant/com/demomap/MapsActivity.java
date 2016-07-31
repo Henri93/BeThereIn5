@@ -92,7 +92,9 @@ public class MapsActivity extends ActionBarActivity implements
                 mBuilder.setLights(Color.RED, 3000, 3000);
                 mBuilder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
                 mNotificationManager.notify(0, mBuilder.build());
-                destroyConnection();
+                //TODO FIGURE A WAY TO EITHER WAIT OR DESTROY NEXT CONNECTION
+                //this ensures that the other person will receive location update too
+                //destroyConnection();
             }
 
             updateMap(updatedLocation);
