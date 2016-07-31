@@ -27,8 +27,8 @@ public class SendActivity extends ActionBarActivity {
     LinearLayout sendLayout;
 
     @Override
-    public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.send);
         getActionBar().setHomeButtonEnabled(true);
         phoneEditText = (EditText) findViewById(R.id.sendPhone);
