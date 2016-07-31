@@ -57,12 +57,14 @@
 
         <activity
             android:name=".MainActivity"
+            android:launchMode="singleInstance"
             android:icon="@mipmap/icon"
             android:label="@string/app_name"
             android:windowSoftInputMode="adjustPan"></activity>
 
         <activity
             android:name=".MapsActivity"
+            android:launchMode="singleInstance"
             android:icon="@mipmap/icon"
             android:label="@string/app_name"
             android:screenOrientation="portrait">
@@ -70,12 +72,14 @@
 
         <activity
             android:name=".MapActivities.WaitingPage"
+            android:launchMode="singleInstance"
             android:label="@string/app_name"
             android:theme="@style/Theme.Transparent">
         </activity>
 
         <activity
             android:name=".SendActivity"
+            android:launchMode="singleInstance"
             android:label="@string/app_name"
             android:parentActivityName=".MainActivity"></activity>
 
