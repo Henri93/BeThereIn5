@@ -58,6 +58,7 @@
             android:layout_gravity="center"
             android:background="@drawable/round_button_small"
             android:gravity="center_vertical|center_horizontal"
+            android:onClick="sendNewButtonClick"
             android:text="Connect"
             android:textAlignment="center"
             android:textColor="@color/Light"
