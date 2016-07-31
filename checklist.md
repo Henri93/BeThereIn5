@@ -11,4 +11,4 @@
 * [x] Ensure proper phone number format
 * [x] Make Error Message PHP function
 * [x] Make Cancel Message PHP function
-* [ ] Make Accept Notification wake screen
+* [x] Make Accept Notification create noise
