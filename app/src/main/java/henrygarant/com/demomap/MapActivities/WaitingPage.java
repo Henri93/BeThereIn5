@@ -20,7 +20,6 @@ import henrygarant.com.demomap.SQLiteHandler;
 
 public class WaitingPage extends FragmentActivity {
 
-    private ProgressDialog pDialog;
     private String number;
     private String sender;
     private boolean fromAccept;
@@ -77,15 +76,7 @@ public class WaitingPage extends FragmentActivity {
     }
 
 
-
     private void sendGCMAccept(final String number) {
-        // Progress dialog
-        pDialog = new ProgressDialog(this, R.style.ProcessDialog);
-        //set cancelable in some other manner
-        pDialog.setCancelable(false);
-        pDialog.setMessage("Sending Request...");
-        showDialog();
-
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
@@ -93,7 +84,6 @@ public class WaitingPage extends FragmentActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        pDialog.setMessage("Waiting for Acceptance...");
                         GcmSender gcmSender = new GcmSender(getApplicationContext());
                         SQLiteHandler db = new SQLiteHandler(getApplicationContext());
                         Log.d("USER: ", db.getUserDetails().toString());
@@ -102,15 +92,5 @@ public class WaitingPage extends FragmentActivity {
                 });
             }
         }, 4 * 1000);
-    }
-
-    private void showDialog() {
-        if (!pDialog.isShowing())
-            pDialog.show();
-    }
-
-    private void hideDialog() {
-        if (pDialog.isShowing())
-            pDialog.dismiss();
     }
 }
