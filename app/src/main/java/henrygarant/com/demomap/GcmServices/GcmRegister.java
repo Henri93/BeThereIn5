@@ -32,6 +32,7 @@ public class GcmRegister{
         gcm = GoogleCloudMessaging.getInstance(context);
         regId = getRegistrationId(context);
 
+
         if (regId.isEmpty()) {
 
             registerInBackground(context);
@@ -108,6 +109,34 @@ public class GcmRegister{
                 Toast.makeText(context,
                         "Registered with GCM Server." + msg, Toast.LENGTH_LONG)
                         .show();
+            }
+        }.execute(null, null, null);
+    }
+
+    public void unregisterInBackground(final Context context) {
+        new AsyncTask() {
+
+            @Override
+            protected String doInBackground(Object[] params) {
+                String msg = "";
+                try {
+                    if (gcm == null) {
+                        gcm = GoogleCloudMessaging.getInstance(context);
+                    }
+                    gcm.unregister();
+                    Log.d("RegisterActivity", "UNregisterInBackground ");
+                    msg = "Device UNregistered";
+
+                } catch (IOException ex) {
+                    msg = "Error :" + ex.getMessage();
+                    Log.d("RegisterActivity", "Error: " + msg);
+                }
+                Log.d("RegisterActivity", "AsyncTask completed: " + msg);
+                return msg;
+            }
+
+
+            protected void onPostExecute(String msg) {
             }
         }.execute(null, null, null);
     }

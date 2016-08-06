@@ -86,6 +86,7 @@ public class RegisterActivity extends Activity {
 
                 if (!name.isEmpty() && !phone.isEmpty() && !password.isEmpty() && Patterns.PHONE.matcher(phone).matches() && phone.length() >= 7 && phone.length() <= 16) {
                     GcmRegister gcm = new GcmRegister();
+                    gcm.unregisterInBackground(getApplicationContext());
                     final String regId = gcm.registerGCM(getApplicationContext());
                     //TODO TEST FORMAT
                     Log.d("REGISTER: ", new GcmSender(getApplicationContext()).formatPhone(phone));
