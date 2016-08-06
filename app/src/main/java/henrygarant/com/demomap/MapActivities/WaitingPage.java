@@ -1,7 +1,6 @@
 package henrygarant.com.demomap.MapActivities;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,6 +22,7 @@ public class WaitingPage extends FragmentActivity {
     private String number;
     private String sender;
     private boolean fromAccept;
+    private boolean error;
 
 
     @Override
@@ -31,6 +31,7 @@ public class WaitingPage extends FragmentActivity {
         setContentView(R.layout.waiting_page);
 
         Intent intent = getIntent();
+        error = intent.getBooleanExtra("error", false);
         number = intent.getStringExtra("phoneto");
         sender = intent.getStringExtra("sender");
         fromAccept = intent.getBooleanExtra("fromaccept", false);
@@ -40,7 +41,29 @@ public class WaitingPage extends FragmentActivity {
             sender = "Unknown";
         }
 
-        if (fromAccept && (number != null && !number.equals(""))) {
+        if (error) {
+            new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.ProcessDialog))
+                    .setTitle("Be There In 5")
+                    .setMessage("Would you like to invite this person to join Be There In 5?")
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent myIntent = new Intent(getBaseContext(), MapsActivity.class);
+
+                            startActivity(myIntent);
+
+                        }
+                    })
+                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent myIntent = new Intent(getBaseContext(), MainActivity.class);
+                            myIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(myIntent);
+
+                        }
+                    })
+                    .setIcon(R.mipmap.icon)
+                    .show();
+        } else if (fromAccept && (number != null && !number.equals(""))) {
             //Came from notification
             new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.ProcessDialog))
                     .setTitle("Be There In 5")

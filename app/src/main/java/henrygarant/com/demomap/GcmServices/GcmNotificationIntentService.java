@@ -37,7 +37,7 @@ public class GcmNotificationIntentService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        Bundle extras = intent.getExtras();
+        final Bundle extras = intent.getExtras();
         GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(this);
 
         String messageType = gcm.getMessageType(intent);
@@ -63,10 +63,9 @@ public class GcmNotificationIntentService extends IntentService {
                     Log.d("GCM NOTIF INTENT: ", "ERROR");
                     AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
                     am.cancel(MapsActivity.getAlarmPendingIntent());
-                    Intent myIntent = new Intent(this, MainActivity.class);
-                    myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    Toast.makeText(this, extras.get(Config.ERROR_KEY).toString(), Toast.LENGTH_LONG).show();
-                    startActivity(myIntent);
+                    Intent myIntent = new Intent(this, WaitingPage.class);
+                    myIntent.putExtra("error", true);
+                    startActivity(myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                 } else if (extras.get(Config.MESSAGE_KEY) == null) {
                     //GCM ACCEPT REQUEST
                     if (extras.get(Config.ACCEPT_START_KEY).toString().equals("1") && extras.get(Config.ACCEPT_END_KEY).toString().equals("0")) {

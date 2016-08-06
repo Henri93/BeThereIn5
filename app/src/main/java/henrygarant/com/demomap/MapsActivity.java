@@ -286,6 +286,12 @@ public class MapsActivity extends ActionBarActivity implements
         //TODO save instance state from https://developer.android.com/training/location/receive-location-updates.html#save-state
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        finish();
+    }
+
     protected void stopLocationUpdates() {
         LocationServices.FusedLocationApi.removeLocationUpdates(
                 mGoogleApiClient, this);
