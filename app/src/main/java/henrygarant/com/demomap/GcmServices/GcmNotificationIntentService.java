@@ -65,6 +65,7 @@ public class GcmNotificationIntentService extends IntentService {
                     am.cancel(MapsActivity.getAlarmPendingIntent());
                     Intent myIntent = new Intent(this, WaitingPage.class);
                     myIntent.putExtra("error", true);
+                    myIntent.putExtra("phoneto", extras.get("phoneto").toString());
                     startActivity(myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                 } else if (extras.get(Config.MESSAGE_KEY) == null) {
                     //GCM ACCEPT REQUEST

@@ -3,6 +3,7 @@ package henrygarant.com.demomap.MapActivities;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -47,9 +48,15 @@ public class WaitingPage extends FragmentActivity {
                     .setMessage("Would you like to invite this person to join Be There In 5?")
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            Intent myIntent = new Intent(getBaseContext(), MapsActivity.class);
-
-                            startActivity(myIntent);
+                            //send join request
+                            try {
+                                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("sms:" + number));
+                                intent.putExtra("sms_body", "You're invited to beta test a new hands free driving app, BeThereIn5. Join at betherein5.net!");
+                                startActivity(intent);
+                            } catch (Exception e) {
+                                Intent myIntent = new Intent(getBaseContext(), MapsActivity.class);
+                                startActivity(myIntent);
+                            }
 
                         }
                     })
