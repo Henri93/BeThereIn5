@@ -95,7 +95,16 @@ public class MapsActivity extends ActionBarActivity implements
                 mNotificationManager.notify(0, mBuilder.build());
                 //TODO FIGURE A WAY TO EITHER WAIT OR DESTROY NEXT CONNECTION
                 //this ensures that the other person will receive location update too
-                //destroyConnection();
+                new java.util.Timer().schedule(
+                        new java.util.TimerTask() {
+                            @Override
+                            public void run() {
+                                destroyConnection();
+                            }
+                        },
+                        60000
+                );
+
             }
 
             updateMap(updatedLocation);
