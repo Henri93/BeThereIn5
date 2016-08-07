@@ -20,6 +20,7 @@ import henrygarant.com.demomap.SQLiteHandler;
 
 public class MyLocationService extends Service {
 
+    //TODO MAKE SURE DOESNT END
 
     @Nullable
     @Override
