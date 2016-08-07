@@ -152,7 +152,7 @@ public class MapsActivity extends ActionBarActivity implements
 
             alarmPendingIntent = PendingIntent.getService(this, 0, serviceIntent, 0);
             AlarmManager alarm_manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-            alarm_manager.setRepeating(AlarmManager.RTC, Calendar.getInstance().getTimeInMillis(), 60000, alarmPendingIntent);
+            alarm_manager.setRepeating(AlarmManager.RTC, Calendar.getInstance().getTimeInMillis(), 30000, alarmPendingIntent);
 
         } catch (Exception e) {
             Log.e("MapsActivity Exception", e.toString());
@@ -298,7 +298,7 @@ public class MapsActivity extends ActionBarActivity implements
     @Override
     protected void onStop() {
         super.onStop();
-        finish();
+        //finish();
     }
 
     protected void stopLocationUpdates() {
