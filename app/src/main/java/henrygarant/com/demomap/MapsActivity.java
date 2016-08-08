@@ -47,9 +47,9 @@ public class MapsActivity extends ActionBarActivity implements
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
     public static String MAP_BROADCAST = "henryrgarant.com.demomap.MAP_UPDATE";
-    public static String phoneTo;
-    public static String sender;
-    private static PendingIntent alarmPendingIntent;
+    private String phoneTo;
+    private String sender;
+    private PendingIntent alarmPendingIntent;
     private final double MILE_RADIUS = .5;
     private String updatedLocation;
     private Intent serviceIntent;
@@ -111,10 +111,6 @@ public class MapsActivity extends ActionBarActivity implements
         }
     };
 
-    public static PendingIntent getAlarmPendingIntent() {
-        return alarmPendingIntent;
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -148,9 +144,10 @@ public class MapsActivity extends ActionBarActivity implements
             setUpMapIfNeeded();
 
             serviceIntent = new Intent(this, MyLocationService.class);
+            serviceIntent.putExtra("phoneto", phoneTo);
             startService(serviceIntent);
 
-            alarmPendingIntent = PendingIntent.getService(this, 0, serviceIntent, 0);
+            alarmPendingIntent = PendingIntent.getService(this, 0, serviceIntent, PendingIntent.FLAG_UPDATE_CURRENT);
             AlarmManager alarm_manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
             alarm_manager.setRepeating(AlarmManager.RTC, Calendar.getInstance().getTimeInMillis(), 30000, alarmPendingIntent);
 

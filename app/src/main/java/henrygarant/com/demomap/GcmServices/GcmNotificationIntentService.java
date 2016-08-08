@@ -19,6 +19,7 @@ import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import henrygarant.com.demomap.Config;
 import henrygarant.com.demomap.MainActivity;
+import henrygarant.com.demomap.MapActivities.MyLocationService;
 import henrygarant.com.demomap.MapActivities.WaitingPage;
 import henrygarant.com.demomap.MapsActivity;
 import henrygarant.com.demomap.R;
@@ -60,8 +61,7 @@ public class GcmNotificationIntentService extends IntentService {
                 if (extras.get(Config.ERROR_KEY) != null) {
                     //GCM ERROR SENDING
                     Log.d("GCM NOTIF INTENT: ", "ERROR");
-                    AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                    am.cancel(MapsActivity.getAlarmPendingIntent());
+                    stopUpdate();
                     Intent myIntent = new Intent(this, WaitingPage.class);
                     myIntent.putExtra("error", true);
                     myIntent.putExtra("phoneto", extras.get("phoneto").toString());
@@ -78,8 +78,7 @@ public class GcmNotificationIntentService extends IntentService {
                     //GCM CANCEL REQUEST
                     else if (extras.get(Config.ACCEPT_START_KEY).toString().equals("0") && extras.get(Config.ACCEPT_END_KEY).toString().equals("1")) {
                         Log.d("CANCEL REQUEST:", "canceling");
-                        AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                        am.cancel(MapsActivity.getAlarmPendingIntent());
+                        stopUpdate();
                         Handler mHandler = new Handler(getMainLooper());
                         mHandler.post(new Runnable() {
                             @Override
@@ -141,5 +140,13 @@ public class GcmNotificationIntentService extends IntentService {
         mBuilder.setContentIntent(contentIntent);
         mBuilder.setAutoCancel(true);
         mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
+    }
+
+    private void stopUpdate() {
+        Intent serviceIntent = new Intent(this, MyLocationService.class);
+        PendingIntent alarmPendingIntent = PendingIntent.getService(this, 0, serviceIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        alarmPendingIntent.cancel();
+        AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        am.cancel(alarmPendingIntent);
     }
 }
