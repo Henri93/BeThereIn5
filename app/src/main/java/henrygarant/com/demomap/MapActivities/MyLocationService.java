@@ -25,6 +25,7 @@ public class MyLocationService extends Service {
     private String phoneTo;
     private int distance;
     private String sender;
+    private boolean isConnected;
 
     @Nullable
     @Override
@@ -38,6 +39,7 @@ public class MyLocationService extends Service {
         phoneTo = intent.getStringExtra("phoneto");
         distance = intent.getIntExtra("distance", 666);
         sender = intent.getStringExtra("sender");
+        isConnected = intent.getBooleanExtra("connected", false);
 
         DestinationManager dm = new DestinationManager();
         Location location = dm.getLocation(getApplicationContext());
@@ -81,12 +83,17 @@ public class MyLocationService extends Service {
 
         RemoteViews views = new RemoteViews(getPackageName(),
                 R.layout.notification);
-        if (sender != null && !sender.equals("Unknown")) {
+        if (sender != null && !sender.equals("Unknown") && distance != 0) {
             views.setTextViewText(R.id.notif_status, "Connected");
             views.setTextViewText(R.id.notif_info, sender + " is " + distance + "m away.");
         } else {
-            views.setTextViewText(R.id.notif_status, "Waiting for Ride Acceptance");
-            views.setTextViewText(R.id.notif_info, "");
+            if (!isConnected) {
+                views.setTextViewText(R.id.notif_status, "Waiting for Ride Acceptance");
+                views.setTextViewText(R.id.notif_info, "");
+            } else {
+                views.setTextViewText(R.id.notif_status, "Connection Lost");
+                views.setTextViewText(R.id.notif_info, "");
+            }
         }
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(

@@ -36,8 +36,8 @@
             android:id="@+id/notif_status"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/Primary_Light"
-            android:textSize="12sp"
+            android:textColor="@color/Light"
+            android:textSize="15sp"
             android:text="Connect"
             android:layout_marginTop="5dp" />
 
@@ -48,8 +48,9 @@
             android:singleLine="true"
             android:ellipsize="marquee"
             android:marqueeRepeatLimit="marquee_forever"
+            android:scrollHorizontally="true"
             android:textColor="@color/Primary"
-            android:textSize="15sp"
+            android:textSize="20sp"
             android:text="You are within 5 minutes from Billy Bob Thorton"
             android:gravity="center_vertical" />
 

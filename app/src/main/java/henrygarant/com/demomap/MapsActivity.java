@@ -52,6 +52,7 @@ public class MapsActivity extends ActionBarActivity implements
     private String phoneTo;
     private String sender;
     private int distance;
+    private boolean isConnected = false;
     private PendingIntent alarmPendingIntent;
     private final double MILE_RADIUS = .5;
     private String updatedLocation;
@@ -68,7 +69,7 @@ public class MapsActivity extends ActionBarActivity implements
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.d("MAPSACTIVITY: ", "Location Broadcast Received");
-
+            isConnected = true;
             //the location of the other person
             updatedLocation = intent.getStringExtra("target");
             //phone number of person sending location
@@ -145,6 +146,7 @@ public class MapsActivity extends ActionBarActivity implements
             serviceIntent.putExtra("phoneto", phoneTo);
             serviceIntent.putExtra("distance", distance);
             serviceIntent.putExtra("sender", sender);
+            serviceIntent.putExtra("connected", isConnected);
             startService(serviceIntent);
 
             alarmPendingIntent = PendingIntent.getService(this, 0, serviceIntent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -361,6 +363,7 @@ public class MapsActivity extends ActionBarActivity implements
         stopService(serviceIntent);
         AlarmManager alarm_manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         alarm_manager.cancel(alarmPendingIntent);
+        isConnected = false;
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
@@ -374,16 +377,22 @@ public class MapsActivity extends ActionBarActivity implements
         RemoteViews views = new RemoteViews(getPackageName(),
                 R.layout.notification);
         if (!finished) {
-            if (sender != null && !sender.equals("Unknown")) {
+            if (sender != null && !sender.equals("Unknown") && distance != 0) {
                 views.setTextViewText(R.id.notif_status, "Connected");
                 views.setTextViewText(R.id.notif_info, sender + " is " + distance + "m away.");
             } else {
-                views.setTextViewText(R.id.notif_status, "Waiting for Ride Acceptance");
-                views.setTextViewText(R.id.notif_info, "");
+                if (!isConnected) {
+                    views.setTextViewText(R.id.notif_status, "Waiting for Ride Acceptance");
+                    views.setTextViewText(R.id.notif_info, "");
+                } else {
+                    views.setTextViewText(R.id.notif_status, "Connection Lost");
+                    views.setTextViewText(R.id.notif_info, "");
+                }
+
             }
         } else {
             views.setTextViewText(R.id.notif_status, "Congratulations!");
-            views.setTextViewText(R.id.notif_info, "You are within 5 minutes from " + sender);
+            views.setTextViewText(R.id.notif_info, sender + " is within 5");
         }
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(
