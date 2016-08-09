@@ -1,6 +1,7 @@
 package henrygarant.com.demomap;
 
 import android.app.AlarmManager;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -19,6 +20,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
+import android.widget.RemoteViews;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,6 +51,7 @@ public class MapsActivity extends ActionBarActivity implements
     public static String MAP_BROADCAST = "henryrgarant.com.demomap.MAP_UPDATE";
     private String phoneTo;
     private String sender;
+    private int distance;
     private PendingIntent alarmPendingIntent;
     private final double MILE_RADIUS = .5;
     private String updatedLocation;
@@ -74,7 +77,13 @@ public class MapsActivity extends ActionBarActivity implements
             sender = intent.getStringExtra("sender");
 
             DestinationManager dm = new DestinationManager();
-            updateUI(sender, dm.CalculationByDistance(getApplicationContext(), dm.convertStringToLatLng(updatedLocation)));
+
+            distance = dm.CalculationByDistance(getApplicationContext(), dm.convertStringToLatLng(updatedLocation));
+
+            updateUI(sender, distance);
+
+            //test
+            updateNotification();
 
             //***
             //THE MASTER BETHEREIN5 CHECK HAPPENS HERE
@@ -126,6 +135,7 @@ public class MapsActivity extends ActionBarActivity implements
         Intent intent = getIntent();
 
         phoneTo = intent.getStringExtra("phonefrom");
+        sender = intent.getStringExtra("sender");
 
         targetName = (TextView) findViewById(R.id.targetNameTextView);
         distanceTextView = (TextView) findViewById(R.id.distanceTextView);
@@ -145,6 +155,8 @@ public class MapsActivity extends ActionBarActivity implements
 
             serviceIntent = new Intent(this, MyLocationService.class);
             serviceIntent.putExtra("phoneto", phoneTo);
+            serviceIntent.putExtra("distance", distance);
+            serviceIntent.putExtra("sender", sender);
             startService(serviceIntent);
 
             alarmPendingIntent = PendingIntent.getService(this, 0, serviceIntent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -363,6 +375,37 @@ public class MapsActivity extends ActionBarActivity implements
         alarm_manager.cancel(alarmPendingIntent);
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+    }
+
+    private void updateNotification() {
+
+        Intent i = new Intent(getApplicationContext(), getApplicationContext().getClass());
+        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        PendingIntent pi = PendingIntent.getActivity(getApplicationContext(), 0, i, 0);
+
+        RemoteViews views = new RemoteViews(getPackageName(),
+                R.layout.notification);
+        if (sender != null) {
+            views.setTextViewText(R.id.notif_status, "Connected");
+            views.setTextViewText(R.id.notif_info, sender + " is " + distance + "m away.");
+        } else {
+            views.setTextViewText(R.id.notif_status, "Waiting for Ride Acceptance");
+            views.setTextViewText(R.id.notif_info, sender + "");
+        }
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(
+                getApplicationContext());
+        Notification note = builder.setContentIntent(pi)
+                .setSmallIcon(R.drawable.notification_icon_small).setTicker("Ride Status").setWhen(System.currentTimeMillis())
+                .setAutoCancel(false).setContentTitle("Be There In 5")
+                .setOngoing(true)
+                .setContent(views).build();
+
+        NotificationManager myNotificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        myNotificationManager.notify(
+                1337,
+                builder.build());
     }
 
 

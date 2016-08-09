@@ -81,6 +81,7 @@ public class WaitingPage extends FragmentActivity {
 
                             //phone number of whom sent the location
                             myIntent.putExtra("phonefrom", number);
+                            myIntent.putExtra("sender", sender);
 
                             startActivity(myIntent);
 
@@ -101,6 +102,7 @@ public class WaitingPage extends FragmentActivity {
             sendGCMAccept(number);
             Intent myIntent = new Intent(getBaseContext(), MapsActivity.class);
             myIntent.putExtra("phonefrom", number);
+            myIntent.putExtra("sender", sender);
             startActivity(myIntent);
         }
     }

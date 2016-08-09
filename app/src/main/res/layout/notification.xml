@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/MidLight">
+
+    <ImageView
+        android:id="@+id/status_bar_album_art"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:src="@drawable/notification_icon_large"
+        android:padding="5dp"
+        android:layout_gravity="center"
+        android:layout_centerVertical="true" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:paddingLeft="15dp"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/status_bar_album_art"
+        android:id="@+id/linearLayout">
+
+        <TextView
+            android:id="@+id/notif_status"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/Light"
+            android:textSize="12sp"
+            android:text="Connect"
+            android:layout_marginTop="5dp" />
+
+        <TextView
+            android:id="@+id/notif_info"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:textColor="@color/Primary_Light"
+            android:textSize="18sp"
+            android:text="Info"
+            android:gravity="center_vertical" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/notif_stop"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:gravity="center"
+        android:src="@drawable/abc_ic_clear_mtrl_alpha"
+        android:padding="5dp"
+        android:layout_gravity="center"
+        android:layout_toEndOf="@+id/linearLayout"
+        android:layout_centerVertical="true" />
+
+</RelativeLayout>

@@ -10,6 +10,7 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+import android.widget.RemoteViews;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -22,6 +23,8 @@ import henrygarant.com.demomap.SQLiteHandler;
 public class MyLocationService extends Service {
 
     private String phoneTo;
+    private int distance;
+    private String sender;
 
     @Nullable
     @Override
@@ -33,6 +36,9 @@ public class MyLocationService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
 
         phoneTo = intent.getStringExtra("phoneto");
+        distance = intent.getIntExtra("distance", 666);
+        sender = intent.getStringExtra("sender");
+
         DestinationManager dm = new DestinationManager();
         Location location = dm.getLocation(getApplicationContext());
         double latitude = location.getLatitude();
@@ -73,14 +79,24 @@ public class MyLocationService extends Service {
         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         PendingIntent pi = PendingIntent.getActivity(this, 0, i, 0);
 
+        RemoteViews views = new RemoteViews(getPackageName(),
+                R.layout.notification);
+        if (sender != null) {
+            views.setTextViewText(R.id.notif_status, "Connected");
+            views.setTextViewText(R.id.notif_info, sender + " is " + distance + "m away.");
+        } else {
+            views.setTextViewText(R.id.notif_status, "Waiting for Ride Acceptance");
+            views.setTextViewText(R.id.notif_info, sender + "");
+        }
+
         NotificationCompat.Builder builder = new NotificationCompat.Builder(
-                this);
+                getApplicationContext());
         Notification note = builder.setContentIntent(pi)
                 .setSmallIcon(R.drawable.notification_icon_small).setTicker("Connected").setWhen(System.currentTimeMillis())
                 .setAutoCancel(false).setContentTitle("Be There In 5")
                 .setOngoing(true)
-                .setContentText("Connected").build();
+                .setContent(views).build();
 
-        startForeground(1337, note);
+        startForeground(1337, builder.build());
     }
 }
