@@ -14,6 +14,7 @@ import android.widget.RemoteViews;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import henrygarant.com.demomap.Config;
 import henrygarant.com.demomap.GcmServices.GcmSender;
 import henrygarant.com.demomap.MapsActivity;
 import henrygarant.com.demomap.R;
@@ -36,25 +37,30 @@ public class MyLocationService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        phoneTo = intent.getStringExtra("phoneto");
-        distance = intent.getIntExtra("distance", 666);
-        sender = intent.getStringExtra("sender");
-        isConnected = intent.getBooleanExtra("connected", false);
-
-        DestinationManager dm = new DestinationManager();
-        Location location = dm.getLocation(getApplicationContext());
-        double latitude = location.getLatitude();
-        double longitude = location.getLongitude();
-        LatLng myLatLng = new LatLng(latitude, longitude);
-        //send the gcm message with location data
-        GcmSender sender = new GcmSender(this);
-        SQLiteHandler db = new SQLiteHandler(this);
-        startNotification();
-        if (phoneTo != null) {
-            Log.d("LOCATION SERVICE: phoneTo-", phoneTo);
-            sender.sendGcmMessage(db.getUserDetails().get("phone").toString(), phoneTo, myLatLng.toString());
+        if (intent.getAction().equals(Config.ACTION_STOP)) {
+            onDestroy();
         } else {
-            Log.d("LOCATION SERVICE: phoneTo-", "null");
+
+            phoneTo = intent.getStringExtra("phoneto");
+            distance = intent.getIntExtra("distance", 666);
+            sender = intent.getStringExtra("sender");
+            isConnected = intent.getBooleanExtra("connected", false);
+
+            DestinationManager dm = new DestinationManager();
+            Location location = dm.getLocation(getApplicationContext());
+            double latitude = location.getLatitude();
+            double longitude = location.getLongitude();
+            LatLng myLatLng = new LatLng(latitude, longitude);
+            //send the gcm message with location data
+            GcmSender sender = new GcmSender(this);
+            SQLiteHandler db = new SQLiteHandler(this);
+            startNotification();
+            if (phoneTo != null) {
+                Log.d("LOCATION SERVICE: phoneTo-", phoneTo);
+                sender.sendGcmMessage(db.getUserDetails().get("phone").toString(), phoneTo, myLatLng.toString());
+            } else {
+                Log.d("LOCATION SERVICE: phoneTo-", "null");
+            }
         }
         return START_NOT_STICKY;
     }
@@ -71,8 +77,6 @@ public class MyLocationService extends Service {
 
     private void abort() {
         stopForeground(true);
-        //AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        //am.cancel(MapsActivity.getAlarmPendingIntent());
     }
 
     private void startNotification() {
@@ -81,13 +85,20 @@ public class MyLocationService extends Service {
         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         PendingIntent pi = PendingIntent.getActivity(this, 0, i, 0);
 
+        Intent nextIntent = new Intent(this, MyLocationService.class);
+        nextIntent.setAction(Config.ACTION_STOP);
+        PendingIntent stopIntent = PendingIntent.getService(this, 0,
+                nextIntent, 0);
+
         RemoteViews views = new RemoteViews(getPackageName(),
                 R.layout.notification);
+        views.setOnClickPendingIntent(R.id.notif_stop, stopIntent);
+
         if (sender != null && !sender.equals("Unknown") && distance != 0) {
             views.setTextViewText(R.id.notif_status, "Connected");
             views.setTextViewText(R.id.notif_info, sender + " is " + distance + "m away.");
         } else {
-            if (!isConnected) {
+            if (!isConnected && (sender == null || sender.equals("Unknown"))) {
                 views.setTextViewText(R.id.notif_status, "Waiting for Ride Acceptance");
                 views.setTextViewText(R.id.notif_info, "");
             } else {
@@ -99,7 +110,7 @@ public class MyLocationService extends Service {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(
                 getApplicationContext());
         Notification note = builder.setContentIntent(pi)
-                .setSmallIcon(R.drawable.notification_icon_small).setTicker("Connected").setWhen(System.currentTimeMillis())
+                .setSmallIcon(R.drawable.notification_icon_small).setTicker("Ride Status").setWhen(System.currentTimeMillis())
                 .setAutoCancel(false).setContentTitle("Be There In 5")
                 .setOngoing(true)
                 .setContent(views).build();

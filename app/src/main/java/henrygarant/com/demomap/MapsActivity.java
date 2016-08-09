@@ -374,14 +374,21 @@ public class MapsActivity extends ActionBarActivity implements
         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         PendingIntent pi = PendingIntent.getActivity(getApplicationContext(), 0, i, 0);
 
+        Intent nextIntent = new Intent(this, MyLocationService.class);
+        nextIntent.setAction(Config.ACTION_STOP);
+        PendingIntent stopIntent = PendingIntent.getService(this, 0,
+                nextIntent, 0);
+
         RemoteViews views = new RemoteViews(getPackageName(),
                 R.layout.notification);
+        views.setOnClickPendingIntent(R.id.notif_stop, stopIntent);
+
         if (!finished) {
             if (sender != null && !sender.equals("Unknown") && distance != 0) {
                 views.setTextViewText(R.id.notif_status, "Connected");
                 views.setTextViewText(R.id.notif_info, sender + " is " + distance + "m away.");
             } else {
-                if (!isConnected) {
+                if (!isConnected && (sender == null || sender.equals("Unknown"))) {
                     views.setTextViewText(R.id.notif_status, "Waiting for Ride Acceptance");
                     views.setTextViewText(R.id.notif_info, "");
                 } else {
@@ -405,7 +412,7 @@ public class MapsActivity extends ActionBarActivity implements
                     .setContent(views).build();
         } else {
             Notification note = builder.setContentIntent(pi)
-                    .setSmallIcon(R.drawable.notification_icon_small).setTicker("Ride Status").setWhen(System.currentTimeMillis())
+                    .setSmallIcon(R.drawable.notification_icon_small).setTicker("Congratulations!").setWhen(System.currentTimeMillis())
                     .setAutoCancel(false).setContentTitle("Be There In 5")
                     .setOngoing(true)
                     .setVibrate(new long[]{1000, 1000, 1000, 1000, 1000})
