@@ -97,6 +97,7 @@
 
 
         <service android:name=".GcmServices.GcmNotificationIntentService" />
+        <service android:name=".MyNotificationManager" />
         <service android:name=".MapActivities.MyLocationService" />
 
     </application>

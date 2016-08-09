@@ -1,8 +1,6 @@
 package henrygarant.com.demomap;
 
 import android.app.AlarmManager;
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -10,17 +8,14 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
 import android.location.Location;
-import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
-import android.widget.RemoteViews;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -60,8 +55,8 @@ public class MapsActivity extends ActionBarActivity implements
     private GoogleMap mMap;
     private int CIRCLE_COLOR =  Color.argb(100, 30, 136, 229);
     private LatLng myLocation;
-    private TextView targetName;
-    private TextView distanceTextView;
+    public static TextView targetName;
+    public static TextView distanceTextView;
     private GoogleApiClient mGoogleApiClient;
     private DestinationManager destinationManager;
 
@@ -83,12 +78,19 @@ public class MapsActivity extends ActionBarActivity implements
 
             updateUI(sender, distance);
 
+            Log.d("NOTIFICATION: ", "from maps");
+            Intent serviceIntent = new Intent(getApplicationContext(), MyNotificationManager.class);
+            serviceIntent.setAction(Config.NOTIF_STICKY);
+            serviceIntent.putExtra("distance", distance);
+            serviceIntent.putExtra("sender", sender);
+            serviceIntent.putExtra("phoneto", phoneTo);
+            serviceIntent.putExtra("connected", isConnected);
 
             //***
             //THE MASTER BETHEREIN5 CHECK HAPPENS HERE
             //***
             if (dm.isWithin5Minutes(getApplicationContext(), dm.convertStringToLatLng(updatedLocation))) {
-                updateNotification(true);
+                serviceIntent.putExtra("finished", true);
                 //TODO FIGURE A WAY TO EITHER WAIT OR DESTROY NEXT CONNECTION
                 //this ensures that the other person will receive location update too
                 new java.util.Timer().schedule(
@@ -102,9 +104,10 @@ public class MapsActivity extends ActionBarActivity implements
                 );
 
             } else {
-                updateNotification(false);
+                serviceIntent.putExtra("finished", false);
             }
 
+            startService(serviceIntent);
             updateMap(updatedLocation);
         }
     };
@@ -129,7 +132,7 @@ public class MapsActivity extends ActionBarActivity implements
         targetName = (TextView) findViewById(R.id.targetNameTextView);
         distanceTextView = (TextView) findViewById(R.id.distanceTextView);
 
-        updateUI("Waiting to connect...", 0);
+        updateUI("Connecting...", 0);
 
         if (mGoogleApiClient == null) {
             mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -166,7 +169,7 @@ public class MapsActivity extends ActionBarActivity implements
         Toast.makeText(MapsActivity.this, "LOCATION CHANGED", Toast.LENGTH_SHORT).show();
     }
 
-    private void updateUI(String name, int distance) {
+    public static void updateUI(String name, int distance) {
         targetName.setText(name);
         distanceTextView.setText("Distance: " + distance + " m");
     }
@@ -368,68 +371,4 @@ public class MapsActivity extends ActionBarActivity implements
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
-
-    private void updateNotification(boolean finished) {
-
-        Intent i = new Intent(getApplicationContext(), getApplicationContext().getClass());
-        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        PendingIntent pi = PendingIntent.getActivity(getApplicationContext(), 0, i, 0);
-
-        Intent nextIntent = new Intent(this, MyLocationService.class);
-        nextIntent.setAction(Config.ACTION_STOP);
-        PendingIntent stopIntent = PendingIntent.getService(this, 0,
-                nextIntent, 0);
-
-        RemoteViews views = new RemoteViews(getPackageName(),
-                R.layout.notification);
-        views.setOnClickPendingIntent(R.id.notif_stop, stopIntent);
-
-        if (!finished) {
-            if (sender != null && !sender.equals("Unknown") && distance != 0) {
-                views.setTextViewText(R.id.notif_status, "Connected");
-                views.setTextViewText(R.id.notif_info, sender + " is " + distance + "m away.");
-            } else {
-                if (!isConnected && (sender == null || sender.equals("Unknown"))) {
-                    views.setTextViewText(R.id.notif_status, "Waiting for Ride Acceptance");
-                    views.setTextViewText(R.id.notif_info, "");
-                } else {
-                    views.setTextViewText(R.id.notif_status, "Connection Lost");
-                    views.setTextViewText(R.id.notif_info, "");
-                }
-
-            }
-        } else {
-            views.setTextViewText(R.id.notif_status, "Congratulations!");
-            views.setTextViewText(R.id.notif_info, sender + " is within 5");
-        }
-
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(
-                getApplicationContext());
-        if (!finished) {
-            Notification note = builder.setContentIntent(pi)
-                    .setSmallIcon(R.drawable.notification_icon_small).setTicker("Ride Status").setWhen(System.currentTimeMillis())
-                    .setAutoCancel(false).setContentTitle("Be There In 5")
-                    .setOngoing(true)
-                    .setContent(views).build();
-        } else {
-            Notification note = builder.setContentIntent(pi)
-                    .setSmallIcon(R.drawable.notification_icon_small).setTicker("Congratulations!").setWhen(System.currentTimeMillis())
-                    .setAutoCancel(false).setContentTitle("Be There In 5")
-                    .setOngoing(true)
-                    .setVibrate(new long[]{1000, 1000, 1000, 1000, 1000})
-                    .setLights(Color.RED, 3000, 3000)
-                    .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
-                    .setContent(views).build();
-        }
-
-
-        NotificationManager myNotificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        myNotificationManager.notify(
-                1337,
-                builder.build());
-    }
-
-
-
 }

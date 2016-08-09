@@ -7,14 +7,10 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.media.RingtoneManager;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
@@ -25,7 +21,7 @@ import henrygarant.com.demomap.MainActivity;
 import henrygarant.com.demomap.MapActivities.MyLocationService;
 import henrygarant.com.demomap.MapActivities.WaitingPage;
 import henrygarant.com.demomap.MapsActivity;
-import henrygarant.com.demomap.R;
+import henrygarant.com.demomap.MyNotificationManager;
 
 public class GcmNotificationIntentService extends IntentService {
 
@@ -72,24 +68,21 @@ public class GcmNotificationIntentService extends IntentService {
                 } else if (extras.get(Config.MESSAGE_KEY) == null) {
                     //GCM ACCEPT REQUEST
                     if (extras.get(Config.ACCEPT_START_KEY).toString().equals("1") && extras.get(Config.ACCEPT_END_KEY).toString().equals("0")) {
-                        Log.d("NOTIFICATIONINTENTSERVICE: ", extras.toString());
                         sender = extras.get("sender").toString();
-                        //MapsActivity.sender = sender;
-                        //MapsActivity.phoneTo = extras.get("phonefrom").toString();
-                        sendNotification("Ride Request From " + sender, extras.get("phonefrom").toString());
+
+                        Intent serviceIntent = new Intent(this, MyNotificationManager.class);
+                        serviceIntent.setAction(Config.NOTIF_ACCEPT);
+                        serviceIntent.putExtra("sender", sender);
+                        serviceIntent.putExtra("phoneto", extras.get("phonefrom").toString());
+                        startService(serviceIntent);
                     }
                     //GCM CANCEL REQUEST
                     else if (extras.get(Config.ACCEPT_START_KEY).toString().equals("0") && extras.get(Config.ACCEPT_END_KEY).toString().equals("1")) {
                         Log.d("CANCEL REQUEST:", "canceling");
+                        sender = extras.get("sender").toString();
                         stopUpdate();
+                        MapsActivity.updateUI("Connection ended by " + sender, 0);
                         //TODO UPDATE NOTIFICATION
-                        Handler mHandler = new Handler(getMainLooper());
-                        mHandler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(getApplicationContext(), "BeThereIn5 Connection Stopped", Toast.LENGTH_SHORT).show();
-                            }
-                        });
                         if (isAppOnForeground(this)) {
                             startActivity(new Intent(this, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                         }
@@ -118,42 +111,14 @@ public class GcmNotificationIntentService extends IntentService {
         GcmBroadcastReceiver.completeWakefulIntent(intent);
     }
 
-    private void sendNotification(String msg, String phonefrom) {
-        Log.d(TAG, "Preparing to send notification...: " + msg);
-        mNotificationManager = (NotificationManager) this
-                .getSystemService(Context.NOTIFICATION_SERVICE);
-
-        Intent intent = new Intent(this, WaitingPage.class);
-
-        intent.putExtra("sender", sender);
-        intent.putExtra("phoneto", phonefrom);
-        intent.putExtra("fromaccept", true);
-
-        //Class to open when user clicks notification
-        PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-                intent, PendingIntent.FLAG_CANCEL_CURRENT);
-
-
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
-                this).setSmallIcon(R.drawable.notification_icon_small)
-                .setContentTitle("Be There In 5")
-                .setStyle(new NotificationCompat.BigTextStyle().bigText(msg))
-                .setContentText(msg);
-
-        mBuilder.setVibrate(new long[]{1000, 1000, 1000, 1000, 1000});
-        mBuilder.setLights(Color.BLUE, 3000, 3000);
-        mBuilder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
-        mBuilder.setContentIntent(contentIntent);
-        mBuilder.setAutoCancel(true);
-        mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
-    }
 
     private void stopUpdate() {
         Intent serviceIntent = new Intent(this, MyLocationService.class);
+        serviceIntent.setAction(Config.ACTION_START);
+
         PendingIntent alarmPendingIntent = PendingIntent.getService(this, 0, serviceIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        alarmPendingIntent.cancel();
-        AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        am.cancel(alarmPendingIntent);
+        AlarmManager alarm_manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        alarm_manager.cancel(alarmPendingIntent);
     }
 
     private boolean isAppOnForeground(Context context) {

@@ -35,6 +35,16 @@ public interface Config {
     public static final String ACTION_START
             = "henryrgarant.com.demomap.MyLocationService.start";
 
+    public static final String NOTIF_STICKY
+            = "henryrgarant.com.demomap.MyNotificationManager.sticky";
+
+    public static final String NOTIF_STOP
+            = "henryrgarant.com.demomap.MyNotificationManager.stop";
+
+    public static final String NOTIF_ACCEPT
+            = "henryrgarant.com.demomap.MyNotificationManager.accept";
+
+
     public static final String FIELD_REGISTRATION_ID = "registration_id";
     public static final String FIELD_MESSAGE = "msg";
 
