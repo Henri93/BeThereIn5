@@ -81,12 +81,12 @@ public class MyLocationService extends Service {
 
         RemoteViews views = new RemoteViews(getPackageName(),
                 R.layout.notification);
-        if (sender != null) {
+        if (sender != null && !sender.equals("Unknown")) {
             views.setTextViewText(R.id.notif_status, "Connected");
             views.setTextViewText(R.id.notif_info, sender + " is " + distance + "m away.");
         } else {
             views.setTextViewText(R.id.notif_status, "Waiting for Ride Acceptance");
-            views.setTextViewText(R.id.notif_info, sender + "");
+            views.setTextViewText(R.id.notif_info, "");
         }
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(

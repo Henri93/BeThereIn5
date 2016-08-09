@@ -82,26 +82,12 @@ public class MapsActivity extends ActionBarActivity implements
 
             updateUI(sender, distance);
 
-            //test
-            updateNotification();
 
             //***
             //THE MASTER BETHEREIN5 CHECK HAPPENS HERE
             //***
             if (dm.isWithin5Minutes(getApplicationContext(), dm.convertStringToLatLng(updatedLocation))) {
-                NotificationManager mNotificationManager = (NotificationManager) getApplicationContext()
-                        .getSystemService(Context.NOTIFICATION_SERVICE);
-                NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
-                        getApplicationContext()).setSmallIcon(R.drawable.notification_icon_small)
-                        .setContentTitle("Be There In 5")
-                        .setStyle(new NotificationCompat.BigTextStyle().bigText("Within 5 minutes"))
-                        .setContentText("You are within 5 minutes from " + sender);
-
-                mBuilder.setVibrate(new long[]{1000, 1000, 1000, 1000, 1000});
-                mBuilder.setLights(Color.RED, 3000, 3000);
-                mBuilder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
-                mBuilder.setAutoCancel(true);
-                mNotificationManager.notify(0, mBuilder.build());
+                updateNotification(true);
                 //TODO FIGURE A WAY TO EITHER WAIT OR DESTROY NEXT CONNECTION
                 //this ensures that the other person will receive location update too
                 new java.util.Timer().schedule(
@@ -114,6 +100,8 @@ public class MapsActivity extends ActionBarActivity implements
                         60000
                 );
 
+            } else {
+                updateNotification(false);
             }
 
             updateMap(updatedLocation);
@@ -377,7 +365,7 @@ public class MapsActivity extends ActionBarActivity implements
         startActivity(intent);
     }
 
-    private void updateNotification() {
+    private void updateNotification(boolean finished) {
 
         Intent i = new Intent(getApplicationContext(), getApplicationContext().getClass());
         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -385,21 +373,38 @@ public class MapsActivity extends ActionBarActivity implements
 
         RemoteViews views = new RemoteViews(getPackageName(),
                 R.layout.notification);
-        if (sender != null) {
-            views.setTextViewText(R.id.notif_status, "Connected");
-            views.setTextViewText(R.id.notif_info, sender + " is " + distance + "m away.");
+        if (!finished) {
+            if (sender != null && !sender.equals("Unknown")) {
+                views.setTextViewText(R.id.notif_status, "Connected");
+                views.setTextViewText(R.id.notif_info, sender + " is " + distance + "m away.");
+            } else {
+                views.setTextViewText(R.id.notif_status, "Waiting for Ride Acceptance");
+                views.setTextViewText(R.id.notif_info, "");
+            }
         } else {
-            views.setTextViewText(R.id.notif_status, "Waiting for Ride Acceptance");
-            views.setTextViewText(R.id.notif_info, sender + "");
+            views.setTextViewText(R.id.notif_status, "Congratulations!");
+            views.setTextViewText(R.id.notif_info, "You are within 5 minutes from " + sender);
         }
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(
                 getApplicationContext());
-        Notification note = builder.setContentIntent(pi)
-                .setSmallIcon(R.drawable.notification_icon_small).setTicker("Ride Status").setWhen(System.currentTimeMillis())
-                .setAutoCancel(false).setContentTitle("Be There In 5")
-                .setOngoing(true)
-                .setContent(views).build();
+        if (!finished) {
+            Notification note = builder.setContentIntent(pi)
+                    .setSmallIcon(R.drawable.notification_icon_small).setTicker("Ride Status").setWhen(System.currentTimeMillis())
+                    .setAutoCancel(false).setContentTitle("Be There In 5")
+                    .setOngoing(true)
+                    .setContent(views).build();
+        } else {
+            Notification note = builder.setContentIntent(pi)
+                    .setSmallIcon(R.drawable.notification_icon_small).setTicker("Ride Status").setWhen(System.currentTimeMillis())
+                    .setAutoCancel(false).setContentTitle("Be There In 5")
+                    .setOngoing(true)
+                    .setVibrate(new long[]{1000, 1000, 1000, 1000, 1000})
+                    .setLights(Color.RED, 3000, 3000)
+                    .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+                    .setContent(views).build();
+        }
+
 
         NotificationManager myNotificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
