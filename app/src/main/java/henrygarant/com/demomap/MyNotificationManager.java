@@ -38,16 +38,19 @@ public class MyNotificationManager extends Service {
             e.printStackTrace();
         }
 
-        if (intent.getAction().equals(Config.NOTIF_STICKY)) {
-            //status
-            stickyNotification(phoneto, sender, distance, finished, MapsActivity.isConnected);
-        } else if (intent.getAction().equals(Config.NOTIF_ACCEPT)) {
-            //accept
-            acceptNotification(sender, phoneto);
-        } else {
-            //stop
-            stopForeground(true);
+        if (intent != null) {
+            if (intent.getAction().equals(Config.NOTIF_STICKY)) {
+                //status
+                stickyNotification(phoneto, sender, distance, finished, MapsActivity.isConnected);
+            } else if (intent.getAction().equals(Config.NOTIF_ACCEPT)) {
+                //accept
+                acceptNotification(sender, phoneto);
+            } else {
+                //stop
+                stopForeground(true);
+            }
         }
+
         return START_STICKY;
     }
 
@@ -83,8 +86,11 @@ public class MyNotificationManager extends Service {
                     views.setTextViewText(R.id.notif_status, "Waiting for Ride Acceptance");
                     views.setTextViewText(R.id.notif_info, "");
                     MapsActivity.updateUI("Connecting...", 0);
+                } else if (isConnected) {
+                    views.setTextViewText(R.id.notif_status, "Congratulations!");
+                    views.setTextViewText(R.id.notif_info, "Remember to drive safe");
                 } else {
-                    views.setTextViewText(R.id.notif_status, "Connection Lost");
+                    views.setTextViewText(R.id.notif_status, "Connecting...");
                     views.setTextViewText(R.id.notif_info, "");
                 }
 
