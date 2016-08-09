@@ -32,6 +32,8 @@ public interface Config {
 
     public static final String ACTION_STOP
             = "henryrgarant.com.demomap.MyLocationService.stop";
+    public static final String ACTION_START
+            = "henryrgarant.com.demomap.MyLocationService.start";
 
     public static final String FIELD_REGISTRATION_ID = "registration_id";
     public static final String FIELD_MESSAGE = "msg";

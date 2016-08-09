@@ -1,8 +1,10 @@
 package henrygarant.com.demomap.MapActivities;
 
+import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.location.Location;
@@ -38,7 +40,14 @@ public class MyLocationService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
 
         if (intent.getAction().equals(Config.ACTION_STOP)) {
-            onDestroy();
+            abort();
+            AlarmManager alarm_manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            alarm_manager.cancel(PendingIntent.getService(this, 0, new Intent(this, MyLocationService.class), PendingIntent.FLAG_UPDATE_CURRENT));
+            isConnected = false;
+            //send gcm cancel
+            GcmSender gcmSender = new GcmSender(this);
+            SQLiteHandler db = new SQLiteHandler(this);
+            gcmSender.sendGcmAccept(db.getUserDetails().get("phone").toString(), phoneTo, "0", "1");
         } else {
 
             phoneTo = intent.getStringExtra("phoneto");
@@ -76,6 +85,7 @@ public class MyLocationService extends Service {
     }
 
     private void abort() {
+        stopSelf();
         stopForeground(true);
     }
 

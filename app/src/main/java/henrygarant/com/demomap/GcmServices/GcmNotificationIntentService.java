@@ -1,5 +1,6 @@
 package henrygarant.com.demomap.GcmServices;
 
+import android.app.ActivityManager;
 import android.app.AlarmManager;
 import android.app.IntentService;
 import android.app.NotificationManager;
@@ -16,6 +17,8 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
+
+import java.util.List;
 
 import henrygarant.com.demomap.Config;
 import henrygarant.com.demomap.MainActivity;
@@ -79,14 +82,17 @@ public class GcmNotificationIntentService extends IntentService {
                     else if (extras.get(Config.ACCEPT_START_KEY).toString().equals("0") && extras.get(Config.ACCEPT_END_KEY).toString().equals("1")) {
                         Log.d("CANCEL REQUEST:", "canceling");
                         stopUpdate();
+                        //TODO UPDATE NOTIFICATION
                         Handler mHandler = new Handler(getMainLooper());
                         mHandler.post(new Runnable() {
                             @Override
                             public void run() {
-                                Toast.makeText(getApplicationContext(), "Connection Stopped", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "BeThereIn5 Connection Stopped", Toast.LENGTH_SHORT).show();
                             }
                         });
-                        startActivity(new Intent(this, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                        if (isAppOnForeground(this)) {
+                            startActivity(new Intent(this, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                        }
                     } else {
                         Log.d("NOTIFICATIONINTENTSERVICE: ", "Error parsing gcm message");
                     }
@@ -149,4 +155,20 @@ public class GcmNotificationIntentService extends IntentService {
         AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         am.cancel(alarmPendingIntent);
     }
+
+    private boolean isAppOnForeground(Context context) {
+        ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningAppProcessInfo> appProcesses = activityManager.getRunningAppProcesses();
+        if (appProcesses == null) {
+            return false;
+        }
+        final String packageName = context.getPackageName();
+        for (ActivityManager.RunningAppProcessInfo appProcess : appProcesses) {
+            if (appProcess.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND && appProcess.processName.equals(packageName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

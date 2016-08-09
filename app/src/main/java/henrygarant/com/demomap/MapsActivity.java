@@ -143,6 +143,7 @@ public class MapsActivity extends ActionBarActivity implements
             setUpMapIfNeeded();
 
             serviceIntent = new Intent(this, MyLocationService.class);
+            serviceIntent.setAction(Config.ACTION_START);
             serviceIntent.putExtra("phoneto", phoneTo);
             serviceIntent.putExtra("distance", distance);
             serviceIntent.putExtra("sender", sender);
