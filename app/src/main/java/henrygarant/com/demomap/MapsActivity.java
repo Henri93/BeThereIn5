@@ -47,7 +47,7 @@ public class MapsActivity extends ActionBarActivity implements
     private String phoneTo;
     private String sender;
     private int distance;
-    private boolean isConnected = false;
+    public static boolean isConnected = false;
     private PendingIntent alarmPendingIntent;
     private final double MILE_RADIUS = .5;
     private String updatedLocation;

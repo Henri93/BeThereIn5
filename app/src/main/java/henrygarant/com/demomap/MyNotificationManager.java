@@ -29,20 +29,18 @@ public class MyNotificationManager extends Service {
         String sender = null;
         int distance = 0;
         boolean finished = false;
-        boolean isConnected = false;
         try {
             phoneto = intent.getStringExtra("phoneto");
             sender = intent.getStringExtra("sender");
             distance = intent.getIntExtra("distance", 0);
             finished = intent.getBooleanExtra("finished", false);
-            isConnected = intent.getBooleanExtra("connected", false);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         if (intent.getAction().equals(Config.NOTIF_STICKY)) {
             //status
-            stickyNotification(phoneto, sender, distance, finished, isConnected);
+            stickyNotification(phoneto, sender, distance, finished, MapsActivity.isConnected);
         } else if (intent.getAction().equals(Config.NOTIF_ACCEPT)) {
             //accept
             acceptNotification(sender, phoneto);
@@ -139,7 +137,13 @@ public class MyNotificationManager extends Service {
         RemoteViews views = new RemoteViews(context.getPackageName(),
                 R.layout.notification_accept);
         views.setOnClickPendingIntent(R.id.notif_accept_accept, acceptIntent);
-        //views.setOnClickPendingIntent(R.id.notif_accept_deny, denyIntent);
+
+        Intent stopIntent = new Intent(this, MyNotificationManager.class);
+        stopIntent.setAction(Config.NOTIF_STOP);
+        PendingIntent denyIntent = PendingIntent.getActivity(this, 0,
+                stopIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+        views.setOnClickPendingIntent(R.id.notif_accept_deny, denyIntent);
         views.setTextViewText(R.id.notif_riderequest, "Ride Request from " + sender);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(
@@ -159,32 +163,6 @@ public class MyNotificationManager extends Service {
                 1337,
                 note);
 
-        /*mNotificationManager = (NotificationManager) this
-                .getSystemService(Context.NOTIFICATION_SERVICE);
-
-        Intent intent = new Intent(this, WaitingPage.class);
-
-        intent.putExtra("sender", sender);
-        intent.putExtra("phoneto", phonefrom);
-        intent.putExtra("fromaccept", true);
-
-        //Class to open when user clicks notification
-        PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-                intent, PendingIntent.FLAG_CANCEL_CURRENT);
-
-
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
-                this).setSmallIcon(R.drawable.notification_icon_small)
-                .setContentTitle("Be There In 5")
-                .setStyle(new NotificationCompat.BigTextStyle().bigText(msg))
-                .setContentText(msg);
-
-        mBuilder.setVibrate(new long[]{1000, 1000, 1000, 1000, 1000});
-        mBuilder.setLights(Color.BLUE, 3000, 3000);
-        mBuilder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
-        mBuilder.setContentIntent(contentIntent);
-        mBuilder.setAutoCancel(true);
-        mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build()); */
     }
 
     @Nullable

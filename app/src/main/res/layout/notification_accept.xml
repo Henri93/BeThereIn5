@@ -71,8 +71,7 @@
                         android:id="@+id/textView2"
                         android:layout_gravity="center_vertical"
                         android:textSize="24sp"
-                        android:textColor="@color/Primary"
-                        android:textStyle="bold" />
+                        android:textColor="@color/Primary" />
 
                 </LinearLayout>
 
@@ -99,7 +98,7 @@
                         android:id="@+id/textView3"
                         android:layout_gravity="center_vertical"
                         android:textSize="22sp"
-                        android:textColor="@color/ErrorRed" />
+                        android:textColor="@color/Hint" />
 
                 </LinearLayout>
             </LinearLayout>
