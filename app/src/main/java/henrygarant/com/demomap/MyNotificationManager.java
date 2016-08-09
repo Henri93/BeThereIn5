@@ -90,7 +90,7 @@ public class MyNotificationManager extends Service {
                     views.setTextViewText(R.id.notif_status, "Congratulations!");
                     views.setTextViewText(R.id.notif_info, "Remember to drive safe");
                 } else {
-                    views.setTextViewText(R.id.notif_status, "Connecting...");
+                    views.setTextViewText(R.id.notif_status, "Obtaining Connection");
                     views.setTextViewText(R.id.notif_info, "");
                 }
 
