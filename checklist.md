@@ -12,6 +12,6 @@
 * [x] Make Error Message PHP function
 * [x] Make Cancel Message PHP function
 * [x] Make Accept Notification create noise
-* [ ] Notification Stay Bar
+* [x] Notification Stay Bar
 * [ ] Imporve Connection Reliablilty
-* [ ] Provide connection updates for user
+* [x] Provide connection updates for user
