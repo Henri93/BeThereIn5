@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/MidLight">
+    android:background="@color/Primary">
 
     <ImageView
         android:id="@+id/status_bar_album_art"
@@ -49,7 +49,7 @@
             android:ellipsize="marquee"
             android:marqueeRepeatLimit="marquee_forever"
             android:scrollHorizontally="true"
-            android:textColor="@color/Primary"
+            android:textColor="@color/Light"
             android:textSize="20sp"
             android:text="You are within 5 minutes from Billy Bob Thorton"
             android:gravity="center_vertical" />

@@ -44,6 +44,9 @@ public interface Config {
     public static final String NOTIF_ACCEPT
             = "henryrgarant.com.demomap.MyNotificationManager.accept";
 
+    public static final String NOTIF_REG
+            = "henryrgarant.com.demomap.MyNotificationManager.reg";
+
 
     public static final String FIELD_REGISTRATION_ID = "registration_id";
     public static final String FIELD_MESSAGE = "msg";

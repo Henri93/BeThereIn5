@@ -27,6 +27,7 @@ public class MyNotificationManager extends Service {
         Log.d("NOTIFICATION: ", "inside notification");
         String phoneto = null;
         String sender = null;
+        String message = null;
         int distance = 0;
         boolean finished = false;
         try {
@@ -34,6 +35,7 @@ public class MyNotificationManager extends Service {
             sender = intent.getStringExtra("sender");
             distance = intent.getIntExtra("distance", 0);
             finished = intent.getBooleanExtra("finished", false);
+            message = intent.getStringExtra("message");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -45,6 +47,8 @@ public class MyNotificationManager extends Service {
             } else if (intent.getAction().equals(Config.NOTIF_ACCEPT)) {
                 //accept
                 acceptNotification(sender, phoneto);
+            } else if (intent.getAction().equals(Config.NOTIF_REG)) {
+                regularNotification(message);
             } else {
                 //stop
                 stopForeground(true);
@@ -62,7 +66,7 @@ public class MyNotificationManager extends Service {
     }
 
     public void stickyNotification(String phoneto, String sender, int distance, boolean finished, boolean isConnected) {
-        Intent i = new Intent(context, context.getClass());
+        Intent i = new Intent(context, MapsActivity.class);
         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         PendingIntent pi = PendingIntent.getActivity(context, 0, i, 0);
 
@@ -87,7 +91,7 @@ public class MyNotificationManager extends Service {
                     views.setTextViewText(R.id.notif_info, "");
                     MapsActivity.updateUI("Connecting...", 0);
                 } else if (isConnected) {
-                    views.setTextViewText(R.id.notif_status, "Congratulations!");
+                    views.setTextViewText(R.id.notif_status, "Connected");
                     views.setTextViewText(R.id.notif_info, "Remember to drive safe");
                 } else {
                     views.setTextViewText(R.id.notif_status, "Obtaining Connection");
@@ -120,6 +124,41 @@ public class MyNotificationManager extends Service {
         }
 
         Log.d("NOTIFICATION: ", "sent notification");
+
+        NotificationManager myNotificationManager =
+                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        myNotificationManager.notify(
+                1337,
+                builder.build());
+        startForeground(1337, builder.build());
+    }
+
+    public void regularNotification(String message) {
+        Intent i = new Intent(context, MainActivity.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        PendingIntent pi = PendingIntent.getActivity(context, 0, i, 0);
+
+        Intent nextIntent = new Intent(context, MyLocationService.class);
+        nextIntent.setAction(Config.ACTION_STOP);
+        PendingIntent stopIntent = PendingIntent.getService(context, 0,
+                nextIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        RemoteViews views = new RemoteViews(context.getPackageName(),
+                R.layout.notification);
+        views.setTextViewText(R.id.notif_status, message);
+        views.setTextViewText(R.id.notif_info, "");
+        views.setOnClickPendingIntent(R.id.notif_stop, stopIntent);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(
+                context);
+
+        Notification note = builder.setContentIntent(pi)
+                .setSmallIcon(R.drawable.notification_icon_small).setTicker(message).setWhen(System.currentTimeMillis())
+                .setAutoCancel(true).setContentTitle("Be There In 5")
+                .setOngoing(false)
+                .setVibrate(new long[]{1000, 1000, 1000})
+                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+                .setContent(views).build();
 
         NotificationManager myNotificationManager =
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);

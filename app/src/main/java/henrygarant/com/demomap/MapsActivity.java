@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
@@ -64,6 +65,12 @@ public class MapsActivity extends ActionBarActivity implements
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.d("MAPSACTIVITY: ", "Location Broadcast Received");
+
+            if (!isConnected) {
+                //vibrate for first connection
+                Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                v.vibrate(1000);
+            }
             isConnected = true;
             //the location of the other person
             updatedLocation = intent.getStringExtra("target");
@@ -170,8 +177,12 @@ public class MapsActivity extends ActionBarActivity implements
     }
 
     public static void updateUI(String name, int distance) {
+        try {
         targetName.setText(name);
         distanceTextView.setText("Distance: " + distance + " m");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -357,9 +368,11 @@ public class MapsActivity extends ActionBarActivity implements
     }
 
     public void cancelButtonClick(View v) {
-        GcmSender gcmSender = new GcmSender(this);
-        SQLiteHandler db = new SQLiteHandler(this);
-        gcmSender.sendGcmAccept(db.getUserDetails().get("phone").toString(), phoneTo, "0", "1");
+        if (isConnected) {
+            GcmSender gcmSender = new GcmSender(this);
+            SQLiteHandler db = new SQLiteHandler(this);
+            gcmSender.sendGcmAccept(db.getUserDetails().get("phone").toString(), phoneTo, "0", "1");
+        }
         destroyConnection();
     }
 

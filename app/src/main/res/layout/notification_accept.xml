@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/MidLight">
+    android:background="@color/Primary">
 
     <ImageView
         android:id="@+id/status_bar_album_art"
@@ -71,7 +71,7 @@
                         android:id="@+id/textView2"
                         android:layout_gravity="center_vertical"
                         android:textSize="24sp"
-                        android:textColor="@color/Primary" />
+                        android:textColor="@color/Light" />
 
                 </LinearLayout>
 
@@ -81,8 +81,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight=".5"
                     android:layout_gravity="center_vertical"
-                    android:id="@+id/notif_accept_deny"
-                    android:background="@color/BlackGloss">
+                    android:id="@+id/notif_accept_deny">
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -98,7 +97,7 @@
                         android:id="@+id/textView3"
                         android:layout_gravity="center_vertical"
                         android:textSize="22sp"
-                        android:textColor="@color/Hint" />
+                        android:textColor="@color/MidLight" />
 
                 </LinearLayout>
             </LinearLayout>

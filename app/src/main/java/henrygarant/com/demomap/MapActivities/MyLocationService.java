@@ -44,11 +44,14 @@ public class MyLocationService extends Service {
         if (intent.getAction().equals(Config.ACTION_STOP)) {
             abort();
             isConnected = false;
+            MapsActivity.isConnected = false;
             MapsActivity.updateUI("Connection Stopped", 0);
             //send gcm cancel
-            GcmSender gcmSender = new GcmSender(this);
-            SQLiteHandler db = new SQLiteHandler(this);
-            gcmSender.sendGcmAccept(db.getUserDetails().get("phone").toString(), phoneTo, "0", "1");
+            if (phoneTo != null) {
+                GcmSender gcmSender = new GcmSender(this);
+                SQLiteHandler db = new SQLiteHandler(this);
+                gcmSender.sendGcmAccept(db.getUserDetails().get("phone").toString(), phoneTo, "0", "1");
+            }
             //remove notification
             Intent serviceIntent = new Intent(this, MyNotificationManager.class);
             serviceIntent.setAction(Config.NOTIF_STOP);

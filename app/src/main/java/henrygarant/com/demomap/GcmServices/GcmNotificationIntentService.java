@@ -82,7 +82,13 @@ public class GcmNotificationIntentService extends IntentService {
                         sender = extras.get("sender").toString();
                         stopUpdate();
                         MapsActivity.updateUI("Connection ended by " + sender, 0);
-                        //TODO UPDATE NOTIFICATION
+
+                        //update notification
+                        Intent serviceIntent = new Intent(this, MyNotificationManager.class);
+                        serviceIntent.setAction(Config.NOTIF_REG);
+                        serviceIntent.putExtra("message", "Connection ended by " + sender);
+                        startService(serviceIntent);
+
                         if (isAppOnForeground(this)) {
                             startActivity(new Intent(this, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                         }
