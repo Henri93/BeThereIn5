@@ -69,7 +69,7 @@ public class MapsActivity extends ActionBarActivity implements
             if (!isConnected) {
                 //vibrate for first connection
                 Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                v.vibrate(1000);
+                v.vibrate(3000);
             }
             isConnected = true;
             //the location of the other person

@@ -97,7 +97,7 @@
                         android:id="@+id/textView3"
                         android:layout_gravity="center_vertical"
                         android:textSize="22sp"
-                        android:textColor="@color/MidLight" />
+                        android:textColor="@color/Light" />
 
                 </LinearLayout>
             </LinearLayout>
