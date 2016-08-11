@@ -193,14 +193,15 @@ public class MyNotificationManager extends Service {
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(
                 context);
-
         Notification note = builder.setSmallIcon(R.drawable.notification_icon_small).setTicker("Ride Request").setWhen(System.currentTimeMillis())
-                .setAutoCancel(true).setContentTitle("Be There In 5")
+                .setAutoCancel(true)
+                .setContentTitle("Be There In 5")
                 .setOngoing(false)
                 .setVibrate(new long[]{1000, 1000, 1000, 1000, 1000})
                 .setLights(Color.BLUE, 3000, 3000)
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
                 .setContent(views).build();
+        note.flags = note.FLAG_AUTO_CANCEL;
 
         NotificationManager myNotificationManager =
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
