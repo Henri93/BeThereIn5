@@ -14,6 +14,7 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.RemoteViews;
 
+import henrygarant.com.demomap.MapActivities.ConnectionManager;
 import henrygarant.com.demomap.MapActivities.MyLocationService;
 import henrygarant.com.demomap.MapActivities.WaitingPage;
 
@@ -24,6 +25,7 @@ public class MyNotificationManager extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         context = this;
+        ConnectionManager connectionManager = new ConnectionManager(this);
         Log.d("NOTIFICATION: ", "inside notification");
         String phoneto = null;
         String sender = null;
@@ -43,7 +45,7 @@ public class MyNotificationManager extends Service {
         if (intent != null) {
             if (intent.getAction().equals(Config.NOTIF_STICKY)) {
                 //status
-                stickyNotification(phoneto, sender, distance, finished, MapsActivity.isConnected);
+                stickyNotification(phoneto, sender, distance, finished, connectionManager.isConnected());
             } else if (intent.getAction().equals(Config.NOTIF_ACCEPT)) {
                 //accept
                 acceptNotification(sender, phoneto);

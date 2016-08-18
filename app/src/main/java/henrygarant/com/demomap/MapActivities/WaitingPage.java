@@ -3,11 +3,14 @@ package henrygarant.com.demomap.MapActivities;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
+
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -79,10 +82,19 @@ public class WaitingPage extends FragmentActivity {
                         public void onClick(DialogInterface dialog, int which) {
                             Intent myIntent = new Intent(getBaseContext(), MapsActivity.class);
 
+                            //send first gcm location message
+                            DestinationManager dm = new DestinationManager();
+                            Location location = dm.getLocation(getApplicationContext());
+                            double latitude = location.getLatitude();
+                            double longitude = location.getLongitude();
+                            LatLng myLatLng = new LatLng(latitude, longitude);
+                            GcmSender gcmSender = new GcmSender(getBaseContext());
+                            SQLiteHandler db = new SQLiteHandler(getBaseContext());
+                            gcmSender.sendGcmMessage(db.getUserDetails().get("phone").toString(), number, myLatLng.toString());
+
                             //phone number of whom sent the location
                             myIntent.putExtra("phonefrom", number);
                             myIntent.putExtra("sender", sender);
-
                             startActivity(myIntent);
 
                         }

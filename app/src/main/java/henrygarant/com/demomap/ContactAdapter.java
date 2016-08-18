@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import henrygarant.com.demomap.MapActivities.ConnectionManager;
 import henrygarant.com.demomap.MapActivities.WaitingPage;
 
 public class ContactAdapter extends BaseExpandableListAdapter {
@@ -68,6 +69,8 @@ public class ContactAdapter extends BaseExpandableListAdapter {
                 Intent intent = new Intent(_context , WaitingPage.class);
                 intent.putExtra("phoneto", number);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                ConnectionManager connectionManager = new ConnectionManager(_context);
+                connectionManager.setConnected(false);
                 _context.startActivity(intent);
 
             }

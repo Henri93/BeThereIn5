@@ -1,6 +1,5 @@
 package henrygarant.com.demomap;
 
-import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -10,7 +9,6 @@ import android.graphics.Color;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Vibrator;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
@@ -33,13 +31,12 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.util.Calendar;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import henrygarant.com.demomap.GcmServices.GcmSender;
+import henrygarant.com.demomap.MapActivities.ConnectionManager;
 import henrygarant.com.demomap.MapActivities.DestinationManager;
-import henrygarant.com.demomap.MapActivities.MyLocationService;
 
 public class MapsActivity extends ActionBarActivity implements
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
@@ -48,7 +45,6 @@ public class MapsActivity extends ActionBarActivity implements
     private String phoneTo;
     private String sender;
     private int distance;
-    public static boolean isConnected = false;
     private PendingIntent alarmPendingIntent;
     private final double MILE_RADIUS = .5;
     private String updatedLocation;
@@ -60,18 +56,13 @@ public class MapsActivity extends ActionBarActivity implements
     public static TextView distanceTextView;
     private GoogleApiClient mGoogleApiClient;
     private DestinationManager destinationManager;
+    private ConnectionManager connectionManager = new ConnectionManager(this);
 
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.d("MAPSACTIVITY: ", "Location Broadcast Received");
 
-            if (!isConnected) {
-                //vibrate for first connection
-                Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                v.vibrate(3000);
-            }
-            isConnected = true;
             //the location of the other person
             updatedLocation = intent.getStringExtra("target");
             //phone number of person sending location
@@ -85,36 +76,6 @@ public class MapsActivity extends ActionBarActivity implements
 
             updateUI(sender, distance);
 
-            Log.d("NOTIFICATION: ", "from maps");
-            Intent serviceIntent = new Intent(getApplicationContext(), MyNotificationManager.class);
-            serviceIntent.setAction(Config.NOTIF_STICKY);
-            serviceIntent.putExtra("distance", distance);
-            serviceIntent.putExtra("sender", sender);
-            serviceIntent.putExtra("phoneto", phoneTo);
-            serviceIntent.putExtra("connected", isConnected);
-
-            //***
-            //THE MASTER BETHEREIN5 CHECK HAPPENS HERE
-            //***
-            if (dm.isWithin5Minutes(getApplicationContext(), dm.convertStringToLatLng(updatedLocation))) {
-                serviceIntent.putExtra("finished", true);
-                //TODO FIGURE A WAY TO EITHER WAIT OR DESTROY NEXT CONNECTION
-                //this ensures that the other person will receive location update too
-                new java.util.Timer().schedule(
-                        new java.util.TimerTask() {
-                            @Override
-                            public void run() {
-                                destroyConnection();
-                            }
-                        },
-                        60000
-                );
-
-            } else {
-                serviceIntent.putExtra("finished", false);
-            }
-
-            startService(serviceIntent);
             updateMap(updatedLocation);
         }
     };
@@ -151,18 +112,6 @@ public class MapsActivity extends ActionBarActivity implements
 
         try {
             setUpMapIfNeeded();
-
-            serviceIntent = new Intent(this, MyLocationService.class);
-            serviceIntent.setAction(Config.ACTION_START);
-            serviceIntent.putExtra("phoneto", phoneTo);
-            serviceIntent.putExtra("distance", distance);
-            serviceIntent.putExtra("sender", sender);
-            serviceIntent.putExtra("connected", isConnected);
-            startService(serviceIntent);
-
-            alarmPendingIntent = PendingIntent.getService(this, 0, serviceIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-            AlarmManager alarm_manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-            alarm_manager.setRepeating(AlarmManager.RTC, Calendar.getInstance().getTimeInMillis(), 30000, alarmPendingIntent);
 
         } catch (Exception e) {
             Log.e("MapsActivity Exception", e.toString());
@@ -368,7 +317,7 @@ public class MapsActivity extends ActionBarActivity implements
     }
 
     public void cancelButtonClick(View v) {
-        if (isConnected) {
+        if (connectionManager.isConnected()) {
             GcmSender gcmSender = new GcmSender(this);
             SQLiteHandler db = new SQLiteHandler(this);
             gcmSender.sendGcmAccept(db.getUserDetails().get("phone").toString(), phoneTo, "0", "1");
@@ -377,10 +326,10 @@ public class MapsActivity extends ActionBarActivity implements
     }
 
     public void destroyConnection() {
-        stopService(serviceIntent);
-        AlarmManager alarm_manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        alarm_manager.cancel(alarmPendingIntent);
-        isConnected = false;
+        //stopService(serviceIntent);
+        // AlarmManager alarm_manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        //alarm_manager.cancel(alarmPendingIntent);
+        connectionManager.setConnected(false);
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }

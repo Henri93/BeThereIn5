@@ -36,6 +36,8 @@ public class MyLocationService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
+        ConnectionManager connectionManager = new ConnectionManager(this);
+
         phoneTo = intent.getStringExtra("phoneto");
         distance = intent.getIntExtra("distance", 666);
         sender = intent.getStringExtra("sender");
@@ -44,7 +46,7 @@ public class MyLocationService extends Service {
         if (intent.getAction().equals(Config.ACTION_STOP)) {
             abort();
             isConnected = false;
-            MapsActivity.isConnected = false;
+            connectionManager.setConnected(false);
             MapsActivity.updateUI("Connection Stopped", 0);
             //send gcm cancel
             if (phoneTo != null) {
