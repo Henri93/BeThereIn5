@@ -32,24 +32,34 @@ public class MyNotificationManager extends Service {
         String message = null;
         int distance = 0;
         boolean finished = false;
-        try {
-            phoneto = intent.getStringExtra("phoneto");
-            sender = intent.getStringExtra("sender");
-            distance = intent.getIntExtra("distance", 0);
-            finished = intent.getBooleanExtra("finished", false);
-            message = intent.getStringExtra("message");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
         if (intent != null) {
             if (intent.getAction().equals(Config.NOTIF_STICKY)) {
                 //status
+                try {
+                    phoneto = intent.getStringExtra("phoneto");
+                    sender = intent.getStringExtra("sender");
+                    distance = intent.getIntExtra("distance", 0);
+                    finished = intent.getBooleanExtra("finished", false);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 stickyNotification(phoneto, sender, distance, finished, connectionManager.isConnected());
             } else if (intent.getAction().equals(Config.NOTIF_ACCEPT)) {
                 //accept
+                try {
+                    phoneto = intent.getStringExtra("phoneto");
+                    sender = intent.getStringExtra("sender");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 acceptNotification(sender, phoneto);
             } else if (intent.getAction().equals(Config.NOTIF_REG)) {
+                try {
+                    message = intent.getStringExtra("message");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 regularNotification(message);
             } else {
                 //stop

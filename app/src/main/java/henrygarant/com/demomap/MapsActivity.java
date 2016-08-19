@@ -273,6 +273,7 @@ public class MapsActivity extends ActionBarActivity implements
     public void onResume() {
         super.onResume();
         setUpMapIfNeeded();
+        updateUI(connectionManager.sender, connectionManager.distance);
         IntentFilter filter = new IntentFilter();
         filter.addAction(MapsActivity.MAP_BROADCAST);
         registerReceiver(broadcastReceiver, filter);
@@ -281,8 +282,6 @@ public class MapsActivity extends ActionBarActivity implements
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        destroyConnection();
-
     }
 
     public void getDirectionsButtonClick(View v) {
@@ -326,11 +325,6 @@ public class MapsActivity extends ActionBarActivity implements
     }
 
     public void destroyConnection() {
-        //stopService(serviceIntent);
-        // AlarmManager alarm_manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        //alarm_manager.cancel(alarmPendingIntent);
-        connectionManager.setConnected(false);
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+        connectionManager.destroyConnection();
     }
 }

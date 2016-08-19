@@ -1,9 +1,6 @@
 package henrygarant.com.demomap.MapActivities;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.location.Location;
@@ -26,6 +23,7 @@ public class MyLocationService extends Service {
     private int distance;
     private String sender;
     private boolean isConnected;
+    private ConnectionManager connectionManager = new ConnectionManager(this);
 
     @Nullable
     @Override
@@ -36,7 +34,7 @@ public class MyLocationService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        ConnectionManager connectionManager = new ConnectionManager(this);
+
 
         phoneTo = intent.getStringExtra("phoneto");
         distance = intent.getIntExtra("distance", 666);
@@ -45,8 +43,6 @@ public class MyLocationService extends Service {
 
         if (intent.getAction().equals(Config.ACTION_STOP)) {
             abort();
-            isConnected = false;
-            connectionManager.setConnected(false);
             MapsActivity.updateUI("Connection Stopped", 0);
             //send gcm cancel
             if (phoneTo != null) {
@@ -54,12 +50,6 @@ public class MyLocationService extends Service {
                 SQLiteHandler db = new SQLiteHandler(this);
                 gcmSender.sendGcmAccept(db.getUserDetails().get("phone").toString(), phoneTo, "0", "1");
             }
-            //remove notification
-            Intent serviceIntent = new Intent(this, MyNotificationManager.class);
-            serviceIntent.setAction(Config.NOTIF_STOP);
-            serviceIntent.putExtra("phoneto", phoneTo);
-            serviceIntent.putExtra("finished", true);
-            startService(serviceIntent);
         } else {
             DestinationManager dm = new DestinationManager();
             Location location = dm.getLocation(getApplicationContext());
@@ -102,16 +92,7 @@ public class MyLocationService extends Service {
     private void abort() {
         stopSelf();
         stopForeground(true);
-        Intent serviceIntent = new Intent(this, MyLocationService.class);
-        serviceIntent.setAction(Config.ACTION_START);
-        serviceIntent.putExtra("phoneto", phoneTo);
-        serviceIntent.putExtra("distance", distance);
-        serviceIntent.putExtra("sender", sender);
-        serviceIntent.putExtra("connected", isConnected);
-
-        PendingIntent alarmPendingIntent = PendingIntent.getService(this, 0, serviceIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        AlarmManager alarm_manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        alarm_manager.cancel(alarmPendingIntent);
+        connectionManager.destroyConnection();
     }
 
 }

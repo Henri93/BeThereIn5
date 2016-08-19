@@ -15,9 +15,11 @@ import com.google.android.gms.maps.model.LatLng;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import henrygarant.com.demomap.Config;
 import henrygarant.com.demomap.GcmServices.GcmSender;
 import henrygarant.com.demomap.MainActivity;
 import henrygarant.com.demomap.MapsActivity;
+import henrygarant.com.demomap.MyNotificationManager;
 import henrygarant.com.demomap.R;
 import henrygarant.com.demomap.SQLiteHandler;
 
@@ -111,6 +113,12 @@ public class WaitingPage extends FragmentActivity {
                     .show();
         } else {
             //Came from user click aka ContactAdapter class or SenderActivity
+            //update notification
+            Intent serviceIntent = new Intent(getBaseContext(), MyNotificationManager.class);
+            serviceIntent.setAction(Config.NOTIF_REG);
+            serviceIntent.putExtra("message", "Waiting for Ride Acceptance");
+            startService(serviceIntent);
+
             sendGCMAccept(number);
             Intent myIntent = new Intent(getBaseContext(), MapsActivity.class);
             myIntent.putExtra("phonefrom", number);

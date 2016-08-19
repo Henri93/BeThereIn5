@@ -86,17 +86,16 @@ public class GcmNotificationIntentService extends IntentService {
                         Log.d("CANCEL REQUEST:", "canceling");
                         sender = extras.get("sender").toString();
                         stopUpdate();
-                        MapsActivity.updateUI("Connection ended by " + sender, 0);
-
-                        //update notification
-                        Intent serviceIntent = new Intent(this, MyNotificationManager.class);
-                        serviceIntent.setAction(Config.NOTIF_REG);
-                        serviceIntent.putExtra("message", "Connection ended by " + sender);
-                        startService(serviceIntent);
 
                         if (isAppOnForeground(this)) {
                             startActivity(new Intent(this, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                         }
+
+                        //update notification
+                        Intent serviceIntent = new Intent(this, MyNotificationManager.class);
+                        serviceIntent.setAction(Config.NOTIF_REG);
+                        serviceIntent.putExtra("message", "Connection Ended By " + sender);
+                        startService(serviceIntent);
                     } else {
                         Log.d("NOTIFICATIONINTENTSERVICE: ", "Error parsing gcm message");
                     }
@@ -107,6 +106,10 @@ public class GcmNotificationIntentService extends IntentService {
                     DestinationManager dm = new DestinationManager();
                     int distance = dm.CalculationByDistance(getApplicationContext(), dm.convertStringToLatLng(extras.get(Config.MESSAGE_KEY).toString()));
                     sender = extras.get("sender").toString();
+
+                    connectionManager.distance = distance;
+                    connectionManager.sender = sender;
+
 
                     if (!connectionManager.isConnected()) {
                         connectionManager.setConnected(true);
