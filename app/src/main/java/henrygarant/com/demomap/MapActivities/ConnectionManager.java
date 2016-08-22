@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 import henrygarant.com.demomap.Config;
 import henrygarant.com.demomap.MainActivity;
@@ -41,14 +40,9 @@ public class ConnectionManager {
         sender = "Waiting for Ride Acceptance";
 
         //stop alarm
-        Intent serviceIntent = new Intent(context, MyLocationService.class);
-        serviceIntent.setAction(Config.ACTION_START);
-        PendingIntent alarmPendingIntent = PendingIntent.getService(context, 0, serviceIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        AlarmManager alarm_manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        alarm_manager.cancel(alarmPendingIntent);
+        cancelAlarm();
 
-        //clear notification
-        Log.d("CONNECTIONMANAGER: ", "clear notifiation");
+
         clearNotification();
 
         Intent intent = new Intent(context, MainActivity.class);
@@ -56,10 +50,27 @@ public class ConnectionManager {
         context.startActivity(intent);
     }
 
+    public void arrivalCancel() {
+        setConnected(false);
+        distance = 0;
+        sender = "You are within 5!";
+
+        //stop alarm
+        cancelAlarm();
+    }
+
     public void clearNotification() {
         Intent serviceIntent = new Intent(context, MyNotificationManager.class);
         serviceIntent.setAction(Config.NOTIF_STOP);
         serviceIntent.putExtra("finished", true);
         context.startService(serviceIntent);
+    }
+
+    public void cancelAlarm() {
+        Intent serviceIntent = new Intent(context, MyLocationService.class);
+        serviceIntent.setAction(Config.ACTION_START);
+        PendingIntent alarmPendingIntent = PendingIntent.getService(context, 0, serviceIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager alarm_manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        alarm_manager.cancel(alarmPendingIntent);
     }
 }

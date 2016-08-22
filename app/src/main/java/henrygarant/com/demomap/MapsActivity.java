@@ -194,7 +194,7 @@ public class MapsActivity extends ActionBarActivity implements
                 mMap.addMarker(new MarkerOptions()
                         .position(targetLoc)
                         .snippet("Target")
-                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.car))
                         .title("Target"));
             }
 

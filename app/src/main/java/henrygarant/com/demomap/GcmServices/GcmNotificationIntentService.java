@@ -144,7 +144,7 @@ public class GcmNotificationIntentService extends IntentService {
                     //***
                     //THE MASTER BETHEREIN5 CHECK HAPPENS HERE
                     //***
-                    /*if (dm.isWithin5Minutes(getApplicationContext(), dm.convertStringToLatLng(extras.get(Config.MESSAGE_KEY).toString()))) {
+                    if (dm.isWithin5Minutes(getApplicationContext(), dm.convertStringToLatLng(extras.get(Config.MESSAGE_KEY).toString()))) {
                         serviceIntent.putExtra("finished", true);
                         //TODO FIGURE A WAY TO EITHER WAIT OR DESTROY NEXT CONNECTION
                         //this ensures that the other person will receive location update too
@@ -152,17 +152,16 @@ public class GcmNotificationIntentService extends IntentService {
                                 new java.util.TimerTask() {
                                     @Override
                                     public void run() {
-                                       // destroyConnection();
+                                        connectionManager.arrivalCancel();
                                         connectionManager.setConnected(false);
                                     }
                                 },
-                                60000
+                                15000
                         );
 
                     } else {
                         serviceIntent.putExtra("finished", false);
-                    }*/
-                    serviceIntent.putExtra("finished", false);
+                    }
                     startService(serviceIntent);
 
 
